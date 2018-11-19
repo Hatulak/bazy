@@ -14,6 +14,8 @@ public class SalaSportowa {
     private Long id;
     private Integer wielkosc;
     private Boolean czyTrybuna;
+    @OneToOne
+    @JoinColumn(name = "SZKOLA_ID")
     private Long idPlacowki;
 
 }

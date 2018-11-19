@@ -10,10 +10,12 @@ import javax.persistence.*;
 public class Szafka {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "SZAFKA_ID", nullable = false)
     private Long id;
     private Integer numer;
     private String haslo;
     private Integer pojemnosc;
-    private Long idDziecka;
+    @OneToOne
+    @JoinColumn(name = "DZIECKO_ID")
+    private Dziecko dziecko;
 }

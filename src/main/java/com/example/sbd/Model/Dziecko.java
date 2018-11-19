@@ -10,12 +10,13 @@ import javax.persistence.*;
 public class Dziecko {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "DZIECKO_ID", nullable = false)
     private Long id;
+    private String imie;
+    private Integer wiek;
     private Long idRodzic1;
     private Long idRodzic2;
     private Long idGrupy;
-    private Integer wiek;
-    private String imie;
+
 
 }

@@ -10,9 +10,11 @@ import javax.persistence.*;
 public class Szkola {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "SZKOLA_ID", nullable = false)
     private Long id;
-    private Long idMiasto;
+    @OneToOne
+    @JoinColumn(name = "MIASTO_ID")
+    private Miasto miasto;
     private String nazwa;
     private String patron;
     private String ulica;

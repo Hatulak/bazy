@@ -13,7 +13,9 @@ public class Rodzic {
     @Column(name = "ID", nullable = false)
     private Long id;
     private String imie;
-    private Long idMiasta;
+    @OneToOne
+    @JoinColumn(name = "MIASTO_ID")
+    private Miasto miasto;
     private String ulica;
     private Integer nrMieszkania;
     private Integer telefon;

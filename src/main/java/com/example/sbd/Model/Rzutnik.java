@@ -11,7 +11,7 @@ import java.util.Date;
 public class Rzutnik {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "RZUTNIK_ID", nullable = false)
     private Long id;
     private String model;
     private String jakoscObrazu;

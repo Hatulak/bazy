@@ -3,11 +3,11 @@ package com.example.sbd.Model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "NAUCZYCIELE")
+@Table(name = "NAUCZYCIEL")
 public class Nauczyciel {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "NAUCZYCIEL_ID", nullable = false)
     private Long id;
     private String imie;
     private String nazwisko;

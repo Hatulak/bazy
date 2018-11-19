@@ -14,7 +14,11 @@ public class Grupa {
     private Long id;
     private Integer maxLiczbaDzieci;
     private Integer wiek;
-    private Long idWychowawcy;
-    private Long idSala;
+    @OneToOne
+    @JoinColumn(name = "NAUCZYCIEL_ID")
+    private Nauczyciel nauczyciel;
+    @OneToOne
+    @JoinColumn(name = "SALA_ID")
+    private Sala sala;
 
 }

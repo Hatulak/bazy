@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Miasto {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "MIASTO_ID", nullable = false)
     private Long id;
     private String nazwa;
     private String gmina;
