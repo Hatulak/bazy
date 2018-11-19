@@ -21,7 +21,7 @@ public class Sala {
     @OneToOne
     @JoinColumn(name = "RZUTNIK_ID")
     private Rzutnik rzutnik;
-    @OneToMany(mappedBy = "sala", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Komputer> komputerList;
 
 

@@ -13,7 +13,7 @@ public class ZestawSprzetow {
     @GeneratedValue
     @Column(name = "ZESTAWSPRZETOW_ID", nullable = false)
     private Long id;
-    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sprzet> sprzetList;
     @ManyToOne
     @JoinColumn(name = "SALASPORTOWA_ID")

@@ -20,7 +20,7 @@ public class Szkola {
     private String patron;
     private String ulica;
     private Integer nrBudynku;
-    @OneToMany(mappedBy = "szkola", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sala> salaList;
 
 }

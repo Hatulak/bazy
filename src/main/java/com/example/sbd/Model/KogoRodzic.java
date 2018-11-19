@@ -13,6 +13,6 @@ public class KogoRodzic {
     @ManyToOne
     @JoinColumn(name = "RODZIC_ID")
     private Rodzic rodzic;
-    @OneToMany
+    @OneToMany(mappedBy = "kogoRodzic", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Dziecko> dzieckoList;
 }

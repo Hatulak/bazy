@@ -21,7 +21,7 @@ public class Grupa {
     @OneToOne
     @JoinColumn(name = "SALA_ID")
     private Sala sala;
-    @OneToMany(mappedBy = "grupa", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "grupa", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Dziecko> dzieckoList;
 
 }
