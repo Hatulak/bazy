@@ -3,6 +3,7 @@ package com.example.sbd.Model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -10,7 +11,7 @@ import javax.persistence.*;
 public class Rodzic {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "RODZIC_ID", nullable = false)
     private Long id;
     private String imie;
     @OneToOne
@@ -19,4 +20,6 @@ public class Rodzic {
     private String ulica;
     private Integer nrMieszkania;
     private Integer telefon;
+    @OneToMany(mappedBy = "DZIECKO_ID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Dziecko> dzieckoList;
 }

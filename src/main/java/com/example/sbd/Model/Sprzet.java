@@ -10,12 +10,13 @@ import javax.persistence.*;
 public class Sprzet {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "SPRZET_ID", nullable = false)
     private Long id;
     private String nazwa;
     private String dyscyplina;
-    private Integer ilosc;
-    private Long idZestawu;
+    @ManyToOne
+    @JoinColumn(name = "ZESTAWSPRZETOW_ID")
+    private ZestawSprzetow zestawSprzetow;
 
 
 }

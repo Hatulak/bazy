@@ -11,11 +11,13 @@ import java.util.Date;
 public class Komputer {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "KOMPUTER_ID", nullable = false)
     private Long id;
     private Date dataZakupu;
-    private Long idSali;
-    private String specyfikacja;
     private Date dataWygasnieciaGwarancji;
+    @ManyToOne
+    @JoinColumn(name = "SALA_ID")
+    private Sala sala;
+    private String specyfikacja;
 
 }

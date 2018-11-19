@@ -3,6 +3,7 @@ package com.example.sbd.Model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -10,9 +11,12 @@ import javax.persistence.*;
 public class ZestawSprzetow {
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "ZESTAWSPRZETOW_ID", nullable = false)
     private Long id;
-    private Long idSprzetu;
-    private Long idSali;
+    @OneToMany(mappedBy = "SPRZET_ID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Sprzet> sprzetList;
+    @ManyToOne
+    @JoinColumn(name = "SALASPORTOWA_ID")
+    private SalaSportowa salaSportowa;
 
 }

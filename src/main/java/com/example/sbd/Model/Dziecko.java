@@ -3,6 +3,7 @@ package com.example.sbd.Model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -14,9 +15,17 @@ public class Dziecko {
     private Long id;
     private String imie;
     private Integer wiek;
-    private Long idRodzic1;
-    private Long idRodzic2;
-    private Long idGrupy;
+    @ManyToOne
+    @JoinColumn(name = "RODZIC_ID")
+    private Rodzic rodzic1;
+    @ManyToOne
+    @JoinColumn(name = "RODZIC_ID")
+    private Rodzic rodzic2;
+    @ManyToOne
+    @JoinColumn(name = "GRUPA_ID")
+    private Grupa grupa;
+    @OneToMany(mappedBy = "CZESNE_ID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Czesne> czesneList;
 
 
 }

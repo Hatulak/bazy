@@ -3,6 +3,7 @@ package com.example.sbd.Model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,5 +20,7 @@ public class Szkola {
     private String patron;
     private String ulica;
     private Integer nrBudynku;
+    @OneToMany(mappedBy = "SALA_ID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Sala> salaList;
 
 }

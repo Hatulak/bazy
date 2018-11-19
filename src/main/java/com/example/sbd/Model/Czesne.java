@@ -13,6 +13,8 @@ public class Czesne {
     @GeneratedValue
     @Column(name = "CZESNE_ID", nullable = false)
     private Long id;
-    private Long idDziecka;
+    @ManyToOne
+    @JoinColumn(name = "DZIECKO_ID")
+    private Dziecko dziecko;
     private Date dataOplaty;
 }

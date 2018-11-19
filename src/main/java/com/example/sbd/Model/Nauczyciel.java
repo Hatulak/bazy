@@ -14,7 +14,9 @@ public class Nauczyciel {
     private String email;
     private Integer telefon;
     private String stopien;
-    private Long idMiasto;
+    @OneToOne
+    @JoinColumn(name = "MIASTO_ID")
+    private Miasto miasto;
     private String ulica;
     private Integer nrMieszkania;
 
