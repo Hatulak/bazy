@@ -16,11 +16,8 @@ public class Dziecko {
     private String imie;
     private Integer wiek;
     @ManyToOne
-    @JoinColumn(name = "RODZIC_ID")
-    private Rodzic rodzic1;
-    @ManyToOne
-    @JoinColumn(name = "RODZIC_ID")
-    private Rodzic rodzic2;
+    @JoinColumn(name = "KOGORODZIC_ID")
+    private KogoRodzic kogoRodzic;
     @ManyToOne
     @JoinColumn(name = "GRUPA_ID")
     private Grupa grupa;

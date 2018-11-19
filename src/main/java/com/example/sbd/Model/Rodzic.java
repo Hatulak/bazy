@@ -20,7 +20,7 @@ public class Rodzic {
     private String ulica;
     private Integer nrMieszkania;
     private Integer telefon;
-    @OneToMany(mappedBy = "rodzic1", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<Dziecko> dzieckoList;
+    @OneToMany(mappedBy = "KOGORODZIC_ID", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<KogoRodzic> kogoRodzicList;
 
 }
