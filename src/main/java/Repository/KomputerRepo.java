@@ -31,6 +31,7 @@ public class KomputerRepo {
         EntityManager em = entityManagerFactory.createEntityManager();
         Query query = em.createQuery("select c from Komputer  c", Komputer.class);
         List<Komputer> resultList = query.getResultList();
+        em.close();
         return resultList;
 
     }

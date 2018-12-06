@@ -31,6 +31,7 @@ public class GrupaRepo {
         EntityManager em = entityManagerFactory.createEntityManager();
         Query query = em.createQuery("select c from Grupa  c", Grupa.class);
         List<Grupa> resultList = query.getResultList();
+        em.close();
         return resultList;
 
     }
