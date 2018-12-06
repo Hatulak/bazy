@@ -1,46 +1,48 @@
-package Crud;
+package Repository;
 
 import Utils.EMF;
-import model.Komputer;
+import model.Czesne;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.util.List;
 
-public class KomputerRepo {
-    public void save(Komputer komputer) {
+public class CzesneRepo {
+    public void save(Czesne czesne) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.persist(komputer);
+        em.persist(czesne);
         em.getTransaction().commit();
         em.close();
     }
 
-    public Komputer getById(Long id) {
+    public Czesne getById(Long id) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
-        Komputer komputer = em.find(Komputer.class, id);
+        Czesne czesne = em.find(Czesne.class, id);
         em.close();
-        return komputer;
+        return czesne;
     }
 
-    public List<Komputer> getAll() {
+    public List<Czesne> getAll() {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
-        Query query = em.createQuery("select c from Komputer  c", Komputer.class);
-        List<Komputer> resultList = query.getResultList();
+        Query query = em.createQuery("select c from Czesne  c", Czesne.class);
+        List<Czesne> resultList = query.getResultList();
         return resultList;
 
     }
 
-    public void remove(Komputer komputer) {
+    public void remove(Czesne czesne) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(komputer);
+        em.remove(czesne);
         em.getTransaction().commit();
         em.close();
     }
+
+
 }

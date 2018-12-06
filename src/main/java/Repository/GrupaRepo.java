@@ -1,4 +1,4 @@
-package Crud;
+package Repository;
 
 import Utils.EMF;
 import model.Grupa;

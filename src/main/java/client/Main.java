@@ -1,6 +1,6 @@
 package client;
 
-import Crud.CzesneRepo;
+import Repository.CzesneRepo;
 import model.Czesne;
 
 import javax.persistence.EntityManager;
