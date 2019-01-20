@@ -1,16 +1,13 @@
 package client;
 
-import model.*;
-
 import javax.persistence.EntityManager;
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
 
     private static EntityManager em;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 ////        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("sbdPU");
 ////        em = entityManagerFactory.createEntityManager();
 ////        em.getTransaction().begin();
@@ -65,24 +62,13 @@ public class Main {
 //        List<Czesne> all = czesneRepo.getAll();
 //        all.forEach(System.out::println);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        JFrame mainFrame = new JFrame("School app");
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLocation(10, 10);
-        mainFrame.setPreferredSize(new Dimension(300, 300));
-        mainFrame.pack();
-        mainFrame.setVisible(true);
-        mainFrame.add(tabbedPane);
-        createTabs(tabbedPane);
-        tabbedPane.setVisible(true);
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MainClient mainClient = new MainClient();
+                mainClient.setVisible(true);
+            }
+        });
     }
-
-    private static void createTabs(JTabbedPane tabbedPane) {
-        tabbedPane.addTab("Dziecko", new DzieckoTab().getPanel1());
-        tabbedPane.addTab("Grupa", new GrupaTab().getPanel1());
-        tabbedPane.addTab("Nauczyciel", new NauczycielTab().getPanel1());
-        tabbedPane.addTab("Sala", new SalaTab().getPanel1());
-        tabbedPane.addTab("Szkoła", new SzkolaTab().getPanel1());
-    }
-
 }
