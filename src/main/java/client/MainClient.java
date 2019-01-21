@@ -58,6 +58,14 @@ public class MainClient extends JFrame {
     private JButton dodajSzkolaButton;
     private JButton edytujSzkolaButton;
     private JButton usunSzkolaButton;
+    private JButton dodajHaleButton;
+    private JButton edytujHaleButton;
+    private JButton usunHaleButton;
+    private JTextField wielkoscTextField;
+    private JComboBox halaSportowaSzkolaComboBox;
+    private JCheckBox trybunaCheckBox;
+    private JList zestawySprzetowList;
+    private JTextField textField1;
 
     public MainClient() {
         add(panel1);
@@ -71,6 +79,46 @@ public class MainClient extends JFrame {
                 AddDzieckoDialog addDzieckoDialog = new AddDzieckoDialog();
                 addDzieckoDialog.pack();
                 addDzieckoDialog.setVisible(true);
+            }
+        });
+        dodajGrupaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddGrupaDialog addGrupaDialog = new AddGrupaDialog();
+                addGrupaDialog.pack();
+                addGrupaDialog.setVisible(true);
+            }
+        });
+        dodajNauczycielButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddNauczycielDialog addNauczycielDialog = new AddNauczycielDialog();
+                addNauczycielDialog.pack();
+                addNauczycielDialog.setVisible(true);
+            }
+        });
+        dodajSalaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSalaDialog addSalaDialog = new AddSalaDialog();
+                addSalaDialog.pack();
+                addSalaDialog.setVisible(true);
+            }
+        });
+        dodajHaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddHalaSportowaDialog addHalaSportowaDialog = new AddHalaSportowaDialog();
+                addHalaSportowaDialog.pack();
+                addHalaSportowaDialog.setVisible(true);
+            }
+        });
+        dodajSzkolaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSzkolaDialog addSzkolaDialog = new AddSzkolaDialog();
+                addSzkolaDialog.pack();
+                addSzkolaDialog.setVisible(true);
             }
         });
     }

@@ -10,6 +10,7 @@ public class Sala {
     @GeneratedValue
     @Column(name = "SALA_ID", nullable = false)
     private Long id;
+    private String numerSali;
     private Integer liczbaKrzesel;
     private Integer liczbaLawek;
     @ManyToOne
@@ -24,7 +25,8 @@ public class Sala {
     public Sala() {
     }
 
-    public Sala(Integer liczbaKrzesel, Integer liczbaLawek, Szkola szkola, Rzutnik rzutnik, List<Komputer> komputerList) {
+    public Sala(String numerSali, Integer liczbaKrzesel, Integer liczbaLawek, Szkola szkola, Rzutnik rzutnik, List<Komputer> komputerList) {
+        this.numerSali = numerSali;
         this.liczbaKrzesel = liczbaKrzesel;
         this.liczbaLawek = liczbaLawek;
         this.szkola = szkola;
@@ -78,5 +80,13 @@ public class Sala {
 
     public void setKomputerList(List<Komputer> komputerList) {
         this.komputerList = komputerList;
+    }
+
+    public String getNumerSali() {
+        return numerSali;
+    }
+
+    public void setNumerSali(String numerSali) {
+        this.numerSali = numerSali;
     }
 }

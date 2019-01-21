@@ -12,6 +12,7 @@ public class Grupa {
     @GeneratedValue
     @Column(name = "GRUPA_ID", nullable = false)
     private Long id;
+    private String nazwa;
     private Integer maxLiczbaDzieci;
     private Integer wiek;
     @OneToOne
@@ -88,5 +89,13 @@ public class Grupa {
 
     public void setDzieckoList(List<Dziecko> dzieckoList) {
         this.dzieckoList = dzieckoList;
+    }
+
+    public String getNazwa() {
+        return nazwa;
+    }
+
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
     }
 }

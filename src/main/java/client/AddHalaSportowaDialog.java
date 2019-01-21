@@ -3,18 +3,17 @@ package client;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddRodzicDialog extends JDialog {
+public class AddHalaSportowaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField imieTextField;
-    private JTextField nazwiskoTextField;
-    private JComboBox miastoComboBox;
-    private JTextField adresTextField;
-    private JTextField telefonTextField;
-    private JButton stworzMiastoButton;
+    private JTextField wielkoscTextField;
+    private JComboBox szkolaComboBox;
+    private JList zestawyList;
+    private JCheckBox takCheckBox;
+    private JButton stworzZestawButton;
 
-    public AddRodzicDialog() {
+    public AddHalaSportowaDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -45,12 +44,12 @@ public class AddRodzicDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzMiastoButton.addActionListener(new ActionListener() {
+        stworzZestawButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
-                addMiastoDialog.pack();
-                addMiastoDialog.setVisible(true);
+                AddZestawDialog addZestawDialog = new AddZestawDialog();
+                addZestawDialog.pack();
+                addZestawDialog.setVisible(true);
             }
         });
     }

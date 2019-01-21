@@ -1,20 +1,20 @@
 package client;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddRodzicDialog extends JDialog {
+public class AddRzutnikDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField imieTextField;
-    private JTextField nazwiskoTextField;
-    private JComboBox miastoComboBox;
-    private JTextField adresTextField;
-    private JTextField telefonTextField;
-    private JButton stworzMiastoButton;
+    private JTextField modelTextField;
+    private JTextField jakoscObrazuTextField;
+    private JXDatePicker dataZakupuDatePicker;
+    private JXDatePicker dataWygasnieciaDatePicker;
 
-    public AddRodzicDialog() {
+    public AddRzutnikDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -45,14 +45,6 @@ public class AddRodzicDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzMiastoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
-                addMiastoDialog.pack();
-                addMiastoDialog.setVisible(true);
-            }
-        });
     }
 
     private void onOK() {
@@ -63,5 +55,12 @@ public class AddRodzicDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    public static void main(String[] args) {
+        AddRzutnikDialog dialog = new AddRzutnikDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
     }
 }

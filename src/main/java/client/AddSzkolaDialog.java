@@ -3,18 +3,20 @@ package client;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddRodzicDialog extends JDialog {
+public class AddSzkolaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField imieTextField;
-    private JTextField nazwiskoTextField;
     private JComboBox miastoComboBox;
+    private JTextField nazwaTextField;
+    private JTextField patronTextField;
     private JTextField adresTextField;
-    private JTextField telefonTextField;
+    private JList saleList;
+    private JList szafkiList;
+    private JList nauczycieleList;
     private JButton stworzMiastoButton;
 
-    public AddRodzicDialog() {
+    public AddSzkolaDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);

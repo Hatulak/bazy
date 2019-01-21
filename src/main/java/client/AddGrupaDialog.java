@@ -3,18 +3,18 @@ package client;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddRodzicDialog extends JDialog {
+public class AddGrupaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField imieTextField;
-    private JTextField nazwiskoTextField;
-    private JComboBox miastoComboBox;
-    private JTextField adresTextField;
-    private JTextField telefonTextField;
-    private JButton stworzMiastoButton;
+    private JTextField nazwaTextField;
+    private JTextField maxLiczbaTextField;
+    private JTextField wiekTextField;
+    private JComboBox nauczycielComboBox;
+    private JComboBox salaComboBox;
+    private JList uczniowieList;
 
-    public AddRodzicDialog() {
+    public AddGrupaDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -45,14 +45,6 @@ public class AddRodzicDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzMiastoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
-                addMiastoDialog.pack();
-                addMiastoDialog.setVisible(true);
-            }
-        });
     }
 
     private void onOK() {

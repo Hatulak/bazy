@@ -3,18 +3,20 @@ package client;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddRodzicDialog extends JDialog {
+public class AddSalaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField imieTextField;
-    private JTextField nazwiskoTextField;
-    private JComboBox miastoComboBox;
-    private JTextField adresTextField;
-    private JTextField telefonTextField;
-    private JButton stworzMiastoButton;
+    private JTextField numerTextField;
+    private JTextField liczbaKrzeselTextField;
+    private JTextField liczbaLawekTextField;
+    private JComboBox szkolaComboBox;
+    private JComboBox rzutnikComboBox;
+    private JList komputeryList;
+    private JButton stworzRzutnikButton;
+    private JButton stworzKomputerButton;
 
-    public AddRodzicDialog() {
+    public AddSalaDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -45,12 +47,20 @@ public class AddRodzicDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzMiastoButton.addActionListener(new ActionListener() {
+        stworzRzutnikButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
-                addMiastoDialog.pack();
-                addMiastoDialog.setVisible(true);
+                AddRzutnikDialog addRzutnikDialog = new AddRzutnikDialog();
+                addRzutnikDialog.pack();
+                addRzutnikDialog.setVisible(true);
+            }
+        });
+        stworzKomputerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddKomputerDialog addKomputerDialog = new AddKomputerDialog();
+                addKomputerDialog.pack();
+                addKomputerDialog.setVisible(true);
             }
         });
     }

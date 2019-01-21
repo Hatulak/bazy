@@ -23,6 +23,9 @@ public class Sprzet {
         this.zestawSprzetow = zestawSprzetow;
     }
 
+    public Sprzet() {
+    }
+
     public Integer getIlosc() {
         return ilosc;
     }
