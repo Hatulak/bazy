@@ -1,21 +1,18 @@
 package client;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import javax.swing.*;
 import java.awt.event.*;
 
-public class AddDzieckoDialog extends JDialog {
+public class AddCzesneDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JList list1;
-    private JList list2;
-    private JComboBox textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JButton stworzCzesneButton;
-    private JButton stworzRodziceButton;
+    private JTextField czesneAmountTextField;
+    private JXDatePicker czesneDatePicker;
 
-    public AddDzieckoDialog() {
+    public AddCzesneDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -46,22 +43,6 @@ public class AddDzieckoDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzCzesneButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
-                addCzesneDialog.pack();
-                addCzesneDialog.setVisible(true);
-            }
-        });
-        stworzRodziceButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddRodzicDialog addRodzicDialog = new AddRodzicDialog();
-                addRodzicDialog.pack();
-                addRodzicDialog.setVisible(true);
-            }
-        });
     }
 
     private void onOK() {
@@ -72,9 +53,5 @@ public class AddDzieckoDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
     }
 }
