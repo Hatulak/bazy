@@ -403,6 +403,9 @@ public class MainClient extends JFrame {
         } else {
             nauczycielList.forEach(p -> nauczycielComboBox.addItem(p.getId() + " " + p.getImie() + " " + p.getNazwisko()));
         }
+        if (nauczycielComboBox.getSelectedItem() == null) {
+            return;
+        }
         String nauczycielCombo = nauczycielComboBox.getSelectedItem().toString();
         if (nauczycielCombo.isEmpty()) {
             log.info("nauczycielcombobox empty");
