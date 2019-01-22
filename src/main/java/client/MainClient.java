@@ -332,13 +332,32 @@ public class MainClient extends JFrame {
                 rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
                 salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
 
-
                 KomputerRepo komputerRepo = new KomputerRepo();
                 List<Komputer> komputerList = komputerRepo.getBySala(salaList.get(0));
 
                 DefaultListModel komputerListModel = new DefaultListModel();
                 komputerList.forEach(s -> komputerListModel.addElement(s.getId().toString()));
                 listaKomputerowList.setModel(komputerListModel);
+
+                edytujSalaButton.setEnabled(true);
+                usunSalaButton.setEnabled(true);
+            }
+        });
+        usunSalaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaRepo salaRepo = new SalaRepo();
+                List<Sala> salaList = salaRepo.getBySalaNumber(salaComboBox.getSelectedItem().toString());
+                salaList.get(0).setRzutnik(null);
+                salaList.get(0).setKomputerList(null);
+                salaList.get(0).setSzkola(null);
+                KomputerRepo komputerRepo = new KomputerRepo();
+                List<Komputer> komputerList = komputerRepo.getBySala(salaList.get(0));
+                komputerList.forEach(c -> {
+                    c.setSala(null);
+                    komputerRepo.update(c);
+                });
+                salaRepo.remove(salaList.get(0));
 
             }
         });

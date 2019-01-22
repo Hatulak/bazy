@@ -9,6 +9,15 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class SalaRepo {
+    public void update(Sala sala) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(sala);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public void save(Sala sala) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -49,7 +58,8 @@ public class SalaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(sala);
+        Sala sala1 = em.find(Sala.class, sala.getId());
+        em.remove(sala1);
         em.getTransaction().commit();
         em.close();
     }
