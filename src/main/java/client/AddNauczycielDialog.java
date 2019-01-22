@@ -72,6 +72,61 @@ public class AddNauczycielDialog extends JDialog {
 
     }
 
+    public AddNauczycielDialog(Nauczyciel nauczyciel) {
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        stworzMiastoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
+                addMiastoDialog.pack();
+                addMiastoDialog.setVisible(true);
+                fillComboboxMiasto();
+            }
+        });
+        fillComboboxMiasto();
+        fillComboboxSzkola();
+        imieTextField.setText(nauczyciel.getImie());
+        nazwiskoTextField.setText(nauczyciel.getNazwisko());
+        telefonTextField.setText(String.valueOf(nauczyciel.getTelefon()));
+        emailTextField.setText(nauczyciel.getEmail());
+        stopienTextField.setText(nauczyciel.getStopien());
+        adresTextField.setText(nauczyciel.getAdres());
+        miastoComboBox.setSelectedItem(nauczyciel.getMiasto().getNazwa());
+        szkolaComboBox.setSelectedItem(nauczyciel.getSzkola().getNazwa());
+    }
+
+    private void onEditOK() {
+
+    }
+
     private void fillComboboxSzkola() {
         SzkolaRepo szkolaRepo = new SzkolaRepo();
         List<Szkola> all = szkolaRepo.getAll();

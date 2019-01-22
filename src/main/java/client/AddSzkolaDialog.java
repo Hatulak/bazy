@@ -99,7 +99,7 @@ public class AddSzkolaDialog extends JDialog {
         nazwaTextField.setText(szkola.getNazwa());
         patronTextField.setText(szkola.getPatron());
         adresTextField.setText(szkola.getAdres());
-        miastoComboBox.setSelectedItem(szkola.getMiasto().getNazwa()); //TODO popraw te miasto bo źle kombinuje
+        miastoComboBox.setSelectedItem(szkola.getMiasto().getNazwa());
     }
 
     private void fillComboboxMiasto() {
