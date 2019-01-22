@@ -20,7 +20,6 @@ public class MainClient extends JFrame {
     private JTextField dzieckoNazwiskoTextField;
     private JTextField dzieckoImieTextField;
     private JList dzieckoRodziceList;
-    private JList dzieckoCzesneList;
     private JComboBox dzieckoGrupaComboBox;
     private JComboBox dzieckoUczenComboBox;
     private JButton dodajDzieckoButton;
@@ -81,6 +80,19 @@ public class MainClient extends JFrame {
     private JButton dodajMiastoButton;
     private JButton edytujMiastoButton;
     private JButton usunMiastoButton;
+    private JButton dodajCzesneButton;
+    private JButton usunCzesneButton;
+    private JButton edytujCzesneButton;
+    private JList czesneCzesneList;
+    private JComboBox comboBox1;
+    private JButton dodajSzafkeButton;
+    private JButton usunSzafkeButton;
+    private JButton edytujSzafkeButton;
+    private JComboBox szafkaComboBox;
+    private JTextField szafkaNumerTextField;
+    private JTextField szafkaHasloTextField;
+    private JTextField szafkaPojemnoscTextField;
+    private JComboBox szafkaDzieckoComboBox;
     private List<Miasto> miastoList;
 
     public MainClient() {
@@ -165,6 +177,22 @@ public class MainClient extends JFrame {
                 addMiastoDialog.pack();
                 addMiastoDialog.setVisible(true);
                 fillComboboxMiasto();
+            }
+        });
+        dodajCzesneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
+                addCzesneDialog.pack();
+                addCzesneDialog.setVisible(true);
+            }
+        });
+        dodajSzafkeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSzafkaDialog addSzafkaDialog = new AddSzafkaDialog();
+                addSzafkaDialog.pack();
+                addSzafkaDialog.setVisible(true);
             }
         });
 

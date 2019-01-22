@@ -49,7 +49,7 @@
           </grid>
         </children>
       </grid>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="7" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="e3588" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -95,30 +95,6 @@
               <text value="Adres"/>
             </properties>
           </component>
-          <component id="64ff5" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Sale"/>
-            </properties>
-          </component>
-          <component id="5239c" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Szafki"/>
-            </properties>
-          </component>
-          <component id="ad58e" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Nauczyciele"/>
-            </properties>
-          </component>
           <component id="82ebf" class="javax.swing.JTextField" binding="nazwaTextField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -143,45 +119,6 @@
             </constraints>
             <properties/>
           </component>
-          <scrollpane id="7dcf6">
-            <constraints>
-              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="56f2a" class="javax.swing.JList" binding="saleList">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
-          </scrollpane>
-          <scrollpane id="aae03">
-            <constraints>
-              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="7ca57" class="javax.swing.JList" binding="szafkiList">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
-          </scrollpane>
-          <scrollpane id="6ecf5">
-            <constraints>
-              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="e34c0" class="javax.swing.JList" binding="nauczycieleList">
-                <constraints/>
-                <properties/>
-              </component>
-            </children>
-          </scrollpane>
           <component id="c841b" class="javax.swing.JButton" binding="stworzMiastoButton">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
