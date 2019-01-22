@@ -1,11 +1,14 @@
 package client;
 
 import Repository.MiastoRepo;
+import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.Miasto;
+import model.Szkola;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Collections;
 import java.util.List;
 
 @Log
@@ -21,8 +24,9 @@ public class AddSzkolaDialog extends JDialog {
     private JList szafkiList;
     private JList nauczycieleList;
     private JButton stworzMiastoButton;
-
+    private List<Miasto> miastoList;
     public AddSzkolaDialog() {
+        //todo usunac pola sele szahfka i nauczyciele pryz tworzeniu sszkoły
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -61,7 +65,7 @@ public class AddSzkolaDialog extends JDialog {
     private void fillComboboxMiasto() {
         miastoComboBox.removeAllItems();
         MiastoRepo miastoRepo = new MiastoRepo();
-        List<Miasto> miastoList = miastoRepo.getAll();
+        miastoList = miastoRepo.getAll();
         if (miastoList == null) {
             log.info("Empty list with miasto's get from DB");
         } else {
@@ -71,6 +75,25 @@ public class AddSzkolaDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        String nazwa = nazwaTextField.getText();
+        String patron = patronTextField.getText();
+        String adres = adresTextField.getText();
+        String miasto = miastoComboBox.getSelectedItem().toString();
+        if (miasto.isEmpty() || nazwa.isEmpty() || patron.isEmpty() || adres.isEmpty()) {
+            log.info("Empty field");
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Miasto toAddMiasto = null;
+        for (int i = 0; i < miastoList.size(); i++) {
+            if (miastoList.get(i).getNazwa().equals(miasto)) {
+                toAddMiasto = miastoList.get(i);
+                break;
+            }
+        }
+
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        szkolaRepo.save(new Szkola(toAddMiasto, nazwa, patron, adres, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
         dispose();
     }
 
