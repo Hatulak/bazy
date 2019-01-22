@@ -13,7 +13,7 @@ public class ZestawSprzetow {
     private Long id;
     private String dyscyplina;
 
-    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Sprzet> sprzetList;
 
     @ManyToOne
