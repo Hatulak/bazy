@@ -9,6 +9,16 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class KomputerRepo {
+
+    public List<Komputer> getAllKomputersWhereSalaIdIsNull() {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Komputer c where c.sala is null", Komputer.class);
+        List<Komputer> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
+
     public void save(Komputer komputer) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
