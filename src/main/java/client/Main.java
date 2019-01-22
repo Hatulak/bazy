@@ -8,6 +8,8 @@ public class Main {
     private static EntityManager em;
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        //todo dddanie okienka do edycji miasta
+
 ////        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("sbdPU");
 ////        em = entityManagerFactory.createEntityManager();
 ////        em.getTransaction().begin();

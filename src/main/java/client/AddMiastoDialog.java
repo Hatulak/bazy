@@ -1,5 +1,8 @@
 package client;
 
+import Repository.MiastoRepo;
+import model.Miasto;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -47,6 +50,16 @@ public class AddMiastoDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        String nazwa = nazwaTextField.getText();
+        String gmina = gminaTextField.getText();
+        String powiat = powiatTextField.getText();
+        String wojewodztwo = wojewodztwoTextField.getText();
+        if (nazwa.isEmpty() || wojewodztwo.isEmpty() || gmina.isEmpty() || powiat.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        MiastoRepo miastoRepo = new MiastoRepo();
+        miastoRepo.save(new Miasto(nazwa, gmina, powiat, wojewodztwo));
         dispose();
     }
 

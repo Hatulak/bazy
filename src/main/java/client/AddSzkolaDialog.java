@@ -1,8 +1,14 @@
 package client;
 
+import Repository.MiastoRepo;
+import lombok.extern.java.Log;
+import model.Miasto;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
+@Log
 public class AddSzkolaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -42,19 +48,19 @@ public class AddSzkolaDialog extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzMiastoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
-                addMiastoDialog.pack();
-                addMiastoDialog.setVisible(true);
-            }
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        stworzMiastoButton.addActionListener(e -> {
+            AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
+            addMiastoDialog.pack();
+            addMiastoDialog.setVisible(true);
         });
+        MiastoRepo miastoRepo = new MiastoRepo();
+        List<Miasto> miastoList = miastoRepo.getAll();
+        if (miastoList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            miastoList.forEach(p -> miastoComboBox.addItem(p.getNazwa()));
+        }
     }
 
     private void onOK() {
