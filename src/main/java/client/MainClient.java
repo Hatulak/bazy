@@ -1,13 +1,8 @@
 package client;
 
 import Repository.*;
-import Repository.MiastoRepo;
-import Repository.NauczycielRepo;
-import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.*;
-import model.Miasto;
-import model.Nauczyciel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -298,6 +293,10 @@ public class MainClient extends JFrame {
         List<Nauczyciel> nauczyciele = nauczycielRepo.getAll();
         List<Sala> sale = salaRepo.getAll();
         List<Szafka> szafki = szafkaRepo.getAll();
+        NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
+        MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
+        miastoComboBox.removeItemListener(miastoComboBoxActionListener);
+        nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
         miastoComboBox.removeAllItems();
         dzieckoGrupaComboBox.removeAllItems();
         grupaGrupaComboBox.removeAllItems();
@@ -311,9 +310,11 @@ public class MainClient extends JFrame {
             dzieckoGrupaComboBox.addItem(i.getNazwa());
             grupaGrupaComboBox.addItem(i.getNazwa());
         });
-        nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s", i.getImie(), i.getNazwisko())));
+        nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s %s", i.getId(), i.getImie(), i.getNazwisko())));
         sale.forEach(i -> salaComboBox.addItem(i.getNumerSali()));
         szafki.forEach(i -> szafkaComboBox.addItem(i.getNumer()));
+        nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+        miastoComboBox.addItemListener(miastoComboBoxActionListener);
 
     }
 
@@ -422,6 +423,9 @@ public class MainClient extends JFrame {
         }
 
         private void fillFiledInNauczycielTab() {
+            if (nauczycielComboBox.getSelectedIndex() == -1) {
+                return;
+            }
             String nauczycielCombo = nauczycielComboBox.getSelectedItem().toString();
             if (nauczycielCombo.isEmpty()) {
                 log.info("nauczycielcombobox empty");
