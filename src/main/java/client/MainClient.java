@@ -40,7 +40,6 @@ public class MainClient extends JFrame {
     private JTextField liczbaLawekTextField;
     private JTextField rzutnikTextField;
     private JList listaKomputerowList;
-    private JComboBox szkolaComboBox;
     private JTextField nazwaSzkolaTextField;
     private JTextField adresSzkolaTextField;
     private JTextField miastoSzkolaTextField;
@@ -65,7 +64,15 @@ public class MainClient extends JFrame {
     private JComboBox halaSportowaSzkolaComboBox;
     private JCheckBox trybunaCheckBox;
     private JList zestawySprzetowList;
-    private JTextField textField1;
+    private JTextField numerSaliTextField;
+    private JComboBox miastoComboBox;
+    private JTextField miastoNazwaTextField;
+    private JTextField miastoGminaTextField;
+    private JTextField miastoPowiatTextField;
+    private JTextField miastoWojewodztwoTextField;
+    private JButton dodajMiastoButton;
+    private JButton edytujMiastoButton;
+    private JButton usunMiastoButton;
 
     public MainClient() {
         add(panel1);
@@ -119,6 +126,14 @@ public class MainClient extends JFrame {
                 AddSzkolaDialog addSzkolaDialog = new AddSzkolaDialog();
                 addSzkolaDialog.pack();
                 addSzkolaDialog.setVisible(true);
+            }
+        });
+        dodajMiastoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
+                addMiastoDialog.pack();
+                addMiastoDialog.setVisible(true);
             }
         });
     }
