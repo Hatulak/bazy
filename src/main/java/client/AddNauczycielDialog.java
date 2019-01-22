@@ -27,7 +27,7 @@ public class AddNauczycielDialog extends JDialog {
     private JTextField adresTextField;
     private JButton stworzMiastoButton;
     private List<Miasto> miastoList;
-
+    private Nauczyciel editNauczyciel;
     public AddNauczycielDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -73,6 +73,7 @@ public class AddNauczycielDialog extends JDialog {
     }
 
     public AddNauczycielDialog(Nauczyciel nauczyciel) {
+        this.editNauczyciel = nauczyciel;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -124,7 +125,40 @@ public class AddNauczycielDialog extends JDialog {
     }
 
     private void onEditOK() {
-
+        String imie = imieTextField.getText();
+        String nazwisko = nazwiskoTextField.getText();
+        String email = emailTextField.getText();
+        String telefonString = telefonTextField.getText();
+        String stopien = stopienTextField.getText();
+        String adres = adresTextField.getText();
+        String miastoCombo = miastoComboBox.getSelectedItem().toString();
+        String szkolaCombo = szkolaComboBox.getSelectedItem().toString();
+        if (imie.isEmpty() || nazwisko.isEmpty() || email.isEmpty() || telefonString.isEmpty() || stopien.isEmpty() || adres.isEmpty() || miastoCombo.isEmpty() || szkolaCombo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Miasto miastoInList = MainClient.findMiastoInList(miastoCombo, miastoList);
+        if (miastoInList == null) {
+            JOptionPane.showMessageDialog(this, "Problem to connect miasto in DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Szkola szkolaInDB = findSzkolaInDB(szkolaCombo);
+        if (szkolaInDB == null) {
+            JOptionPane.showMessageDialog(this, "Problem to connect szkola in DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Integer telefon = null;
+        try {
+            telefon = Integer.valueOf(telefonString);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Phone number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        NauczycielRepo nauczycielRepo = new NauczycielRepo();
+        Nauczyciel nauczyciel = new Nauczyciel(imie, nazwisko, email, telefon, stopien, miastoInList, adres, szkolaInDB);
+        nauczyciel.setId(editNauczyciel.getId());
+        nauczycielRepo.update(nauczyciel);
+        dispose();
     }
 
     private void fillComboboxSzkola() {

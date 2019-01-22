@@ -151,6 +151,22 @@ public class MainClient extends JFrame {
                 nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
             }
         });
+        edytujNauczycielButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
+                if (nauczycielComboBox.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nauczyciel is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Nauczyciel nauczycielInList = findNauczycielInList(nauczycielComboBox.getSelectedItem().toString(), nauczycielList);
+                AddNauczycielDialog addNauczycielDialog = new AddNauczycielDialog(nauczycielInList);
+                addNauczycielDialog.pack();
+                addNauczycielDialog.setVisible(true);
+                fillComboboxNauczyciel();
+                nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+            }
+        });
         dodajSalaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -278,21 +294,11 @@ public class MainClient extends JFrame {
                 editSzkolaDialog.setVisible(true);
             }
         });
-        edytujNauczycielButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                NauczycielRepo nauczycielRepo = new NauczycielRepo();
-                Nauczyciel nauczyciel = getCurrentNauczyciel(nauczycielComboBox.getSelectedItem().toString(), nauczycielRepo.getAll());
-                AddNauczycielDialog editNauczycielDialog = new AddNauczycielDialog(nauczyciel);
-                editNauczycielDialog.pack();
-                editNauczycielDialog.setVisible(true);
-            }
-        });
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
         for (int i = 0; i < all.size(); i++) {
-            if (String.format("%s %s", all.get(i).getImie() + " " + all.get(i).getNazwisko()).equals(nauczyciel)) {
+            if (String.format("%s %s %s", all.get(i).getId(), all.get(i).getImie(), all.get(i).getNazwisko()).equals(nauczyciel)) {
                 return all.get(i);
             }
         }

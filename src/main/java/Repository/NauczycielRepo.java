@@ -45,4 +45,13 @@ public class NauczycielRepo {
         em.getTransaction().commit();
         em.close();
     }
+
+    public void update(Nauczyciel nauczyciel) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(nauczyciel);
+        em.getTransaction().commit();
+        em.close();
+    }
 }
