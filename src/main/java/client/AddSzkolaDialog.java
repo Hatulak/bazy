@@ -84,16 +84,12 @@ public class AddSzkolaDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Miasto toAddMiasto = null;
-        for (int i = 0; i < miastoList.size(); i++) {
-            if (miastoList.get(i).getNazwa().equals(miasto)) {
-                toAddMiasto = miastoList.get(i);
-                break;
-            }
+        Miasto miastoInList = MainClient.findMiastoInList(miasto, miastoList);
+        if (miastoInList == null) {
+            return;
         }
-
         SzkolaRepo szkolaRepo = new SzkolaRepo();
-        szkolaRepo.save(new Szkola(toAddMiasto, nazwa, patron, adres, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
+        szkolaRepo.save(new Szkola(miastoInList, nazwa, patron, adres, Collections.emptyList(), Collections.emptyList(), Collections.emptyList()));
         dispose();
     }
 

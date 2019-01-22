@@ -1,10 +1,18 @@
 package client;
 
+import Repository.MiastoRepo;
+import lombok.extern.java.Log;
+import model.Miasto;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
 
+@Log
 public class MainClient extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
@@ -73,6 +81,7 @@ public class MainClient extends JFrame {
     private JButton dodajMiastoButton;
     private JButton edytujMiastoButton;
     private JButton usunMiastoButton;
+    private List<Miasto> miastoList;
 
     public MainClient() {
         add(panel1);
@@ -80,6 +89,27 @@ public class MainClient extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(400, 400));
         pack();
+        fillComboboxMiasto();
+        miastoComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String selectedMiasto = miastoComboBox.getSelectedItem().toString();
+                if (selectedMiasto.isEmpty()) {
+                    log.info("Get empty string from combobox");
+                    return;
+                }
+                Miasto miastoFromList = null;
+                miastoFromList = findMiastoInList(selectedMiasto, miastoList);
+                if (miastoFromList == null) {
+                    log.info("city is null");
+                    return;
+                }
+                miastoNazwaTextField.setText(miastoFromList.getNazwa());
+                miastoPowiatTextField.setText(miastoFromList.getPowiat());
+                miastoGminaTextField.setText(miastoFromList.getGmina());
+                miastoWojewodztwoTextField.setText(miastoFromList.getWojewodztwo());
+            }
+        });
         dodajDzieckoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -134,7 +164,39 @@ public class MainClient extends JFrame {
                 AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
                 addMiastoDialog.pack();
                 addMiastoDialog.setVisible(true);
+                fillComboboxMiasto();
             }
         });
+
+    }
+
+
+    static Miasto findMiastoInList(String selectedMiasto, List<Miasto> miastoList) {
+        for (int i = 0; i < miastoList.size(); i++) {
+            if (miastoList.get(i).getNazwa().equals(selectedMiasto)) {
+                return miastoList.get(i);
+            }
+        }
+        return null;
+    }
+
+    private void fillComboboxMiasto() {
+        miastoComboBox.removeAllItems();
+        MiastoRepo miastoRepo = new MiastoRepo();
+        miastoList = miastoRepo.getAll();
+        if (miastoList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            miastoList.forEach(p -> miastoComboBox.addItem(p.getNazwa()));
+        }
+        String miastoComboString = miastoComboBox.getSelectedItem().toString();
+        if (miastoComboString.isEmpty()) {
+            return;
+        }
+        Miasto miastoInList = findMiastoInList(miastoComboString, miastoList);
+        miastoNazwaTextField.setText(miastoInList.getNazwa());
+        miastoPowiatTextField.setText(miastoInList.getPowiat());
+        miastoGminaTextField.setText(miastoInList.getGmina());
+        miastoWojewodztwoTextField.setText(miastoInList.getWojewodztwo());
     }
 }
