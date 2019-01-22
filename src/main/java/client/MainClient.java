@@ -196,6 +196,21 @@ public class MainClient extends JFrame {
             }
         });
 
+        edytujMiastoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Miasto currentMiasto = findMiastoInList(miastoComboBox.getSelectedItem().toString(), miastoList);
+                AddMiastoDialog editMiastoDialog = new AddMiastoDialog(currentMiasto);
+                editMiastoDialog.pack();
+                editMiastoDialog.setVisible(true);
+            }
+        });
+        usunMiastoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
 
@@ -222,6 +237,8 @@ public class MainClient extends JFrame {
             return;
         }
         Miasto miastoInList = findMiastoInList(miastoComboString, miastoList);
+        edytujMiastoButton.setEnabled(true);
+        usunMiastoButton.setEnabled(true);
         miastoNazwaTextField.setText(miastoInList.getNazwa());
         miastoPowiatTextField.setText(miastoInList.getPowiat());
         miastoGminaTextField.setText(miastoInList.getGmina());

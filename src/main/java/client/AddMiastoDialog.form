@@ -100,7 +100,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="true"/>
+            </properties>
           </component>
           <component id="c8181" class="javax.swing.JTextField" binding="gminaTextField">
             <constraints>
@@ -108,7 +110,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="true"/>
+            </properties>
           </component>
           <component id="d1e77" class="javax.swing.JTextField" binding="wojewodztwoTextField">
             <constraints>
@@ -116,7 +120,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="true"/>
+            </properties>
           </component>
           <component id="98200" class="javax.swing.JTextField" binding="powiatTextField">
             <constraints>
@@ -124,7 +130,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="true"/>
+            </properties>
           </component>
         </children>
       </grid>

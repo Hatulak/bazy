@@ -48,6 +48,49 @@ public class AddMiastoDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public AddMiastoDialog(Miasto currentMiasto) {
+
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        nazwaTextField.setText(currentMiasto.getNazwa());
+        gminaTextField.setText(currentMiasto.getGmina());
+        powiatTextField.setText(currentMiasto.getPowiat());
+        wojewodztwoTextField.setText(currentMiasto.getWojewodztwo());
+    }
+
+    private void onEditOK() {
+        //TODO Zrob tutaj tego merge'a
+    }
+
     private void onOK() {
         // add your code here
         String nazwa = nazwaTextField.getText();
