@@ -1,8 +1,18 @@
 package client;
 
+import Repository.MiastoRepo;
+import Repository.RodzicRepo;
+import lombok.extern.java.Log;
+import model.Miasto;
+import model.Rodzic;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
+import static client.MainClient.findMiastoInList;
+
+@Log
 public class AddRodzicDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -51,12 +61,44 @@ public class AddRodzicDialog extends JDialog {
                 AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
                 addMiastoDialog.pack();
                 addMiastoDialog.setVisible(true);
+                fillComboboxMiasto();
             }
         });
+        fillComboboxMiasto();
+    }
+
+    private void fillComboboxMiasto() {
+        miastoComboBox.removeAllItems();
+        MiastoRepo miastoRepo = new MiastoRepo();
+        List<Miasto> miastoList = miastoRepo.getAll();
+        if (miastoList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            miastoList.forEach(p -> miastoComboBox.addItem(p.getNazwa()));
+        }
     }
 
     private void onOK() {
-        // add your code here
+        miastoComboBox.removeAllItems();
+        MiastoRepo miastoRepo = new MiastoRepo();
+        List<Miasto> miastoList = miastoRepo.getAll();
+        if (miastoList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            miastoList.forEach(p -> miastoComboBox.addItem(p.getNazwa()));
+        }
+        String miastoComboString = miastoComboBox.getSelectedItem().toString();
+        if (miastoComboString.isEmpty()) {
+            return;
+        }
+        Miasto miastoInList = findMiastoInList(miastoComboString, miastoList);
+        String imie = imieTextField.getText();
+        String nazwisko = nazwiskoTextField.getText();
+        String adres = adresTextField.getText();
+        int telefon = Integer.parseInt(telefonTextField.getText());
+        Rodzic rodzic = new Rodzic(imie, nazwisko, miastoInList, adres, telefon);
+        RodzicRepo rodzicRepo = new RodzicRepo();
+        rodzicRepo.save(rodzic);
         dispose();
     }
 

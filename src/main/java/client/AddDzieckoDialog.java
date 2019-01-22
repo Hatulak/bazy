@@ -1,5 +1,8 @@
 package client;
 
+import Repository.RodzicRepo;
+import model.Rodzic;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -8,11 +11,9 @@ public class AddDzieckoDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JList rodziceList;
-    private JList czesneList;
     private JComboBox textField1;
     private JTextField textField2;
     private JTextField textField3;
-    private JButton stworzCzesneButton;
     private JButton stworzRodziceButton;
 
     public AddDzieckoDialog() {
@@ -46,23 +47,28 @@ public class AddDzieckoDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzCzesneButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
-                addCzesneDialog.pack();
-                addCzesneDialog.setVisible(true);
-            }
-        });
         stworzRodziceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AddRodzicDialog addRodzicDialog = new AddRodzicDialog();
                 addRodzicDialog.pack();
                 addRodzicDialog.setVisible(true);
+                updateRodziceList();
             }
         });
+        updateRodziceList();
     }
+
+    private void updateRodziceList() {
+        RodzicRepo rodzicRepo = new RodzicRepo();
+        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+        for (Rodzic rodzic :
+                rodzicRepo.getAll()) {
+            defaultListModel.addElement(String.format("%s %s", rodzic.getImie(), rodzic.getNazwisko()));
+        }
+        rodziceList.setModel(defaultListModel);
+    }
+
 
     private void onOK() {
         // add your code here
