@@ -9,6 +9,16 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class RzutnikRepo {
+
+    public List<Rzutnik> getRzutniksWhereRzutnikInSalaIsNull() {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Rzutnik c, Sala s where s.rzutnik <> c.id", Rzutnik.class);
+        List<Rzutnik> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
+
     public void save(Rzutnik rzutnik) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();

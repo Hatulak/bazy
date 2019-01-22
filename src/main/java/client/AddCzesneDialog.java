@@ -1,9 +1,12 @@
 package client;
 
+import Repository.CzesneRepo;
+import model.Czesne;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Date;
 
 public class AddCzesneDialog extends JDialog {
     private JPanel contentPane;
@@ -46,7 +49,17 @@ public class AddCzesneDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
+        String czesneAmount = czesneAmountTextField.getText();
+        Date czesneDate = czesneDatePicker.getDate();
+
+        if (czesneAmount.isEmpty() || czesneDate == null) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        CzesneRepo czesneRepo = new CzesneRepo();
+        czesneRepo.save(new Czesne(czesneDate, Double.parseDouble(czesneAmount)));
+
         dispose();
     }
 

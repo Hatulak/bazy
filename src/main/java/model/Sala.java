@@ -16,7 +16,7 @@ public class Sala {
     @ManyToOne
     @JoinColumn(name = "SZKOLA_ID")
     private Szkola szkola;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "RZUTNIK_ID")
     private Rzutnik rzutnik;
     @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

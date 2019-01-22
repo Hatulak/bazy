@@ -97,7 +97,7 @@
               <text value="Rodzice"/>
             </properties>
           </component>
-          <component id="1096a" class="javax.swing.JList" binding="list1" default-binding="true">
+          <component id="1096a" class="javax.swing.JList" binding="rodziceList">
             <constraints>
               <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
@@ -105,7 +105,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="5ffa4" class="javax.swing.JList" binding="list2" default-binding="true">
+          <component id="5ffa4" class="javax.swing.JList" binding="czesneList">
             <constraints>
               <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>

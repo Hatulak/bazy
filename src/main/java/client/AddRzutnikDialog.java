@@ -1,10 +1,15 @@
 package client;
 
+import Repository.RzutnikRepo;
+import lombok.extern.java.Log;
+import model.Rzutnik;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Date;
 
+@Log
 public class AddRzutnikDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -48,7 +53,20 @@ public class AddRzutnikDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
+        String model = modelTextField.getText();
+        String jakoscObrazu = jakoscObrazuTextField.getText();
+        Date dataZakupu = dataZakupuDatePicker.getDate();
+        Date dataWygasniecia = dataWygasnieciaDatePicker.getDate();
+
+        if (model.isEmpty() || jakoscObrazu.isEmpty() || dataWygasniecia == null || dataZakupu == null) {
+            log.info("Empty field");
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        RzutnikRepo rzutnikRepo = new RzutnikRepo();
+        rzutnikRepo.save(new Rzutnik(model, jakoscObrazu, dataZakupu, dataWygasniecia));
+
         dispose();
     }
 
