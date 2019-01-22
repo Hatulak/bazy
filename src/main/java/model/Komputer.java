@@ -22,10 +22,9 @@ public class Komputer {
     public Komputer() {
     }
 
-    public Komputer(Date dataZakupu, Date dataWygasnieciaGwarancji, Sala sala, String specyfikacja) {
+    public Komputer(Date dataZakupu, Date dataWygasnieciaGwarancji, String specyfikacja) {
         this.dataZakupu = dataZakupu;
         this.dataWygasnieciaGwarancji = dataWygasnieciaGwarancji;
-        this.sala = sala;
         this.specyfikacja = specyfikacja;
     }
 
