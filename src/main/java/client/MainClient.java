@@ -94,6 +94,7 @@ public class MainClient extends JFrame {
     private JTextField szafkaHasloTextField;
     private JTextField szafkaPojemnoscTextField;
     private JTextField szafkaDzieckoTextField;
+    private JButton dodajSprzetButton;
     private List<Miasto> miastoList;
     private List<Nauczyciel> nauczycielList;
     private NauczycielRepo nauczycielRepo;

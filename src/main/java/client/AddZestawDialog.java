@@ -8,7 +8,6 @@ public class AddZestawDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField textField1;
-    private JList list1;
     private JButton stworzSprzetButton;
 
     public AddZestawDialog() {
