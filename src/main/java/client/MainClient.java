@@ -1,6 +1,7 @@
 package client;
 
 import Repository.MiastoRepo;
+import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.Miasto;
 
@@ -104,6 +105,12 @@ public class MainClient extends JFrame {
         fillComboboxMiasto();
         ComboBoxActionListener comboBoxActionListener = new ComboBoxActionListener();
         miastoComboBox.addItemListener(comboBoxActionListener);
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        if (szkolaRepo.getAll().size() == 1) {
+            dodajSzkolaButton.setEnabled(false);
+            edytujSzkolaButton.setEnabled(true);
+            usunSzkolaButton.setEnabled(true);
+        }
         dodajDzieckoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -150,6 +157,9 @@ public class MainClient extends JFrame {
                 AddSzkolaDialog addSzkolaDialog = new AddSzkolaDialog();
                 addSzkolaDialog.pack();
                 addSzkolaDialog.setVisible(true);
+                dodajSzkolaButton.setEnabled(false);
+                edytujSzkolaButton.setEnabled(true);
+                usunSzkolaButton.setEnabled(true);
             }
         });
         dodajMiastoButton.addActionListener(new ActionListener() {
@@ -213,6 +223,14 @@ public class MainClient extends JFrame {
                 miastoRepo.remove(miastoInList);
                 fillComboboxMiasto();
                 miastoComboBox.addItemListener(comboBoxActionListener);
+            }
+        });
+        usunSzkolaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dodajSzkolaButton.setEnabled(true);
+                edytujSzkolaButton.setEnabled(false);
+                usunSzkolaButton.setEnabled(false);
             }
         });
     }
