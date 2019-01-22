@@ -26,6 +26,16 @@ public class SzkolaRepo {
         return szkola;
     }
 
+    public List<Szkola> getByName(String name) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Szkola c where c.nazwa = :schoolName", Szkola.class)
+                .setParameter("schoolName", name);
+        List<Szkola> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
+
     public List<Szkola> getAll() {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();

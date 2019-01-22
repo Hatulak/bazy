@@ -10,6 +10,15 @@ import java.util.List;
 
 public class KomputerRepo {
 
+    public void update(Komputer komputer) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(komputer);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public List<Komputer> getAllKomputersWhereSalaIdIsNull() {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -19,13 +28,16 @@ public class KomputerRepo {
         return resultList;
     }
 
-    public void save(Komputer komputer) {
+    public Long save(Komputer komputer) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
         em.persist(komputer);
+        em.flush();
+        Long konputerID = komputer.getId();
         em.getTransaction().commit();
         em.close();
+        return konputerID;
     }
 
     public Komputer getById(Long id) {

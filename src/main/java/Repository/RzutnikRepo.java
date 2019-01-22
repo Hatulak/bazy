@@ -13,7 +13,17 @@ public class RzutnikRepo {
     public List<Rzutnik> getRzutniksWhereRzutnikInSalaIsNull() {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
-        Query query = em.createQuery("select c from Rzutnik c, Sala s where s.rzutnik <> c.id", Rzutnik.class);
+        Query query = em.createQuery("select c from Rzutnik c where c.id not in (select s.rzutnik from Sala s)", Rzutnik.class);
+        List<Rzutnik> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
+
+    public List<Rzutnik> getByModel(String model) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Rzutnik c where c.model = :modelName", Rzutnik.class)
+                .setParameter("modelName", model);
         List<Rzutnik> resultList = query.getResultList();
         em.close();
         return resultList;

@@ -7,10 +7,12 @@ import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.Komputer;
 import model.Rzutnik;
+import model.Sala;
 import model.Szkola;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Log
@@ -123,8 +125,33 @@ public class AddSalaDialog extends JDialog {
 
 
     private void onOK() {
-        SalaRepo salaRepo = new SalaRepo();
+        String numerSali = numerTextField.getText();
+        Integer liczbaKrzesel = Integer.parseInt(liczbaKrzeselTextField.getText());
+        Integer liczbaLawek = Integer.parseInt(liczbaLawekTextField.getText());
 
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        List<Szkola> szkolaList = szkolaRepo.getByName(szkolaComboBox.getSelectedItem().toString());
+        Szkola szkola = szkolaList.get(0);
+
+        RzutnikRepo rzutnikRepo = new RzutnikRepo();
+        List<Rzutnik> rzutnikList = rzutnikRepo.getByModel(rzutnikComboBox.getSelectedItem().toString());
+        Rzutnik rzutnik = rzutnikList.get(0);
+
+        KomputerRepo komputerRepo = new KomputerRepo();
+        List selectedValuesList = komputeryJList.getSelectedValuesList();
+        List<Komputer> selectedComputerList = new LinkedList<>();
+        for (int i = 0; i < selectedValuesList.size(); i++) {
+            selectedComputerList.add(komputerRepo.getById(Long.parseLong(selectedValuesList.get(i).toString())));
+        }
+
+        SalaRepo salaRepo = new SalaRepo();
+        Sala sala = new Sala(numerSali, liczbaKrzesel, liczbaLawek, szkola, rzutnik);
+        salaRepo.save(sala);
+
+        selectedComputerList.forEach(c -> {
+            c.setSala(sala);
+            komputerRepo.update(c);
+        });
 
         dispose();
     }

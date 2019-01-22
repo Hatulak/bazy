@@ -25,13 +25,12 @@ public class Sala {
     public Sala() {
     }
 
-    public Sala(String numerSali, Integer liczbaKrzesel, Integer liczbaLawek, Szkola szkola, Rzutnik rzutnik, List<Komputer> komputerList) {
+    public Sala(String numerSali, Integer liczbaKrzesel, Integer liczbaLawek, Szkola szkola, Rzutnik rzutnik) {
         this.numerSali = numerSali;
         this.liczbaKrzesel = liczbaKrzesel;
         this.liczbaLawek = liczbaLawek;
         this.szkola = szkola;
         this.rzutnik = rzutnik;
-        this.komputerList = komputerList;
     }
 
     public Long getId() {
