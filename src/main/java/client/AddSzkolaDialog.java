@@ -53,7 +53,13 @@ public class AddSzkolaDialog extends JDialog {
             AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
             addMiastoDialog.pack();
             addMiastoDialog.setVisible(true);
+            fillComboboxMiasto();
         });
+        fillComboboxMiasto();
+    }
+
+    private void fillComboboxMiasto() {
+        miastoComboBox.removeAllItems();
         MiastoRepo miastoRepo = new MiastoRepo();
         List<Miasto> miastoList = miastoRepo.getAll();
         if (miastoList == null) {
