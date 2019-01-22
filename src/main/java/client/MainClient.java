@@ -1,11 +1,12 @@
 package client;
 
-import Repository.MiastoRepo;
-import Repository.SzkolaRepo;
+import Repository.*;
 import lombok.extern.java.Log;
-import model.Miasto;
+import model.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -69,7 +70,6 @@ public class MainClient extends JFrame {
     private JButton edytujHaleButton;
     private JButton usunHaleButton;
     private JTextField wielkoscTextField;
-    private JComboBox halaSportowaSzkolaComboBox;
     private JCheckBox trybunaCheckBox;
     private JList zestawySprzetowList;
     private JTextField numerSaliTextField;
@@ -85,7 +85,7 @@ public class MainClient extends JFrame {
     private JButton usunCzesneButton;
     private JButton edytujCzesneButton;
     private JList czesneCzesneList;
-    private JComboBox comboBox1;
+    private JComboBox czesneDzieckoComboBox;
     private JButton dodajSzafkeButton;
     private JButton usunSzafkeButton;
     private JButton edytujSzafkeButton;
@@ -93,7 +93,7 @@ public class MainClient extends JFrame {
     private JTextField szafkaNumerTextField;
     private JTextField szafkaHasloTextField;
     private JTextField szafkaPojemnoscTextField;
-    private JComboBox szafkaDzieckoComboBox;
+    private JTextField szafkaDzieckoTextField;
     private List<Miasto> miastoList;
 
     public MainClient() {
@@ -102,6 +102,12 @@ public class MainClient extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(400, 400));
         pack();
+        tabbedPane1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                refreshEverything();
+            }
+        });
         fillComboboxMiasto();
         ComboBoxActionListener comboBoxActionListener = new ComboBoxActionListener();
         miastoComboBox.addItemListener(comboBoxActionListener);
@@ -243,9 +249,44 @@ public class MainClient extends JFrame {
         });
     }
 
+    private void refreshEverything() {
+        DzieckoRepo dzieckoRepo = new DzieckoRepo();
+        GrupaRepo grupaRepo = new GrupaRepo();
+        MiastoRepo miastoRepo = new MiastoRepo();
+        NauczycielRepo nauczycielRepo = new NauczycielRepo();
+        SalaRepo salaRepo = new SalaRepo();
+        SzafkaRepo szafkaRepo = new SzafkaRepo();
+        List<Dziecko> dzieci = dzieckoRepo.getAll();
+        List<Grupa> grupy = grupaRepo.getAll();
+        List<Miasto> miasta = miastoRepo.getAll();
+        List<Nauczyciel> nauczyciele = nauczycielRepo.getAll();
+        List<Sala> sale = salaRepo.getAll();
+        List<Szafka> szafki = szafkaRepo.getAll();
+        miastoComboBox.removeAllItems();
+        dzieckoGrupaComboBox.removeAllItems();
+        grupaGrupaComboBox.removeAllItems();
+        czesneDzieckoComboBox.removeAllItems();
+        nauczycielComboBox.removeAllItems();
+        salaComboBox.removeAllItems();
+        szafkaComboBox.removeAllItems();
+        miasta.forEach(i -> miastoComboBox.addItem(i.getNazwa()));
+        dzieci.forEach(i -> czesneDzieckoComboBox.addItem(i.getImie()));
+        grupy.forEach(i -> {
+            dzieckoGrupaComboBox.addItem(i.getNazwa());
+            grupaGrupaComboBox.addItem(i.getNazwa());
+        });
+        nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s", i.getImie(), i.getNazwisko())));
+        sale.forEach(i -> salaComboBox.addItem(i.getNumerSali()));
+        szafki.forEach(i -> szafkaComboBox.addItem(i.getNumer()));
+
+    }
+
     private class ComboBoxActionListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
+            if (miastoComboBox.getSelectedItem() == null) {
+                return;
+            }
             String selectedMiasto = miastoComboBox.getSelectedItem().toString();
             if (selectedMiasto.isEmpty()) {
                 log.info("Get empty string from combobox");
@@ -282,6 +323,9 @@ public class MainClient extends JFrame {
         } else {
             miastoList.forEach(p -> miastoComboBox.addItem(p.getNazwa()));
         }
+        if (miastoComboBox.getSelectedItem() == null) {
+            return;
+        }
         String miastoComboString = miastoComboBox.getSelectedItem().toString();
         if (miastoComboString.isEmpty()) {
             return;
@@ -294,4 +338,6 @@ public class MainClient extends JFrame {
         miastoGminaTextField.setText(miastoInList.getGmina());
         miastoWojewodztwoTextField.setText(miastoInList.getWojewodztwo());
     }
+
+
 }
