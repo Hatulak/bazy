@@ -1,7 +1,9 @@
 package client;
 
+import Repository.KomputerRepo;
 import Repository.RzutnikRepo;
 import lombok.extern.java.Log;
+import model.Komputer;
 import model.Rzutnik;
 
 import javax.swing.*;
@@ -18,10 +20,11 @@ public class AddSalaDialog extends JDialog {
     private JTextField liczbaLawekTextField;
     private JComboBox szkolaComboBox;
     private JComboBox rzutnikComboBox;
-    private JList komputeryList;
+    private JList komputeryJList;
     private JButton stworzRzutnikButton;
     private JButton stworzKomputerButton;
     private List<Rzutnik> rzutnikList;
+    private List<Komputer> komputerList;
 
     public AddSalaDialog() {
         setContentPane(contentPane);
@@ -69,10 +72,25 @@ public class AddSalaDialog extends JDialog {
                 AddKomputerDialog addKomputerDialog = new AddKomputerDialog();
                 addKomputerDialog.pack();
                 addKomputerDialog.setVisible(true);
+                fillListViewKomupter();
 
             }
         });
         fillComboboxRzutnik();
+        fillListViewKomupter();
+    }
+
+    private void fillListViewKomupter() {
+        komputeryJList.removeAll();
+        KomputerRepo komputerRepo = new KomputerRepo();
+        komputerList = komputerRepo.getAllKomputersWhereSalaIdIsNull();
+        if (komputerList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            DefaultListModel komputerListModel = new DefaultListModel();
+            komputerList.forEach(e -> komputerListModel.addElement(e.getId().toString()));
+            komputeryJList.setModel(komputerListModel);
+        }
     }
 
     private void fillComboboxRzutnik() {
