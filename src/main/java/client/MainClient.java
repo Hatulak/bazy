@@ -329,8 +329,17 @@ public class MainClient extends JFrame {
                 numerSaliTextField.setText(salaList.get(0).getNumerSali());
                 liczbaKrzeselTextField.setText(salaList.get(0).getLiczbaKrzesel().toString());
                 liczbaLawekTextField.setText(salaList.get(0).getLiczbaLawek().toString());
-                rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
-                salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
+                if (salaList.get(0).getRzutnik() == null) {
+                    rzutnikTextField.setText("BRAK");
+                } else {
+                    rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
+                }
+
+                if (salaList.get(0).getSzkola() == null) {
+                    salaSzkolaTextField.setText("BRAK");
+                } else {
+                    salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
+                }
 
                 KomputerRepo komputerRepo = new KomputerRepo();
                 List<Komputer> komputerList = komputerRepo.getBySala(salaList.get(0));
@@ -359,6 +368,7 @@ public class MainClient extends JFrame {
                 });
                 salaRepo.remove(salaList.get(0));
 
+                refreshEverything();
             }
         });
     }
