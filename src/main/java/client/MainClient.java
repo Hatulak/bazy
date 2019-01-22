@@ -64,8 +64,8 @@ public class MainClient extends JFrame {
     private JComboBox halaSportowaSzkolaComboBox;
     private JCheckBox trybunaCheckBox;
     private JList zestawySprzetowList;
-    private JTextField textField1;
-    private JComboBox comboBox1;
+    private JTextField numerSaliTextField;
+    private JComboBox miastoComboBox;
     private JTextField miastoNazwaTextField;
     private JTextField miastoGminaTextField;
     private JTextField miastoPowiatTextField;
