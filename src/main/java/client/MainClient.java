@@ -128,5 +128,13 @@ public class MainClient extends JFrame {
                 addSzkolaDialog.setVisible(true);
             }
         });
+        dodajMiastoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
+                addMiastoDialog.pack();
+                addMiastoDialog.setVisible(true);
+            }
+        });
     }
 }
