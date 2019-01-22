@@ -12,7 +12,6 @@ public class MainClient extends JFrame {
     private JTextField dzieckoNazwiskoTextField;
     private JTextField dzieckoImieTextField;
     private JList dzieckoRodziceList;
-    private JList dzieckoCzesneList;
     private JComboBox dzieckoGrupaComboBox;
     private JComboBox dzieckoUczenComboBox;
     private JButton dodajDzieckoButton;
@@ -73,6 +72,11 @@ public class MainClient extends JFrame {
     private JButton dodajMiastoButton;
     private JButton edytujMiastoButton;
     private JButton usunMiastoButton;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JList czesneCzesneList;
+    private JComboBox comboBox1;
 
     public MainClient() {
         add(panel1);
