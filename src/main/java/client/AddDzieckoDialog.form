@@ -89,15 +89,7 @@
               <text value="Rodzice"/>
             </properties>
           </component>
-          <component id="1096a" class="javax.swing.JList" binding="rodziceList">
-            <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="574ed" class="javax.swing.JComboBox" binding="textField1" default-binding="true">
+          <component id="574ed" class="javax.swing.JComboBox" binding="grupaComboBox">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -105,7 +97,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="8dd68" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+          <component id="8dd68" class="javax.swing.JTextField" binding="wiekTextField">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -113,7 +105,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="8088c" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+          <component id="8088c" class="javax.swing.JTextField" binding="imieTextField">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -129,6 +121,19 @@
               <text value="Stwórz"/>
             </properties>
           </component>
+          <scrollpane id="e1410">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="1096a" class="javax.swing.JList" binding="rodziceList">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
     </children>

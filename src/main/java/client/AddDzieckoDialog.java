@@ -11,9 +11,9 @@ public class AddDzieckoDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JList rodziceList;
-    private JComboBox textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JComboBox grupaComboBox;
+    private JTextField wiekTextField;
+    private JTextField imieTextField;
     private JButton stworzRodziceButton;
 
     public AddDzieckoDialog() {
@@ -71,7 +71,6 @@ public class AddDzieckoDialog extends JDialog {
 
 
     private void onOK() {
-        // add your code here
         dispose();
     }
 
