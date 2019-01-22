@@ -130,6 +130,7 @@ public class MainClient extends JFrame {
                 AddDzieckoDialog addDzieckoDialog = new AddDzieckoDialog();
                 addDzieckoDialog.pack();
                 addDzieckoDialog.setVisible(true);
+                refreshEverything();
             }
         });
         dodajGrupaButton.addActionListener(new ActionListener() {
@@ -138,6 +139,7 @@ public class MainClient extends JFrame {
                 AddGrupaDialog addGrupaDialog = new AddGrupaDialog();
                 addGrupaDialog.pack();
                 addGrupaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         dodajNauczycielButton.addActionListener(new ActionListener() {
@@ -149,6 +151,7 @@ public class MainClient extends JFrame {
                 nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
                 fillComboboxNauczyciel();
                 nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+                refreshEverything();
             }
         });
         dodajSalaButton.addActionListener(new ActionListener() {
@@ -157,6 +160,7 @@ public class MainClient extends JFrame {
                 AddSalaDialog addSalaDialog = new AddSalaDialog();
                 addSalaDialog.pack();
                 addSalaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         dodajHaleButton.addActionListener(new ActionListener() {
@@ -165,6 +169,7 @@ public class MainClient extends JFrame {
                 AddHalaSportowaDialog addHalaSportowaDialog = new AddHalaSportowaDialog();
                 addHalaSportowaDialog.pack();
                 addHalaSportowaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         dodajSzkolaButton.addActionListener(new ActionListener() {
@@ -177,6 +182,7 @@ public class MainClient extends JFrame {
                 edytujSzkolaButton.setEnabled(true);
                 usunSzkolaButton.setEnabled(true);
                 fillComboboxNauczyciel();
+                refreshEverything();
             }
         });
         dodajMiastoButton.addActionListener(new ActionListener() {
@@ -188,6 +194,7 @@ public class MainClient extends JFrame {
                 miastoComboBox.removeItemListener(miastoComboBoxActionListener);
                 fillComboboxMiasto();
                 miastoComboBox.addItemListener(miastoComboBoxActionListener);
+                refreshEverything();
             }
         });
         dodajCzesneButton.addActionListener(new ActionListener() {
@@ -196,6 +203,7 @@ public class MainClient extends JFrame {
                 AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
                 addCzesneDialog.pack();
                 addCzesneDialog.setVisible(true);
+                refreshEverything();
             }
         });
         dodajSzafkeButton.addActionListener(new ActionListener() {
@@ -204,6 +212,7 @@ public class MainClient extends JFrame {
                 AddSzafkaDialog addSzafkaDialog = new AddSzafkaDialog();
                 addSzafkaDialog.pack();
                 addSzafkaDialog.setVisible(true);
+                refreshEverything();
             }
         });
 
@@ -221,6 +230,7 @@ public class MainClient extends JFrame {
                 miastoComboBox.removeItemListener(miastoComboBoxActionListener);
                 fillComboboxMiasto();
                 miastoComboBox.addItemListener(miastoComboBoxActionListener);
+                refreshEverything();
             }
         });
         usunMiastoButton.addActionListener(new ActionListener() {
@@ -240,6 +250,7 @@ public class MainClient extends JFrame {
                 miastoRepo.remove(miastoInList);
                 fillComboboxMiasto();
                 miastoComboBox.addItemListener(miastoComboBoxActionListener);
+                refreshEverything();
             }
         });
         usunNauczycielButton.addActionListener(new ActionListener() {
@@ -260,6 +271,7 @@ public class MainClient extends JFrame {
                 nauczycielRepo.remove(byId);
                 fillComboboxNauczyciel();
                 nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+                refreshEverything();
             }
         });
         usunSzkolaButton.addActionListener(new ActionListener() {
@@ -268,6 +280,7 @@ public class MainClient extends JFrame {
                 dodajSzkolaButton.setEnabled(true);
                 edytujSzkolaButton.setEnabled(false);
                 usunSzkolaButton.setEnabled(false);
+                refreshEverything();
             }
         });
         edytujSzkolaButton.addActionListener(new ActionListener() {
@@ -276,6 +289,7 @@ public class MainClient extends JFrame {
                 AddSzkolaDialog editSzkolaDialog = new AddSzkolaDialog(szkolaRepo.getAll().get(0));
                 editSzkolaDialog.pack();
                 editSzkolaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         edytujNauczycielButton.addActionListener(new ActionListener() {
@@ -286,6 +300,7 @@ public class MainClient extends JFrame {
                 AddNauczycielDialog editNauczycielDialog = new AddNauczycielDialog(nauczyciel);
                 editNauczycielDialog.pack();
                 editNauczycielDialog.setVisible(true);
+                refreshEverything();
             }
         });
     }
