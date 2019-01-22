@@ -168,6 +168,7 @@ public class MainClient extends JFrame {
                 addNauczycielDialog.setVisible(true);
                 fillComboboxNauczyciel();
                 nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+                refreshEverything();
             }
         });
         dodajSalaButton.addActionListener(new ActionListener() {
