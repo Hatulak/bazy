@@ -2,9 +2,12 @@ package client;
 
 import Repository.KomputerRepo;
 import Repository.RzutnikRepo;
+import Repository.SalaRepo;
+import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.Komputer;
 import model.Rzutnik;
+import model.Szkola;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -23,8 +26,10 @@ public class AddSalaDialog extends JDialog {
     private JList komputeryJList;
     private JButton stworzRzutnikButton;
     private JButton stworzKomputerButton;
+
     private List<Rzutnik> rzutnikList;
     private List<Komputer> komputerList;
+    private List<Szkola> szkolaList;
 
     public AddSalaDialog() {
         setContentPane(contentPane);
@@ -78,6 +83,7 @@ public class AddSalaDialog extends JDialog {
         });
         fillComboboxRzutnik();
         fillListViewKomupter();
+        fillComboboxSzkola();
     }
 
     private void fillListViewKomupter() {
@@ -85,7 +91,7 @@ public class AddSalaDialog extends JDialog {
         KomputerRepo komputerRepo = new KomputerRepo();
         komputerList = komputerRepo.getAllKomputersWhereSalaIdIsNull();
         if (komputerList == null) {
-            log.info("Empty list with miasto's get from DB");
+            log.info("Empty list with komputer's get from DB");
         } else {
             DefaultListModel komputerListModel = new DefaultListModel();
             komputerList.forEach(e -> komputerListModel.addElement(e.getId().toString()));
@@ -98,15 +104,28 @@ public class AddSalaDialog extends JDialog {
         RzutnikRepo rzutnikRepo = new RzutnikRepo();
         rzutnikList = rzutnikRepo.getRzutniksWhereRzutnikInSalaIsNull();
         if (rzutnikList == null) {
-            log.info("Empty list with miasto's get from DB");
+            log.info("Empty list with rzutnik's get from DB");
         } else {
             rzutnikList.forEach(p -> rzutnikComboBox.addItem(p.getModel()));
         }
     }
 
+    private void fillComboboxSzkola() {
+        szkolaComboBox.removeAllItems();
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        szkolaList = szkolaRepo.getAll();
+        if (szkolaList == null) {
+            log.info("Empty list with szkola's get from DB");
+        } else {
+            szkolaList.forEach(s -> szkolaComboBox.addItem(s.getNazwa()));
+        }
+    }
+
 
     private void onOK() {
-        // add your code here
+        SalaRepo salaRepo = new SalaRepo();
+
+
         dispose();
     }
 
