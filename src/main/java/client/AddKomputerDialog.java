@@ -1,10 +1,15 @@
 package client;
 
+import Repository.KomputerRepo;
+import lombok.extern.java.Log;
+import model.Komputer;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Date;
 
+@Log
 public class AddKomputerDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -47,7 +52,19 @@ public class AddKomputerDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
+        Date dataZakupu = dataZakupuDatePicker.getDate();
+        Date dataWygasniecia = dataWygasnieciaDatePicker.getDate();
+        String specyfikacja = specyfikacjaTextPane.getText();
+
+        if (specyfikacja.isEmpty() || dataZakupu == null || dataWygasniecia == null) {
+            log.info("Empty field");
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        KomputerRepo komputerRepo = new KomputerRepo();
+        komputerRepo.save(new Komputer(dataZakupu, dataWygasniecia, specyfikacja));
+
         dispose();
     }
 

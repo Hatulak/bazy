@@ -153,9 +153,11 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="d5297" class="javax.swing.JList" binding="komputeryList">
+              <component id="d5297" class="javax.swing.JList" binding="komputeryJList">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <model/>
+                </properties>
               </component>
             </children>
           </scrollpane>
