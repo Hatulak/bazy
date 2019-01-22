@@ -39,7 +39,16 @@ public class MiastoRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(miasto);
+        em.remove(em.contains(miasto) ? miasto : em.merge(miasto));
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public void update(Miasto miasto) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(miasto);
         em.getTransaction().commit();
         em.close();
     }
