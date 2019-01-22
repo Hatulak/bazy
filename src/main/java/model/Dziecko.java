@@ -18,7 +18,7 @@ public class Dziecko {
     @ManyToOne
     @JoinColumn(name = "GRUPA_ID")
     private Grupa grupa;
-    @OneToMany(mappedBy = "dziecko", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "dziecko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Czesne> czesneList;
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(

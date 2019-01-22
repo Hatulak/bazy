@@ -16,11 +16,11 @@ public class Szkola {
     private String nazwa;
     private String patron;
     private String adres;
-    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Sala> salaList;
-    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Szafka> szafkaLista;
-    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "szkola", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Nauczyciel> nauczycielList;
 
     public Szkola() {

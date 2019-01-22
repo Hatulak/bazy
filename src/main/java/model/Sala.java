@@ -19,7 +19,7 @@ public class Sala {
     @OneToOne
     @JoinColumn(name = "RZUTNIK_ID")
     private Rzutnik rzutnik;
-    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "sala", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Komputer> komputerList;
 
     public Sala() {
