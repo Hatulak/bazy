@@ -41,7 +41,8 @@ public class NauczycielRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(nauczyciel);
+        Nauczyciel nauczyciel1 = em.find(Nauczyciel.class, nauczyciel.getId());
+        em.remove(nauczyciel1);
         em.getTransaction().commit();
         em.close();
     }

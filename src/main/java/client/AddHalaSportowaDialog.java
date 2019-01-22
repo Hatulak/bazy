@@ -56,6 +56,9 @@ public class AddHalaSportowaDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        String wielkosc = wielkoscTextField.getText();
+        String szkola = szkolaComboBox.getSelectedItem().toString();
+
         dispose();
     }
 

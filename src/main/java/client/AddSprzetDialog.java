@@ -1,5 +1,8 @@
 package client;
 
+import Repository.SprzetRepo;
+import model.Sprzet;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -45,6 +48,24 @@ public class AddSprzetDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        String nazwa = nazwaTextField.getText();
+        String iloscString = iloscTextField.getText();
+        if (nazwa.isEmpty() || iloscString.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Integer ilosc = null;
+        try {
+            ilosc = Integer.valueOf(iloscString);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Phone number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        SprzetRepo sprzetRepo = new SprzetRepo();
+        //fixme need to change after add combobox :3
+
+
+        sprzetRepo.save(new Sprzet(nazwa, ilosc, null));
         dispose();
     }
 

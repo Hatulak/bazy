@@ -1,5 +1,7 @@
 package client;
 
+import Repository.SprzetRepo;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -10,11 +12,15 @@ public class AddZestawDialog extends JDialog {
     private JTextField textField1;
     private JList list1;
     private JButton stworzSprzetButton;
+    private DefaultListModel defaultListModel;
+    private SprzetRepo sprzetRepo;
 
     public AddZestawDialog() {
+        sprzetRepo = new SprzetRepo();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        defaultListModel = new DefaultListModel();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -60,5 +66,11 @@ public class AddZestawDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private void fillList() {
+        defaultListModel = new DefaultListModel();
+        sprzetRepo.getAll();
+//        sprzetRepo.();
     }
 }
