@@ -102,26 +102,8 @@ public class MainClient extends JFrame {
         setMinimumSize(new Dimension(400, 400));
         pack();
         fillComboboxMiasto();
-        miastoComboBox.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                String selectedMiasto = miastoComboBox.getSelectedItem().toString();
-                if (selectedMiasto.isEmpty()) {
-                    log.info("Get empty string from combobox");
-                    return;
-                }
-                Miasto miastoFromList = null;
-                miastoFromList = findMiastoInList(selectedMiasto, miastoList);
-                if (miastoFromList == null) {
-                    log.info("city is null");
-                    return;
-                }
-                miastoNazwaTextField.setText(miastoFromList.getNazwa());
-                miastoPowiatTextField.setText(miastoFromList.getPowiat());
-                miastoGminaTextField.setText(miastoFromList.getGmina());
-                miastoWojewodztwoTextField.setText(miastoFromList.getWojewodztwo());
-            }
-        });
+        ComboBoxActionListener comboBoxActionListener = new ComboBoxActionListener();
+        miastoComboBox.addItemListener(comboBoxActionListener);
         dodajDzieckoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -176,7 +158,9 @@ public class MainClient extends JFrame {
                 AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
                 addMiastoDialog.pack();
                 addMiastoDialog.setVisible(true);
+                miastoComboBox.removeItemListener(comboBoxActionListener);
                 fillComboboxMiasto();
+                miastoComboBox.addItemListener(comboBoxActionListener);
             }
         });
         dodajCzesneButton.addActionListener(new ActionListener() {
@@ -200,19 +184,59 @@ public class MainClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Miasto currentMiasto = findMiastoInList(miastoComboBox.getSelectedItem().toString(), miastoList);
+                if (currentMiasto == null) {
+                    log.info("found null in edytujmiastobuttonaction");
+                    return;
+                }
                 AddMiastoDialog editMiastoDialog = new AddMiastoDialog(currentMiasto);
                 editMiastoDialog.pack();
                 editMiastoDialog.setVisible(true);
+                miastoComboBox.removeItemListener(comboBoxActionListener);
+                fillComboboxMiasto();
+                miastoComboBox.addItemListener(comboBoxActionListener);
             }
         });
         usunMiastoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                miastoComboBox.removeItemListener(comboBoxActionListener);
+                if (miastoComboBox.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "City is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Miasto miastoInList = findMiastoInList(miastoComboBox.getSelectedItem().toString(), miastoList);
+                if (miastoInList == null) {
+                    log.info("found null in deletemiastobuttonaction");
+                    return;
+                }
+                MiastoRepo miastoRepo = new MiastoRepo();
+                miastoRepo.remove(miastoInList);
+                fillComboboxMiasto();
+                miastoComboBox.addItemListener(comboBoxActionListener);
             }
         });
     }
 
+    private class ComboBoxActionListener implements ItemListener {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            String selectedMiasto = miastoComboBox.getSelectedItem().toString();
+            if (selectedMiasto.isEmpty()) {
+                log.info("Get empty string from combobox");
+                return;
+            }
+            Miasto miastoFromList = null;
+            miastoFromList = findMiastoInList(selectedMiasto, miastoList);
+            if (miastoFromList == null) {
+                log.info("city is null");
+                return;
+            }
+            miastoNazwaTextField.setText(miastoFromList.getNazwa());
+            miastoPowiatTextField.setText(miastoFromList.getPowiat());
+            miastoGminaTextField.setText(miastoFromList.getGmina());
+            miastoWojewodztwoTextField.setText(miastoFromList.getWojewodztwo());
+        }
+    }
 
     static Miasto findMiastoInList(String selectedMiasto, List<Miasto> miastoList) {
         for (int i = 0; i < miastoList.size(); i++) {

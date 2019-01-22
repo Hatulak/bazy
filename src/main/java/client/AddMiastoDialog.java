@@ -5,6 +5,7 @@ import model.Miasto;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class AddMiastoDialog extends JDialog {
     private JPanel contentPane;
@@ -89,6 +90,25 @@ public class AddMiastoDialog extends JDialog {
 
     private void onEditOK() {
         //TODO Zrob tutaj tego merge'a
+        String nazwa = nazwaTextField.getText();
+        String gmina = gminaTextField.getText();
+        String powiat = powiatTextField.getText();
+        String wojewodztwo = wojewodztwoTextField.getText();
+        if (nazwa.isEmpty() || wojewodztwo.isEmpty() || gmina.isEmpty() || powiat.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        MiastoRepo miastoRepo = new MiastoRepo();
+        List<Miasto> all = miastoRepo.getAll();
+        Miasto miastoInList = MainClient.findMiastoInList(nazwa, all);
+        if (miastoInList != null) {
+            miastoInList.setNazwa(nazwa);
+            miastoInList.setGmina(gmina);
+            miastoInList.setPowiat(powiat);
+            miastoInList.setWojewodztwo(wojewodztwo);
+            miastoRepo.update(miastoInList);
+        }
+        dispose();
     }
 
     private void onOK() {
