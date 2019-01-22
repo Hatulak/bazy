@@ -72,9 +72,9 @@ public class MainClient extends JFrame {
     private JButton dodajMiastoButton;
     private JButton edytujMiastoButton;
     private JButton usunMiastoButton;
-    private JButton button1;
-    private JButton button2;
-    private JButton button3;
+    private JButton dodajCzesneButton;
+    private JButton usunCzesneButton;
+    private JButton edytujCzesneButton;
     private JList czesneCzesneList;
     private JComboBox comboBox1;
 

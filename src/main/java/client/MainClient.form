@@ -41,28 +41,30 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="ac380" class="javax.swing.JButton" binding="button1" default-binding="true">
+                      <component id="ac380" class="javax.swing.JButton" binding="dodajCzesneButton">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <text value="Dodaj"/>
                         </properties>
                       </component>
-                      <component id="6b97b" class="javax.swing.JButton" binding="button2" default-binding="true">
+                      <component id="6b97b" class="javax.swing.JButton" binding="usunCzesneButton">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <enabled value="false"/>
+                          <text value="Usuń"/>
                         </properties>
                       </component>
-                      <component id="d9c1b" class="javax.swing.JButton" binding="button3" default-binding="true">
+                      <component id="d9c1b" class="javax.swing.JButton" binding="edytujCzesneButton">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Button"/>
+                          <enabled value="false"/>
+                          <text value="Edytuj"/>
                         </properties>
                       </component>
                     </children>
@@ -101,7 +103,7 @@
                     <children>
                       <component id="ea816" class="javax.swing.JList" binding="czesneCzesneList">
                         <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="6" anchor="8" fill="3" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
