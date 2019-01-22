@@ -126,7 +126,7 @@ public class AddNauczycielDialog extends JDialog {
         dispose();
     }
 
-    private Szkola findSzkolaInDB(String selectedSzkola) {
+    private static Szkola findSzkolaInDB(String selectedSzkola) {
         List<Szkola> szkolaList = new SzkolaRepo().getAll();
         for (int i = 0; i < szkolaList.size(); i++) {
             if (szkolaList.get(i).getNazwa().equals(selectedSzkola)) {

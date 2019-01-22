@@ -1,9 +1,11 @@
 package client;
 
 import Repository.MiastoRepo;
+import Repository.NauczycielRepo;
 import Repository.SzkolaRepo;
 import lombok.extern.java.Log;
 import model.Miasto;
+import model.Nauczyciel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,16 +97,23 @@ public class MainClient extends JFrame {
     private JTextField szafkaPojemnoscTextField;
     private JComboBox szafkaDzieckoComboBox;
     private List<Miasto> miastoList;
+    private List<Nauczyciel> nauczycielList;
+    private NauczycielRepo nauczycielRepo;
 
     public MainClient() {
+        nauczycielRepo = new NauczycielRepo();
+
         add(panel1);
         setTitle("School app");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(400, 400));
         pack();
         fillComboboxMiasto();
-        ComboBoxActionListener comboBoxActionListener = new ComboBoxActionListener();
-        miastoComboBox.addItemListener(comboBoxActionListener);
+        fillComboboxNauczyciel();
+        NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
+        nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
+        MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
+        miastoComboBox.addItemListener(miastoComboBoxActionListener);
         SzkolaRepo szkolaRepo = new SzkolaRepo();
         if (szkolaRepo.getAll().size() == 1) {
             dodajSzkolaButton.setEnabled(false);
@@ -133,6 +142,9 @@ public class MainClient extends JFrame {
                 AddNauczycielDialog addNauczycielDialog = new AddNauczycielDialog();
                 addNauczycielDialog.pack();
                 addNauczycielDialog.setVisible(true);
+                nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
+                fillComboboxNauczyciel();
+                nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
             }
         });
         dodajSalaButton.addActionListener(new ActionListener() {
@@ -160,6 +172,7 @@ public class MainClient extends JFrame {
                 dodajSzkolaButton.setEnabled(false);
                 edytujSzkolaButton.setEnabled(true);
                 usunSzkolaButton.setEnabled(true);
+                fillComboboxNauczyciel();
             }
         });
         dodajMiastoButton.addActionListener(new ActionListener() {
@@ -168,9 +181,9 @@ public class MainClient extends JFrame {
                 AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
                 addMiastoDialog.pack();
                 addMiastoDialog.setVisible(true);
-                miastoComboBox.removeItemListener(comboBoxActionListener);
+                miastoComboBox.removeItemListener(miastoComboBoxActionListener);
                 fillComboboxMiasto();
-                miastoComboBox.addItemListener(comboBoxActionListener);
+                miastoComboBox.addItemListener(miastoComboBoxActionListener);
             }
         });
         dodajCzesneButton.addActionListener(new ActionListener() {
@@ -201,15 +214,15 @@ public class MainClient extends JFrame {
                 AddMiastoDialog editMiastoDialog = new AddMiastoDialog(currentMiasto);
                 editMiastoDialog.pack();
                 editMiastoDialog.setVisible(true);
-                miastoComboBox.removeItemListener(comboBoxActionListener);
+                miastoComboBox.removeItemListener(miastoComboBoxActionListener);
                 fillComboboxMiasto();
-                miastoComboBox.addItemListener(comboBoxActionListener);
+                miastoComboBox.addItemListener(miastoComboBoxActionListener);
             }
         });
         usunMiastoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                miastoComboBox.removeItemListener(comboBoxActionListener);
+                miastoComboBox.removeItemListener(miastoComboBoxActionListener);
                 if (miastoComboBox.getSelectedItem().toString().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "City is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -222,7 +235,27 @@ public class MainClient extends JFrame {
                 MiastoRepo miastoRepo = new MiastoRepo();
                 miastoRepo.remove(miastoInList);
                 fillComboboxMiasto();
-                miastoComboBox.addItemListener(comboBoxActionListener);
+                miastoComboBox.addItemListener(miastoComboBoxActionListener);
+            }
+        });
+        usunNauczycielButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
+                if (nauczycielComboBox.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nauczyciel is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String[] split = nauczycielComboBox.getSelectedItem().toString().split(" ");
+                Long idValue = Long.valueOf(split[0]);
+                Nauczyciel byId = nauczycielRepo.getById(idValue);
+                if (byId == null) {
+                    return;
+                }
+                //todo trzeba to ogarnac czemu nie działa do konca :c
+                nauczycielRepo.remove(byId);
+                fillComboboxNauczyciel();
+                nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
             }
         });
         usunSzkolaButton.addActionListener(new ActionListener() {
@@ -235,7 +268,7 @@ public class MainClient extends JFrame {
         });
     }
 
-    private class ComboBoxActionListener implements ItemListener {
+    private class MiastoComboBoxActionListener implements ItemListener {
         @Override
         public void itemStateChanged(ItemEvent e) {
             String selectedMiasto = miastoComboBox.getSelectedItem().toString();
@@ -285,5 +318,73 @@ public class MainClient extends JFrame {
         miastoPowiatTextField.setText(miastoInList.getPowiat());
         miastoGminaTextField.setText(miastoInList.getGmina());
         miastoWojewodztwoTextField.setText(miastoInList.getWojewodztwo());
+    }
+
+    private void fillComboboxNauczyciel() {
+        nauczycielComboBox.removeAllItems();
+        nauczycielList = nauczycielRepo.getAll();
+        if (nauczycielList == null) {
+            log.info("Empty list with miasto's get from DB");
+        } else {
+            nauczycielList.forEach(p -> nauczycielComboBox.addItem(p.getId() + " " + p.getImie() + " " + p.getNazwisko()));
+        }
+        String nauczycielCombo = nauczycielComboBox.getSelectedItem().toString();
+        if (nauczycielCombo.isEmpty()) {
+            log.info("nauczycielcombobox empty");
+            return;
+        }
+        Nauczyciel nauczycielInList = findNauczycielInList(nauczycielCombo, nauczycielList);
+        if (nauczycielInList == null) {
+            log.info("nauczyciel cannot found in list");
+            return;
+        }
+        imieTextField.setText(nauczycielInList.getImie());
+        nazwiskoTextField.setText(nauczycielInList.getNazwisko());
+        telefonTextField.setText(String.valueOf(nauczycielInList.getTelefon()));
+        adresTextField.setText(nauczycielInList.getAdres());
+        miastoTextField.setText(nauczycielInList.getMiasto().getNazwa());
+        szkolaTextField.setText(nauczycielInList.getSzkola().getNazwa());
+        stopienTextField.setText(nauczycielInList.getStopien());
+        emailTextField.setText(nauczycielInList.getEmail());
+    }
+
+    private Nauczyciel findNauczycielInList(String selectedNauczyciel, List<Nauczyciel> nauczycielList) {
+        String[] split = selectedNauczyciel.split(" ");
+        Long idValue = Long.valueOf(split[0]);
+        for (int i = 0; i < nauczycielList.size(); i++) {
+            if (nauczycielList.get(i).getId().equals(idValue)) {
+                return nauczycielList.get(i);
+            }
+        }
+        return null;
+    }
+
+    private class NauczycielComboBoxListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fillFiledInNauczycielTab();
+        }
+
+        private void fillFiledInNauczycielTab() {
+            String nauczycielCombo = nauczycielComboBox.getSelectedItem().toString();
+            if (nauczycielCombo.isEmpty()) {
+                log.info("nauczycielcombobox empty");
+                return;
+            }
+            Nauczyciel nauczycielInList = findNauczycielInList(nauczycielCombo, nauczycielList);
+            if (nauczycielInList == null) {
+                log.info("nauczyciel cannot found in list");
+                return;
+            }
+            imieTextField.setText(nauczycielInList.getImie());
+            nazwiskoTextField.setText(nauczycielInList.getNazwisko());
+            telefonTextField.setText(String.valueOf(nauczycielInList.getTelefon()));
+            adresTextField.setText(nauczycielInList.getAdres());
+            miastoTextField.setText(nauczycielInList.getMiasto().getNazwa());
+            szkolaTextField.setText(nauczycielInList.getSzkola().getNazwa());
+            stopienTextField.setText(nauczycielInList.getStopien());
+            emailTextField.setText(nauczycielInList.getEmail());
+        }
     }
 }

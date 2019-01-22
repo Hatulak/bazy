@@ -1,6 +1,7 @@
 package Repository;
 
 import Utils.EMF;
+import lombok.extern.java.Log;
 import model.Nauczyciel;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import java.util.List;
 
+@Log
 public class NauczycielRepo {
     public void save(Nauczyciel nauczyciel) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
