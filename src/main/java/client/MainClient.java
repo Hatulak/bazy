@@ -77,6 +77,14 @@ public class MainClient extends JFrame {
     private JButton edytujCzesneButton;
     private JList czesneCzesneList;
     private JComboBox comboBox1;
+    private JButton dodajSzafkeButton;
+    private JButton usunSzafkeButton;
+    private JButton edytujSzafkeButton;
+    private JComboBox szafkaComboBox;
+    private JTextField szafkaNumerTextField;
+    private JTextField szafkaHasloTextField;
+    private JTextField szafkaPojemnoscTextField;
+    private JComboBox szafkaDzieckoComboBox;
 
     public MainClient() {
         add(panel1);
@@ -146,6 +154,14 @@ public class MainClient extends JFrame {
                 AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
                 addCzesneDialog.pack();
                 addCzesneDialog.setVisible(true);
+            }
+        });
+        dodajSzafkeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSzafkaDialog addSzafkaDialog = new AddSzafkaDialog();
+                addSzafkaDialog.pack();
+                addSzafkaDialog.setVisible(true);
             }
         });
     }

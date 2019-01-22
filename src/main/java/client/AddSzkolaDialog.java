@@ -20,9 +20,6 @@ public class AddSzkolaDialog extends JDialog {
     private JTextField nazwaTextField;
     private JTextField patronTextField;
     private JTextField adresTextField;
-    private JList saleList;
-    private JList szafkiList;
-    private JList nauczycieleList;
     private JButton stworzMiastoButton;
     private List<Miasto> miastoList;
     public AddSzkolaDialog() {
