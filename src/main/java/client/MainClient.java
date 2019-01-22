@@ -325,6 +325,12 @@ public class MainClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (salaComboBox.getSelectedItem() == null) {
+                    numerSaliTextField.setText("");
+                    liczbaKrzeselTextField.setText("");
+                    liczbaLawekTextField.setText("");
+                    rzutnikTextField.setText("");
+                    salaSzkolaTextField.setText("");
+                    listaKomputerowList.setListData(new String[]{""});
                     return;
                 }
                 SalaRepo salaRepo = new SalaRepo();
