@@ -233,6 +233,14 @@ public class MainClient extends JFrame {
                 usunSzkolaButton.setEnabled(false);
             }
         });
+        edytujSzkolaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSzkolaDialog editSzkolaDialog = new AddSzkolaDialog(szkolaRepo.getAll().get(0));
+                editSzkolaDialog.pack();
+                editSzkolaDialog.setVisible(true);
+            }
+        });
     }
 
     private class ComboBoxActionListener implements ItemListener {

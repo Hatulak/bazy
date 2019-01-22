@@ -60,6 +60,48 @@ public class AddSzkolaDialog extends JDialog {
         fillComboboxMiasto();
     }
 
+    public AddSzkolaDialog(Szkola szkola) {
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        stworzMiastoButton.addActionListener(e -> {
+            AddMiastoDialog addMiastoDialog = new AddMiastoDialog();
+            addMiastoDialog.pack();
+            addMiastoDialog.setVisible(true);
+            fillComboboxMiasto();
+        });
+        fillComboboxMiasto();
+
+        nazwaTextField.setText(szkola.getNazwa());
+        patronTextField.setText(szkola.getPatron());
+        adresTextField.setText(szkola.getAdres());
+        miastoComboBox.setSelectedItem(szkola.getMiasto().getNazwa()); //TODO popraw te miasto bo źle kombinuje
+    }
+
     private void fillComboboxMiasto() {
         miastoComboBox.removeAllItems();
         MiastoRepo miastoRepo = new MiastoRepo();
