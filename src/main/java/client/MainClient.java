@@ -40,7 +40,6 @@ public class MainClient extends JFrame {
     private JTextField liczbaLawekTextField;
     private JTextField rzutnikTextField;
     private JList listaKomputerowList;
-    private JComboBox szkolaComboBox;
     private JTextField nazwaSzkolaTextField;
     private JTextField adresSzkolaTextField;
     private JTextField miastoSzkolaTextField;
@@ -66,6 +65,14 @@ public class MainClient extends JFrame {
     private JCheckBox trybunaCheckBox;
     private JList zestawySprzetowList;
     private JTextField textField1;
+    private JComboBox comboBox1;
+    private JTextField miastoNazwaTextField;
+    private JTextField miastoGminaTextField;
+    private JTextField miastoPowiatTextField;
+    private JTextField miastoWojewodztwoTextField;
+    private JButton dodajMiastoButton;
+    private JButton edytujMiastoButton;
+    private JButton usunMiastoButton;
 
     public MainClient() {
         add(panel1);
