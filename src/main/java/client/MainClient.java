@@ -94,6 +94,7 @@ public class MainClient extends JFrame {
     private JTextField szafkaHasloTextField;
     private JTextField szafkaPojemnoscTextField;
     private JTextField szafkaDzieckoTextField;
+    private JButton dodajSprzetButton;
     private List<Miasto> miastoList;
     private List<Nauczyciel> nauczycielList;
     private NauczycielRepo nauczycielRepo;
@@ -307,6 +308,38 @@ public class MainClient extends JFrame {
                 editSzkolaDialog.pack();
                 editSzkolaDialog.setVisible(true);
                 refreshEverything();
+            }
+        });
+        edytujNauczycielButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NauczycielRepo nauczycielRepo = new NauczycielRepo();
+                Nauczyciel nauczyciel = getCurrentNauczyciel(nauczycielComboBox.getSelectedItem().toString(), nauczycielRepo.getAll());
+                AddNauczycielDialog editNauczycielDialog = new AddNauczycielDialog(nauczyciel);
+                editNauczycielDialog.pack();
+                editNauczycielDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
+        salaComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaRepo salaRepo = new SalaRepo();
+                List<Sala> salaList = salaRepo.getBySalaNumber(salaComboBox.getSelectedItem().toString());
+                numerSaliTextField.setText(salaList.get(0).getNumerSali());
+                liczbaKrzeselTextField.setText(salaList.get(0).getLiczbaKrzesel().toString());
+                liczbaLawekTextField.setText(salaList.get(0).getLiczbaLawek().toString());
+                rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
+                salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
+
+
+                KomputerRepo komputerRepo = new KomputerRepo();
+                List<Komputer> komputerList = komputerRepo.getBySala(salaList.get(0));
+
+                DefaultListModel komputerListModel = new DefaultListModel();
+                komputerList.forEach(s -> komputerListModel.addElement(s.getId().toString()));
+                listaKomputerowList.setModel(komputerListModel);
+
             }
         });
     }

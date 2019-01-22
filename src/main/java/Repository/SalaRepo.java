@@ -26,6 +26,16 @@ public class SalaRepo {
         return sala;
     }
 
+    public List<Sala> getBySalaNumber(String number) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Sala c where c.numerSali = :numer", Sala.class)
+                .setParameter("numer", number);
+        List<Sala> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
+
     public List<Sala> getAll() {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();

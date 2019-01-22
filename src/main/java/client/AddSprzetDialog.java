@@ -12,6 +12,7 @@ public class AddSprzetDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField nazwaTextField;
     private JTextField iloscTextField;
+    private JComboBox zestawComboBox;
 
     public AddSprzetDialog() {
         setContentPane(contentPane);
