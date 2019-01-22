@@ -140,5 +140,13 @@ public class MainClient extends JFrame {
                 addMiastoDialog.setVisible(true);
             }
         });
+        dodajCzesneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
+                addCzesneDialog.pack();
+                addCzesneDialog.setVisible(true);
+            }
+        });
     }
 }
