@@ -7,8 +7,8 @@ public class AddDzieckoDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JList list1;
-    private JList list2;
+    private JList rodziceList;
+    private JList czesneList;
     private JComboBox textField1;
     private JTextField textField2;
     private JTextField textField3;
