@@ -93,6 +93,7 @@ public class AddZestawDialog extends JDialog {
                 sprzetRepo.update(sprzetById);
                 sprzetRepo.remove(sprzetById);
                 fillListAndSetButtons(zestawSprzetow);
+                dispose();
             }
         });
         edytujSprzetButton.addActionListener(new ActionListener() {
