@@ -20,7 +20,7 @@ public class AddHalaSportowaDialog extends JDialog {
     private JComboBox szkolaComboBox;
     private JCheckBox takCheckBox;
     private JButton stworzButton;
-
+    private SalaSportowa sportowa;
     public AddHalaSportowaDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -55,28 +55,81 @@ public class AddHalaSportowaDialog extends JDialog {
         fillComboboxSzkola();
     }
 
-    private void onOK() {
-        // add your code here
+    public AddHalaSportowaDialog(SalaSportowa sportowa) {
+        this.sportowa = sportowa;
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        fillComboboxSzkola();
+        wielkoscTextField.setText(String.valueOf(sportowa.getWielkosc()));
+        takCheckBox.setSelected(sportowa.getCzyTrybuna());
+    }
+
+    private void onEditOK() {
+        SalaSportowa salaSportowa = validateAndGetSalaSportowa();
+        if (salaSportowa == null) return;
+        salaSportowa.setId(sportowa.getId());
+        salaSportowa.setZestawSprzetowList(sportowa.getZestawSprzetowList());
+        SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+        salaSportowaRepo.update(salaSportowa);
+        dispose();
+    }
+
+    private SalaSportowa validateAndGetSalaSportowa() {
         boolean checkBoxSelected = takCheckBox.isSelected();
         String wielkoscText = wielkoscTextField.getText();
         String szkolaText = szkolaComboBox.getSelectedItem().toString();
         if (wielkoscText.isEmpty() || szkolaText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         Szkola szkola = findSzkolaInDB(szkolaText);
         if (szkola == null) {
             JOptionPane.showMessageDialog(this, "Problem to connect and find szkola in DB!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         Integer wielkosc = null;
         try {
             wielkosc = Integer.valueOf(wielkoscText);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Wielkosc contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         SalaSportowa salaSportowa = new SalaSportowa(wielkosc, checkBoxSelected, szkola, Collections.emptyList());
+        return salaSportowa;
+    }
+
+    private void onOK() {
+        // add your code here
+        SalaSportowa salaSportowa = validateAndGetSalaSportowa();
+        if (salaSportowa == null) return;
         SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
         salaSportowaRepo.save(salaSportowa);
         dispose();

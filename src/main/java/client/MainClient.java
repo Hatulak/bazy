@@ -241,6 +241,26 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        edytujHaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+                List<SalaSportowa> sportowaList = salaSportowaRepo.getAll();
+                if (sportowaList == null) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                if (sportowaList.isEmpty()) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                SalaSportowa sportowa = sportowaList.get(0);
+                AddHalaSportowaDialog addHalaSportowaDialog = new AddHalaSportowaDialog(sportowa);
+                addHalaSportowaDialog.pack();
+                addHalaSportowaDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
         usunHaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -529,6 +549,7 @@ public class MainClient extends JFrame {
     private void fillHalaTab(List<SalaSportowa> salaSportowaList) {
         if (salaSportowaList == null) {
             dodajHaleButton.setEnabled(true);
+            edytujHaleButton.setEnabled(false);
             wielkoscTextField.setText("");
             trybunaCheckBox.setSelected(false);
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
@@ -538,6 +559,7 @@ public class MainClient extends JFrame {
         if (salaSportowaList.isEmpty()) {
             wielkoscTextField.setText("");
             trybunaCheckBox.setSelected(false);
+            edytujHaleButton.setEnabled(false);
             dodajHaleButton.setEnabled(true);
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
@@ -545,6 +567,7 @@ public class MainClient extends JFrame {
         }
         SalaSportowa salaSportowa = salaSportowaList.get(0);
         dodajHaleButton.setEnabled(false);
+        edytujHaleButton.setEnabled(true);
         wielkoscTextField.setText(String.valueOf(salaSportowa.getWielkosc()));
         trybunaCheckBox.setSelected(salaSportowa.getCzyTrybuna());
         DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();

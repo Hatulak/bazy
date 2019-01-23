@@ -44,4 +44,13 @@ public class SalaSportowaRepo {
         em.getTransaction().commit();
         em.close();
     }
+
+    public void update(SalaSportowa salaSportowa) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(salaSportowa);
+        em.getTransaction().commit();
+        em.close();
+    }
 }
