@@ -610,6 +610,11 @@ public class MainClient extends JFrame {
                     JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                SalaSportowa salaSportowa = zestawSprzetowToRemove.getSalaSportowa();
+                salaSportowa.removeZestawSprzetow(zestawSprzetowToRemove);
+                new SalaSportowaRepo().update(salaSportowa);
+                zestawSprzetowToRemove.setSalaSportowa(null);
+                zestawSprzetowRepo.update(zestawSprzetowToRemove);
                 zestawSprzetowRepo.remove(zestawSprzetowToRemove);
                 refreshEverything();
             }

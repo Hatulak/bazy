@@ -33,6 +33,10 @@ public class ZestawSprzetow {
         sprzetList.add(sprzet);
     }
 
+    public void removeSprzetFromList(Sprzet sprzet) {
+        sprzetList.add(sprzet);
+    }
+
     public String getDyscyplina() {
         return dyscyplina;
     }

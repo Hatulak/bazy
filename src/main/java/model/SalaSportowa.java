@@ -34,6 +34,10 @@ public class SalaSportowa {
         zestawSprzetowList.add(zestawSprzetow);
     }
 
+    public void removeZestawSprzetow(ZestawSprzetow zestawSprzetow) {
+        zestawSprzetowList.remove(zestawSprzetow);
+    }
+
     public Long getId() {
         return id;
     }
