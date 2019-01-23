@@ -151,6 +151,26 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        usunGrupaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
+                if (grupaGrupaComboBox.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Grupa is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Grupa inGrupGrupaList = findInGrupGrupaList(grupaGrupaComboBox.getSelectedItem().toString());
+                if (inGrupGrupaList == null) {
+                    log.info("found null in delete grupa button action");
+                    return;
+                }
+                GrupaRepo grupaRepo = new GrupaRepo();
+                grupaRepo.remove(inGrupGrupaList);
+                fillGrupaGrupaComboBox();
+                grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
+                refreshEverything();
+            }
+        });
         dodajNauczycielButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

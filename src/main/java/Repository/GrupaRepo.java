@@ -40,7 +40,8 @@ public class GrupaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(grupa);
+        Grupa toRemove = em.find(Grupa.class, grupa.getId());
+        em.remove(toRemove);
         em.getTransaction().commit();
         em.close();
     }
