@@ -52,4 +52,13 @@ public class SzafkaRepo {
         em.close();
         return resultList;
     }
+
+    public void update(Szafka szafka) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(szafka);
+        em.getTransaction().commit();
+        em.close();
+    }
 }

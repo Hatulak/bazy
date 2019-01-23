@@ -3,9 +3,11 @@ package client;
 import Repository.DzieckoRepo;
 import Repository.GrupaRepo;
 import Repository.RodzicRepo;
+import Repository.SzafkaRepo;
 import model.Dziecko;
 import model.Grupa;
 import model.Rodzic;
+import model.Szafka;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -65,7 +67,15 @@ public class AddDzieckoDialog extends JDialog {
             }
         });
         updateGrupaComboBox();
+        updateSzafkaComboBox();
         updateRodziceList();
+    }
+
+    private void updateSzafkaComboBox() {
+        szafkaComboBox.removeAllItems();
+        SzafkaRepo szafkaRepo = new SzafkaRepo();
+        List<Szafka> szafkaList = szafkaRepo.getEmptySzafkas();
+        szafkaList.forEach(e -> szafkaComboBox.addItem(e.getId() + " " + e.getNumer()));
     }
 
     private void updateRodziceList() {
@@ -106,6 +116,14 @@ public class AddDzieckoDialog extends JDialog {
         GrupaRepo grupaRepo = new GrupaRepo();
         Grupa grupa = grupaRepo.getById(Long.parseLong(grupaComboBox.getSelectedItem().toString().split(" ")[0]));
 
+        Dziecko dziecko = new Dziecko(imie, wiek, grupa, selectedRodziceSet);
+        DzieckoRepo dzieckoRepo = new DzieckoRepo();
+        dzieckoRepo.save(dziecko);
+        SzafkaRepo szafkaRepo = new SzafkaRepo();
+        Szafka szafka = szafkaRepo.getById(Long.parseLong(szafkaComboBox.getSelectedItem().toString().split(" ")[0]));
+        szafka.setDziecko(dziecko);
+        szafkaRepo.update(szafka);
+
 
         if (imie.isEmpty()) {
             JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -117,8 +135,6 @@ public class AddDzieckoDialog extends JDialog {
             return;
         }
 
-        DzieckoRepo dzieckoRepo = new DzieckoRepo();
-        dzieckoRepo.save(new Dziecko(imie, wiek, grupa, selectedRodziceSet));
 
         dispose();
     }

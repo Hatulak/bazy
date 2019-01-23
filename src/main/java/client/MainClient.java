@@ -128,6 +128,26 @@ public class MainClient extends JFrame {
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         SzkolaRepo szkolaRepo = new SzkolaRepo();
         if (szkolaRepo.getAll().size() == 1) {
+            Szkola szkola = szkolaRepo.getAll().get(0);
+            nazwaSzkolaTextField.setText(szkola.getNazwa());
+            adresSzkolaTextField.setText(szkola.getAdres());
+            patronSzkolaTextField.setText(szkola.getPatron());
+            miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+            SalaRepo salaRepo = new SalaRepo();
+            List<Sala> salaList = salaRepo.getAll();
+            DefaultListModel salaListModel = new DefaultListModel();
+            salaList.forEach(sala -> salaListModel.addElement(sala.getId() + " " + sala.getNumerSali()));
+            saleSzkolaList.setModel(salaListModel);
+            SzafkaRepo szafkaRepo = new SzafkaRepo();
+            List<Szafka> szafkaList = szafkaRepo.getAll();
+            DefaultListModel szafkaListModel = new DefaultListModel();
+            szafkaList.forEach(szafka -> szafkaListModel.addElement(szafka.getId() + " " + szafka.getNumer()));
+            szafkiSzkolaList.setModel(szafkaListModel);
+            List<Nauczyciel> nauczyciele = nauczycielRepo.getAll();
+            nauczycieleSzkolaList.removeAll();
+            DefaultListModel nauczycieleListModel = new DefaultListModel();
+            nauczyciele.forEach(e -> nauczycieleListModel.addElement(e.getId() + " " + e.getImie() + " " + e.getNazwisko()));
+            nauczycieleSzkolaList.setModel(nauczycieleListModel);
             dodajSzkolaButton.setEnabled(false);
             edytujSzkolaButton.setEnabled(true);
             usunSzkolaButton.setEnabled(true);
@@ -732,6 +752,16 @@ public class MainClient extends JFrame {
         List<Sala> sale = salaRepo.getAll();
         List<Szafka> szafki = szafkaRepo.getAll();
         List<SalaSportowa> salaSportowaList = salaSportowaRepo.getAll();
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        Szkola szkola = szkolaRepo.getAll().get(0);
+        nazwaSzkolaTextField.setText(szkola.getNazwa());
+        adresSzkolaTextField.setText(szkola.getAdres());
+        patronSzkolaTextField.setText(szkola.getPatron());
+        miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+        DefaultListModel salaListModel = new DefaultListModel();
+        DefaultListModel szafkaListModel = new DefaultListModel();
+        nauczycieleSzkolaList.removeAll();
+        DefaultListModel nauczycieleListModel = new DefaultListModel();
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
         GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
@@ -751,9 +781,21 @@ public class MainClient extends JFrame {
             dzieckoGrupaComboBox.addItem(i.getNazwa());
             grupaGrupaComboBox.addItem(i.getNazwa());
         });
-        nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s %s", i.getId(), i.getImie(), i.getNazwisko())));
-        sale.forEach(i -> salaComboBox.addItem(i.getNumerSali()));
-        szafki.forEach(i -> szafkaComboBox.addItem(i.getId() + " Numer Szafki: " + i.getNumer()));
+        nauczyciele.forEach(i -> {
+            nauczycieleListModel.addElement(i.getId() + " " + i.getImie() + " " + i.getNazwisko());
+            nauczycielComboBox.addItem(String.format("%s %s %s", i.getId(), i.getImie(), i.getNazwisko()));
+        });
+        sale.forEach(i -> {
+            salaComboBox.addItem(i.getNumerSali());
+            salaListModel.addElement(i.getNumerSali());
+        });
+        szafki.forEach(i -> {
+            szafkaComboBox.addItem(i.getId() + " Numer Szafki: " + i.getNumer());
+            szafkaListModel.addElement(i.getId() + " Numer Szafki: " + i.getNumer());
+        });
+        szafkiSzkolaList.setModel(szafkaListModel);
+        nauczycieleSzkolaList.setModel(nauczycieleListModel);
+        saleSzkolaList.setModel(salaListModel);
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
