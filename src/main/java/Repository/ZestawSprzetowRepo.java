@@ -39,7 +39,17 @@ public class ZestawSprzetowRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(zestawSprzetow);
+        ZestawSprzetow toRemove = em.find(ZestawSprzetow.class, zestawSprzetow.getId());
+        em.remove(toRemove);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public void update(ZestawSprzetow zestawSprzetow) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(zestawSprzetow);
         em.getTransaction().commit();
         em.close();
     }

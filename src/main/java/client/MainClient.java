@@ -527,8 +527,42 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        usunZestawSprzetowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (zestawySprzetowList.isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No item is selected from list!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String selectedZestaw = zestawySprzetowList.getSelectedValue().toString();
+                ZestawSprzetowRepo zestawSprzetowRepo = new ZestawSprzetowRepo();
+                List<ZestawSprzetow> zestawSprzetow = zestawSprzetowRepo.getAll();
+                if (zestawSprzetow == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (zestawSprzetow.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String idText = selectedZestaw.split(" ")[0];
+                Long id = Long.valueOf(idText);
+                ZestawSprzetow zestawSprzetowToRemove = null;
+                for (int i = 0; i < zestawSprzetow.size(); i++) {
+                    if (zestawSprzetow.get(i).getId().equals(id)) {
+                        zestawSprzetowToRemove = zestawSprzetow.get(i);
+                        break;
+                    }
+                }
+                if (zestawSprzetowToRemove == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                zestawSprzetowRepo.remove(zestawSprzetowToRemove);
+                refreshEverything();
+            }
+        });
     }
-
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
         for (int i = 0; i < all.size(); i++) {
             if (String.format("%s %s %s", all.get(i).getId(), all.get(i).getImie(), all.get(i).getNazwisko()).equals(nauczyciel)) {
@@ -591,6 +625,8 @@ public class MainClient extends JFrame {
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
             dodajZestawSprzetowButton.setEnabled(false);
             dodajSprzetButton.setEnabled(false);
+            usunZestawSprzetowButton.setEnabled(false);
+            edytujZestawSprzetowButton.setEnabled(false);
             return;
         }
         if (salaSportowaList.isEmpty()) {
@@ -602,6 +638,8 @@ public class MainClient extends JFrame {
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
             dodajZestawSprzetowButton.setEnabled(false);
+            usunZestawSprzetowButton.setEnabled(false);
+            edytujZestawSprzetowButton.setEnabled(false);
             return;
         }
         SalaSportowa salaSportowa = salaSportowaList.get(0);
@@ -615,6 +653,8 @@ public class MainClient extends JFrame {
         zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
         if (!salaSportowa.getZestawSprzetowList().isEmpty()) {
             dodajSprzetButton.setEnabled(true);
+            usunZestawSprzetowButton.setEnabled(true);
+            edytujZestawSprzetowButton.setEnabled(true);
         }
     }
 

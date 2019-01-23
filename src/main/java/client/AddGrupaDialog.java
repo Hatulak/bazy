@@ -167,9 +167,11 @@ public class AddGrupaDialog extends JDialog {
             log.info("Cannot found sala in list");
             return null;
         }
-        if (grupa.getDzieckoList().size() > maxLiczba) {
-            JOptionPane.showMessageDialog(this, "Max Liczba is lower than number of children who are sign in that group!!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
+        if (grupa != null) {
+            if (grupa.getDzieckoList().size() > maxLiczba) {
+                JOptionPane.showMessageDialog(this, "Max Liczba is lower than number of children who are sign in that group!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
         }
         Grupa grupaEdited = new Grupa(nazwa, maxLiczba, wiek, nauczyciel, sala, Collections.emptyList());
         return grupaEdited;
