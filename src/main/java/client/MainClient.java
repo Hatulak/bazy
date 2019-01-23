@@ -570,6 +570,36 @@ public class MainClient extends JFrame {
                 edytujCzesneButton.setEnabled(true);
             }
         });
+        szafkaComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (szafkaComboBox.getSelectedItem() == null) {
+                    edytujSzafkeButton.setEnabled(false);
+                    usunSzafkeButton.setEnabled(false);
+                    return;
+                }
+
+                String id_numer = szafkaComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_numer.charAt(i) != ' ' && i < id_numer.length()) {
+                    id += id_numer.charAt(i);
+                    i++;
+                }
+                SzafkaRepo szafkaRepo = new SzafkaRepo();
+                Szafka szafka = szafkaRepo.getById(Long.parseLong(id));
+
+                szafkaNumerTextField.setText(szafka.getNumer().toString());
+                szafkaHasloTextField.setText(szafka.getHaslo());
+                szafkaPojemnoscTextField.setText(szafka.getPojemnosc().toString());
+
+                if (szafka.getDziecko() == null) {
+                    szafkaDzieckoTextField.setText("BRAK PRZYPISANEGO DZIECKA");
+                } else {
+                    szafkaDzieckoTextField.setText(szafka.getDziecko().getId() + " Imie: " + szafka.getDziecko().getImie());
+                }
+            }
+        });
         usunSalaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -677,6 +707,7 @@ public class MainClient extends JFrame {
             }
         });
     }
+
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
         for (int i = 0; i < all.size(); i++) {
             if (String.format("%s %s %s", all.get(i).getId(), all.get(i).getImie(), all.get(i).getNazwisko()).equals(nauczyciel)) {
@@ -722,7 +753,7 @@ public class MainClient extends JFrame {
         });
         nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s %s", i.getId(), i.getImie(), i.getNazwisko())));
         sale.forEach(i -> salaComboBox.addItem(i.getNumerSali()));
-        szafki.forEach(i -> szafkaComboBox.addItem(i.getNumer()));
+        szafki.forEach(i -> szafkaComboBox.addItem(i.getId() + " Numer Szafki: " + i.getNumer()));
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
