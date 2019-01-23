@@ -43,4 +43,13 @@ public class SzafkaRepo {
         em.getTransaction().commit();
         em.close();
     }
+
+    public List<Szafka> getEmptySzafkas() {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Szafka c where c.dziecko.id is null", Szafka.class);
+        List<Szafka> resultList = query.getResultList();
+        em.close();
+        return resultList;
+    }
 }
