@@ -229,7 +229,16 @@ public class MainClient extends JFrame {
         dodajCzesneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AddCzesneDialog addCzesneDialog = new AddCzesneDialog();
+                DzieckoRepo dzieckoRepo = new DzieckoRepo();
+                String id_imie = czesneDzieckoComboBox.getSelectedItem().toString(); //TODO - hatulak
+                String id = new String();
+                int i = 0;
+                while (id_imie.charAt(i) != ' ' && i < id_imie.length()) {
+                    id += id_imie.charAt(i);
+                    i++;
+                }
+                Dziecko dziecko = dzieckoRepo.getById(Long.parseLong(id));
+                AddCzesneDialog addCzesneDialog = new AddCzesneDialog(dziecko);
                 addCzesneDialog.pack();
                 addCzesneDialog.setVisible(true);
                 refreshEverything();
@@ -349,8 +358,16 @@ public class MainClient extends JFrame {
                 numerSaliTextField.setText(salaList.get(0).getNumerSali());
                 liczbaKrzeselTextField.setText(salaList.get(0).getLiczbaKrzesel().toString());
                 liczbaLawekTextField.setText(salaList.get(0).getLiczbaLawek().toString());
-                rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
-                salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
+                if (salaList.get(0).getRzutnik() == null) {
+                    rzutnikTextField.setText("BRAK");
+                } else {
+                    rzutnikTextField.setText(salaList.get(0).getRzutnik().getModel());
+                }
+                if (salaList.get(0).getSzkola() == null) {
+                    salaSzkolaTextField.setText("BRAK");
+                } else {
+                    salaSzkolaTextField.setText(salaList.get(0).getSzkola().getNazwa());
+                }
 
                 KomputerRepo komputerRepo = new KomputerRepo();
                 List<Komputer> komputerList = komputerRepo.getBySala(salaList.get(0));
@@ -435,7 +452,7 @@ public class MainClient extends JFrame {
         salaComboBox.removeAllItems();
         szafkaComboBox.removeAllItems();
         miasta.forEach(i -> miastoComboBox.addItem(i.getNazwa()));
-        dzieci.forEach(i -> czesneDzieckoComboBox.addItem(i.getImie()));
+        dzieci.forEach(i -> czesneDzieckoComboBox.addItem(i.getId() + " " + i.getImie()));
         grupy.forEach(i -> {
             dzieckoGrupaComboBox.addItem(i.getNazwa());
             grupaGrupaComboBox.addItem(i.getNazwa());

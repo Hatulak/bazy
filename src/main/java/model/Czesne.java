@@ -33,6 +33,12 @@ public class Czesne {
         this.kwota = kwota;
     }
 
+    public Czesne(Date dataOplaty, Double kwota, Dziecko dziecko) {
+        this.dataOplaty = dataOplaty;
+        this.kwota = kwota;
+        this.dziecko = dziecko;
+    }
+
     public Long getId() {
         return id;
     }
