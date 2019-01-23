@@ -17,7 +17,7 @@ public class AddSprzetDialog extends JDialog {
     private JTextField iloscTextField;
     private JComboBox zestawComboBox;
     private List<ZestawSprzetow> zestawSprzetowList;
-
+    private Sprzet sprzet;
     public AddSprzetDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -51,6 +51,72 @@ public class AddSprzetDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         fillZestawComboBox();
+    }
+
+    public AddSprzetDialog(Sprzet sprzetById) {
+        this.sprzet = sprzetById;
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        fillZestawComboBox();
+        nazwaTextField.setText(sprzet.getNazwa());
+        iloscTextField.setText(String.valueOf(sprzet.getIlosc()));
+    }
+
+    private void onEditOK() {
+        String nazwa = nazwaTextField.getText();
+        String iloscString = iloscTextField.getText();
+        String zestawCombo = zestawComboBox.getSelectedItem().toString();
+        if (nazwa.isEmpty() || iloscString.isEmpty() || zestawCombo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Integer ilosc = null;
+        try {
+            ilosc = Integer.valueOf(iloscString);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Phone number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ZestawSprzetow zestawSprzetow = findInList(zestawCombo);
+        if (zestawSprzetow == null) {
+            JOptionPane.showMessageDialog(this, "Problem with DB to get ZestawSprzetow!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Sprzet sprzetToUpdate = new Sprzet(nazwa, ilosc, zestawSprzetow);
+        sprzetToUpdate.setId(sprzet.getId());
+        zestawSprzetow.addSprzetToList(sprzetToUpdate);
+        SprzetRepo sprzetRepo = new SprzetRepo();
+        sprzetRepo.update(sprzetToUpdate);
+        dispose();
     }
 
     private void onOK() {

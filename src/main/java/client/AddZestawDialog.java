@@ -93,6 +93,7 @@ public class AddZestawDialog extends JDialog {
                 sprzetRepo.update(sprzetById);
                 sprzetRepo.remove(sprzetById);
                 fillListAndSetButtons(zestawSprzetow);
+                dispose();
             }
         });
         edytujSprzetButton.addActionListener(new ActionListener() {
@@ -102,6 +103,18 @@ public class AddZestawDialog extends JDialog {
                     JOptionPane.showMessageDialog(null, "Nothing is selected!!", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                String selectedSprzet = sprzetList.getSelectedValue().toString();
+                Long id = Long.valueOf(selectedSprzet.split(" ")[0]);
+                SprzetRepo sprzetRepo = new SprzetRepo();
+                Sprzet sprzetById = sprzetRepo.getById(id);
+                if (sprzetById == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with delete sprzet from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                AddSprzetDialog addSprzetDialog = new AddSprzetDialog(sprzetById);
+                addSprzetDialog.pack();
+                addSprzetDialog.setVisible(true);
+                fillListAndSetButtons(zestawSprzetow);
             }
         });
     }

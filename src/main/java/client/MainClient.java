@@ -92,8 +92,8 @@ public class MainClient extends JFrame {
     private JButton edytujSzafkeButton;
     private JComboBox szafkaComboBox;
     private JTextField szafkaNumerTextField;
-    private JTextField szafkaHasloTextField;
     private JTextField szafkaPojemnoscTextField;
+    private JTextField szafkaHasloTextField;
     private JTextField szafkaDzieckoTextField;
     private JButton dodajSprzetButton;
     private JButton dodajZestawSprzetowButton;
@@ -618,6 +618,43 @@ public class MainClient extends JFrame {
                 } else {
                     szafkaDzieckoTextField.setText(szafka.getDziecko().getId() + " Imie: " + szafka.getDziecko().getImie());
                 }
+                edytujSzafkeButton.setEnabled(true);
+                usunSzafkeButton.setEnabled(true);
+            }
+        });
+        usunSzafkeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id_numer = szafkaComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_numer.charAt(i) != ' ' && i < id_numer.length()) {
+                    id += id_numer.charAt(i);
+                    i++;
+                }
+                SzafkaRepo szafkaRepo = new SzafkaRepo();
+                Szafka szafka = szafkaRepo.getById(Long.parseLong(id));
+                szafkaRepo.remove(szafka);
+                refreshEverything();
+            }
+        });
+        edytujSzafkeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id_numer = szafkaComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_numer.charAt(i) != ' ' && i < id_numer.length()) {
+                    id += id_numer.charAt(i);
+                    i++;
+                }
+                SzafkaRepo szafkaRepo = new SzafkaRepo();
+                Szafka szafka = szafkaRepo.getById(Long.parseLong(id));
+
+                AddSzafkaDialog addSzafkaDialog = new AddSzafkaDialog(szafka);
+                addSzafkaDialog.pack();
+                addSzafkaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         usunSalaButton.addActionListener(new ActionListener() {
