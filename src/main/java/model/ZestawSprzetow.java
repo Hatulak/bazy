@@ -13,7 +13,7 @@ public class ZestawSprzetow {
     private Long id;
     private String dyscyplina;
 
-    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Sprzet> sprzetList;
 
     @ManyToOne
@@ -27,6 +27,10 @@ public class ZestawSprzetow {
         this.dyscyplina = dyscyplina;
         this.sprzetList = sprzetList;
         this.salaSportowa = salaSportowa;
+    }
+
+    public void addSprzetToList(Sprzet sprzet) {
+        sprzetList.add(sprzet);
     }
 
     public String getDyscyplina() {

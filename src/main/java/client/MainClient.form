@@ -982,7 +982,9 @@
                     <children>
                       <component id="2181" class="javax.swing.JList" binding="zestawySprzetowList">
                         <constraints/>
-                        <properties/>
+                        <properties>
+                          <selectionMode value="0"/>
+                        </properties>
                       </component>
                     </children>
                   </scrollpane>

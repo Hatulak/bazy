@@ -1,10 +1,13 @@
 package client;
 
 import Repository.SprzetRepo;
+import Repository.ZestawSprzetowRepo;
 import model.Sprzet;
+import model.ZestawSprzetow;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class AddSprzetDialog extends JDialog {
     private JPanel contentPane;
@@ -13,6 +16,7 @@ public class AddSprzetDialog extends JDialog {
     private JTextField nazwaTextField;
     private JTextField iloscTextField;
     private JComboBox zestawComboBox;
+    private List<ZestawSprzetow> zestawSprzetowList;
 
     public AddSprzetDialog() {
         setContentPane(contentPane);
@@ -45,13 +49,16 @@ public class AddSprzetDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        fillZestawComboBox();
     }
 
     private void onOK() {
         // add your code here
         String nazwa = nazwaTextField.getText();
         String iloscString = iloscTextField.getText();
-        if (nazwa.isEmpty() || iloscString.isEmpty()) {
+        String zestawCombo = zestawComboBox.getSelectedItem().toString();
+        if (nazwa.isEmpty() || iloscString.isEmpty() || zestawCombo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -62,16 +69,43 @@ public class AddSprzetDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Phone number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        ZestawSprzetow zestawSprzetow = findInList(zestawCombo);
+        if (zestawSprzetow == null) {
+            JOptionPane.showMessageDialog(this, "Problem with DB to get ZestawSprzetow!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Sprzet sprzet = new Sprzet(nazwa, ilosc, zestawSprzetow);
+        zestawSprzetow.addSprzetToList(sprzet);
         SprzetRepo sprzetRepo = new SprzetRepo();
-        //fixme need to change after add combobox :3
-
-
-        sprzetRepo.save(new Sprzet(nazwa, ilosc, null));
+        sprzetRepo.save(sprzet);
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private ZestawSprzetow findInList(String selected) {
+        String idText = selected.split(" ")[0];
+        Long id = Long.valueOf(idText);
+        for (int i = 0; i < zestawSprzetowList.size(); i++) {
+            if (zestawSprzetowList.get(i).getId().equals(id)) {
+                return zestawSprzetowList.get(i);
+            }
+        }
+        return null;
+    }
+
+    private void fillZestawComboBox() {
+        zestawComboBox.removeAllItems();
+        zestawSprzetowList = new ZestawSprzetowRepo().getAll();
+        if (zestawSprzetowList == null) {
+            return;
+        }
+        if (zestawSprzetowList.isEmpty()) {
+            return;
+        }
+        zestawSprzetowList.forEach(p -> zestawComboBox.addItem(p.getId() + " " + p.getDyscyplina()));
     }
 }

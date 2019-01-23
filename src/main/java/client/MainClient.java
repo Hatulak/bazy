@@ -299,6 +299,15 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        dodajSprzetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSprzetDialog addSprzetDialog = new AddSprzetDialog();
+                addSprzetDialog.pack();
+                addSprzetDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
         dodajSzkolaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -496,14 +505,6 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
-        dodajSprzetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddSprzetDialog addSprzetDialog = new AddSprzetDialog();
-                addSprzetDialog.pack();
-                addSprzetDialog.setVisible(true);
-            }
-        });
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
@@ -567,6 +568,7 @@ public class MainClient extends JFrame {
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
             dodajZestawSprzetowButton.setEnabled(false);
+            dodajSprzetButton.setEnabled(false);
             return;
         }
         if (salaSportowaList.isEmpty()) {
@@ -574,6 +576,7 @@ public class MainClient extends JFrame {
             trybunaCheckBox.setSelected(false);
             edytujHaleButton.setEnabled(false);
             dodajHaleButton.setEnabled(true);
+            dodajSprzetButton.setEnabled(false);
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
             dodajZestawSprzetowButton.setEnabled(false);
@@ -588,6 +591,9 @@ public class MainClient extends JFrame {
         DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
         salaSportowa.getZestawSprzetowList().forEach(p -> zestawSprzetowDefaultListModel.addElement(p.getId() + " " + p.getDyscyplina()));
         zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
+        if (!salaSportowa.getZestawSprzetowList().isEmpty()) {
+            dodajSprzetButton.setEnabled(true);
+        }
     }
 
     private class MiastoComboBoxActionListener implements ItemListener {
