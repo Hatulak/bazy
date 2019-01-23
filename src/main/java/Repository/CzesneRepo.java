@@ -11,6 +11,15 @@ import java.util.List;
 
 public class CzesneRepo {
 
+    public void update(Czesne czesne) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(czesne);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public List<Czesne> getByDziecko(Dziecko dziecko) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();

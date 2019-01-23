@@ -18,6 +18,8 @@ public class AddCzesneDialog extends JDialog {
 
     private Dziecko dziecko;
 
+    private Czesne czesne;
+
     public AddCzesneDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -85,6 +87,45 @@ public class AddCzesneDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public AddCzesneDialog(Dziecko dziecko, Czesne czesne) {
+        this.dziecko = dziecko;
+        this.czesne = czesne;
+
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        czesneDatePicker.setDate(czesne.getDataOplaty());
+        czesneAmountTextField.setText(czesne.getKwota().toString());
+    }
+
     private void onOK() {
         String czesneAmount = czesneAmountTextField.getText();
         Date czesneDate = czesneDatePicker.getDate();
@@ -99,8 +140,18 @@ public class AddCzesneDialog extends JDialog {
             return;
         }
 
+        if (czesne == null) {
+            CzesneRepo czesneRepo = new CzesneRepo();
+            czesneRepo.save(new Czesne(czesneDate, Double.parseDouble(czesneAmount), dziecko));
+            dispose();
+            return;
+        }
+
+        czesne.setDataOplaty(czesneDate);
+        czesne.setKwota(Double.parseDouble(czesneAmount));
+
         CzesneRepo czesneRepo = new CzesneRepo();
-        czesneRepo.save(new Czesne(czesneDate, Double.parseDouble(czesneAmount), dziecko));
+        czesneRepo.update(czesne);
 
         dispose();
     }

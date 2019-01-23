@@ -378,6 +378,35 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        edytujCzesneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DzieckoRepo dzieckoRepo = new DzieckoRepo();
+                String id_imie = czesneDzieckoComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_imie.charAt(i) != ' ' && i < id_imie.length()) {
+                    id += id_imie.charAt(i);
+                    i++;
+                }
+                String czesneToEditString = czesneCzesneList.getSelectedValue().toString();
+                i = 0;
+                String idCzesne = new String();
+                while (czesneToEditString.charAt(i) != ' ' && i < czesneToEditString.length()) {
+                    idCzesne += czesneToEditString.charAt(i);
+                    i++;
+                }
+                CzesneRepo czesneRepo = new CzesneRepo();
+                Czesne czesne = czesneRepo.getById(Long.parseLong(idCzesne));
+
+                Dziecko dziecko = dzieckoRepo.getById(Long.parseLong(id));
+                AddCzesneDialog addCzesneDialog = new AddCzesneDialog(dziecko, czesne);
+                addCzesneDialog.pack();
+                addCzesneDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
+
         dodajSzafkeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
