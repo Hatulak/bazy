@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.LinkedList;
 import java.util.List;
 
 @Log
@@ -339,7 +340,7 @@ public class MainClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DzieckoRepo dzieckoRepo = new DzieckoRepo();
-                String id_imie = czesneDzieckoComboBox.getSelectedItem().toString(); //TODO - hatulak
+                String id_imie = czesneDzieckoComboBox.getSelectedItem().toString();
                 String id = new String();
                 int i = 0;
                 while (id_imie.charAt(i) != ' ' && i < id_imie.length()) {
@@ -353,6 +354,30 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        usunCzesneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List selectedValuesList = czesneCzesneList.getSelectedValuesList();
+                List<String> czesneStringList = new LinkedList<>();
+                selectedValuesList.forEach(s -> czesneStringList.add(s.toString()));
+                List<Long> czesneIdList = new LinkedList<>();
+                czesneStringList.forEach(c -> {
+                    String id = new String();
+                    int i = 0;
+                    while (c.charAt(i) != ' ' && i < c.length()) {
+                        id += c.charAt(i);
+                        i++;
+                    }
+                    czesneIdList.add(Long.parseLong(id));
+                });
+                CzesneRepo czesneRepo = new CzesneRepo();
+                czesneIdList.forEach(c -> {
+                    Czesne byId = czesneRepo.getById(c);
+                    czesneRepo.remove(byId);
+                });
+                refreshEverything();
+            }
+        });
         dodajSzafkeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -362,7 +387,6 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
-
         edytujMiastoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -487,6 +511,34 @@ public class MainClient extends JFrame {
 
                 edytujSalaButton.setEnabled(true);
                 usunSalaButton.setEnabled(true);
+            }
+        });
+        czesneDzieckoComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (czesneDzieckoComboBox.getSelectedItem() == null) {
+                    edytujCzesneButton.setEnabled(false);
+                    usunCzesneButton.setEnabled(false);
+                    return;
+                }
+                DzieckoRepo dzieckoRepo = new DzieckoRepo();
+                String id_imie = czesneDzieckoComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_imie.charAt(i) != ' ' && i < id_imie.length()) {
+                    id += id_imie.charAt(i);
+                    i++;
+                }
+                Dziecko dziecko = dzieckoRepo.getById(Long.parseLong(id));
+
+                CzesneRepo czesneRepo = new CzesneRepo();
+                List<Czesne> czesneList = czesneRepo.getByDziecko(dziecko);
+
+                DefaultListModel czesneListModel = new DefaultListModel();
+                czesneList.forEach(c -> czesneListModel.addElement(c.getId() + " Kwota: " + c.getKwota()));
+                czesneCzesneList.setModel(czesneListModel);
+                usunCzesneButton.setEnabled(true);
+                edytujCzesneButton.setEnabled(true);
             }
         });
         usunSalaButton.addActionListener(new ActionListener() {
