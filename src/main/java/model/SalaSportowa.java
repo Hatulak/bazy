@@ -30,6 +30,10 @@ public class SalaSportowa {
         this.zestawSprzetowList = zestawSprzetowList;
     }
 
+    public void addZestawSprzetow(ZestawSprzetow zestawSprzetow) {
+        zestawSprzetowList.add(zestawSprzetow);
+    }
+
     public Long getId() {
         return id;
     }

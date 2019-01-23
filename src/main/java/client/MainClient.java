@@ -279,6 +279,26 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        dodajZestawSprzetowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+                List<SalaSportowa> sportowaList = salaSportowaRepo.getAll();
+                if (sportowaList == null) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                if (sportowaList.isEmpty()) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                SalaSportowa sportowa = sportowaList.get(0);
+                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa);
+                addZestawDialog.pack();
+                addZestawDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
         dodajSzkolaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -484,14 +504,6 @@ public class MainClient extends JFrame {
                 addSprzetDialog.setVisible(true);
             }
         });
-        dodajZestawSprzetowButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddZestawDialog addZestawDialog = new AddZestawDialog();
-                addZestawDialog.pack();
-                addZestawDialog.setVisible(true);
-            }
-        });
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
@@ -554,6 +566,7 @@ public class MainClient extends JFrame {
             trybunaCheckBox.setSelected(false);
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
+            dodajZestawSprzetowButton.setEnabled(false);
             return;
         }
         if (salaSportowaList.isEmpty()) {
@@ -563,11 +576,13 @@ public class MainClient extends JFrame {
             dodajHaleButton.setEnabled(true);
             DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
             zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
+            dodajZestawSprzetowButton.setEnabled(false);
             return;
         }
         SalaSportowa salaSportowa = salaSportowaList.get(0);
         dodajHaleButton.setEnabled(false);
         edytujHaleButton.setEnabled(true);
+        dodajZestawSprzetowButton.setEnabled(true);
         wielkoscTextField.setText(String.valueOf(salaSportowa.getWielkosc()));
         trybunaCheckBox.setSelected(salaSportowa.getCzyTrybuna());
         DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();

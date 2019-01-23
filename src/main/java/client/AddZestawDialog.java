@@ -1,24 +1,26 @@
 package client;
 
-import Repository.SprzetRepo;
+import Repository.ZestawSprzetowRepo;
+import model.SalaSportowa;
+import model.ZestawSprzetow;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Collections;
 
 public class AddZestawDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField dyscyplinaTextField;
-    private DefaultListModel defaultListModel;
-    private SprzetRepo sprzetRepo;
+    private SalaSportowa salaSportowa;
 
-    public AddZestawDialog() {
-        sprzetRepo = new SprzetRepo();
+    public AddZestawDialog(SalaSportowa salaSportowa) {
+        this.salaSportowa = salaSportowa;
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        defaultListModel = new DefaultListModel();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -50,17 +52,21 @@ public class AddZestawDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        String dyscyplinaText = dyscyplinaTextField.getText();
+        if (dyscyplinaText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ZestawSprzetow zestawSprzetow = new ZestawSprzetow(dyscyplinaText, Collections.emptyList(), salaSportowa);
+        salaSportowa.addZestawSprzetow(zestawSprzetow);
+        ZestawSprzetowRepo zestawSprzetowRepo = new ZestawSprzetowRepo();
+        zestawSprzetowRepo.save(zestawSprzetow);
+
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    private void fillList() {
-        defaultListModel = new DefaultListModel();
-        sprzetRepo.getAll();
-//        sprzetRepo.();
     }
 }
