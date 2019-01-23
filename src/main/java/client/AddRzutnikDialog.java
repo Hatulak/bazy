@@ -74,11 +74,4 @@ public class AddRzutnikDialog extends JDialog {
         // add your code here if necessary
         dispose();
     }
-
-    public static void main(String[] args) {
-        AddRzutnikDialog dialog = new AddRzutnikDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
 }

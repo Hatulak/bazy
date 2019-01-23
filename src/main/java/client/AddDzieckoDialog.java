@@ -1,10 +1,17 @@
 package client;
 
+import Repository.DzieckoRepo;
+import Repository.GrupaRepo;
 import Repository.RodzicRepo;
+import model.Dziecko;
+import model.Grupa;
 import model.Rodzic;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AddDzieckoDialog extends JDialog {
     private JPanel contentPane;
@@ -15,6 +22,7 @@ public class AddDzieckoDialog extends JDialog {
     private JTextField wiekTextField;
     private JTextField imieTextField;
     private JButton stworzRodziceButton;
+    private JComboBox szafkaComboBox;
 
     public AddDzieckoDialog() {
         setContentPane(contentPane);
@@ -56,6 +64,7 @@ public class AddDzieckoDialog extends JDialog {
                 updateRodziceList();
             }
         });
+        updateGrupaComboBox();
         updateRodziceList();
     }
 
@@ -64,13 +73,53 @@ public class AddDzieckoDialog extends JDialog {
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         for (Rodzic rodzic :
                 rodzicRepo.getAll()) {
-            defaultListModel.addElement(String.format("%s %s", rodzic.getImie(), rodzic.getNazwisko()));
+            defaultListModel.addElement(String.format("%s %s %s", rodzic.getId().toString(), rodzic.getImie(), rodzic.getNazwisko()));
         }
         rodziceList.setModel(defaultListModel);
     }
 
+    private void updateGrupaComboBox() {
+        grupaComboBox.removeAllItems();
+        GrupaRepo grupaRepo = new GrupaRepo();
+        List<Grupa> grupaList = grupaRepo.getAll();
+        grupaList.forEach(e -> grupaComboBox.addItem(e.getId() + " " + e.getNazwa()));
+    }
 
     private void onOK() {
+        String imie = imieTextField.getText();
+        Integer wiek = null;
+        try {
+            wiek = Integer.parseInt(wiekTextField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Wiek musi być liczbą", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        RodzicRepo rodzicRepo = new RodzicRepo();
+        List selectedValuesList = rodziceList.getSelectedValuesList();
+        Set<Rodzic> selectedRodziceSet = new HashSet<>();
+        for (int i = 0; i < selectedValuesList.size(); i++) {
+            String id = selectedValuesList.get(i).toString().split(" ")[0];
+            selectedRodziceSet.add(rodzicRepo.getById(Long.parseLong(id)));
+        }
+
+        GrupaRepo grupaRepo = new GrupaRepo();
+        Grupa grupa = grupaRepo.getById(Long.parseLong(grupaComboBox.getSelectedItem().toString().split(" ")[0]));
+
+
+        if (imie.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (selectedRodziceSet.size() < 1) {
+            JOptionPane.showMessageDialog(this, "Dziecko powinno mieć chociaż jednego rodzica", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DzieckoRepo dzieckoRepo = new DzieckoRepo();
+        dzieckoRepo.save(new Dziecko(imie, wiek, grupa, selectedRodziceSet));
+
         dispose();
     }
 

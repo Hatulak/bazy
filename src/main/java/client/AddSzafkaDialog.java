@@ -7,7 +7,6 @@ public class AddSzafkaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JComboBox comboBox1;
     private JTextField textField1;
     private JTextField textField2;
     private JTextField textField3;
