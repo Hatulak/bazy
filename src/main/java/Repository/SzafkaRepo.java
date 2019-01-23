@@ -39,7 +39,8 @@ public class SzafkaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(szafka);
+        Szafka szafka1 = em.find(Szafka.class, szafka.getId());
+        em.remove(szafka1);
         em.getTransaction().commit();
         em.close();
     }

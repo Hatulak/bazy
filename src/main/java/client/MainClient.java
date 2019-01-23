@@ -598,8 +598,27 @@ public class MainClient extends JFrame {
                 } else {
                     szafkaDzieckoTextField.setText(szafka.getDziecko().getId() + " Imie: " + szafka.getDziecko().getImie());
                 }
+                edytujSzafkeButton.setEnabled(true);
+                usunSzafkeButton.setEnabled(true);
             }
         });
+        usunSzafkeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String id_numer = szafkaComboBox.getSelectedItem().toString();
+                String id = new String();
+                int i = 0;
+                while (id_numer.charAt(i) != ' ' && i < id_numer.length()) {
+                    id += id_numer.charAt(i);
+                    i++;
+                }
+                SzafkaRepo szafkaRepo = new SzafkaRepo();
+                Szafka szafka = szafkaRepo.getById(Long.parseLong(id));
+                szafkaRepo.remove(szafka);
+
+            }
+        });
+
         usunSalaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
