@@ -771,6 +771,37 @@ public class MainClient extends JFrame {
         usunDzieckoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String dzieckoGrupaCombo = dzieckoGrupaComboBox.getSelectedItem().toString();
+                String dzieckoUczenCombo = dzieckoUczenComboBox.getSelectedItem().toString();
+                if (dzieckoGrupaCombo.isEmpty() || dzieckoUczenCombo.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Empty combobox!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Grupa grupaDB = findInGrupGrupaList(dzieckoGrupaCombo);
+                if (grupaDB == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Dziecko dzieckoDB = findInDbDziecko(dzieckoUczenCombo);
+                if (dzieckoDB == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                GrupaRepo grupaRepo = new GrupaRepo();
+                DzieckoRepo dzieckoRepo = new DzieckoRepo();
+                SzafkaRepo szafkaRepo = new SzafkaRepo();
+                Szafka szafkaDB = findSzafkaOfDziecko(dzieckoDB);
+                if (szafkaDB != null) {
+                    szafkaDB.setDziecko(null);
+                    szafkaRepo.update(szafkaDB);
+                }
+                grupaDB.removeDziecko(dzieckoDB);
+                dzieckoDB.setRodzicSet(null);
+                dzieckoDB.setGrupa(null);
+                grupaRepo.update(grupaDB);
+                dzieckoRepo.update(dzieckoDB);
+                dzieckoRepo.remove(dzieckoDB);
+                refreshEverything();
                 //TODO Usuwanie dziecka
             }
         });
@@ -787,6 +818,28 @@ public class MainClient extends JFrame {
         });
         ActionListener dzieckoUczenActionListener = new DzieckoComboBoxListener();
         dzieckoUczenComboBox.addActionListener(dzieckoUczenActionListener);
+    }
+
+    private Szafka findSzafkaOfDziecko(Dziecko dzieckoDB) {
+        List<Szafka> szafkaListDB = new SzafkaRepo().getAll();
+        if (szafkaListDB == null) {
+            return null;
+        }
+        if (szafkaListDB.isEmpty()) {
+            return null;
+        }
+        for (int i = 0; i < szafkaListDB.size(); i++) {
+            if (szafkaListDB.get(i).getDziecko().getId().equals(dzieckoDB.getId())) {
+                return szafkaListDB.get(i);
+            }
+        }
+        return null;
+    }
+
+    private Dziecko findInDbDziecko(String dzieckoUczenCombo) {
+        Long id = Long.valueOf(dzieckoUczenCombo.split(" ")[0]);
+        Dziecko byId = new DzieckoRepo().getById(id);
+        return byId;
     }
 
     private void fillDzieckoWindow(String s) {
@@ -1099,8 +1152,9 @@ public class MainClient extends JFrame {
     }
 
     private Grupa findInGrupGrupaList(String grupaGrupaCombo) {
+        Long id = Long.valueOf(grupaGrupaCombo.split(" ")[0]);
         for (int i = 0; i < grupaList.size(); i++) {
-            if (grupaList.get(i).getNazwa().equals(grupaGrupaCombo)) {
+            if (grupaList.get(i).getId().equals(id)) {
                 return grupaList.get(i);
             }
         }
@@ -1116,7 +1170,7 @@ public class MainClient extends JFrame {
             log.info("Epmty list from db with grupa");
             return;
         }
-        grupaList.forEach(p -> grupaGrupaComboBox.addItem(p.getNazwa()));
+        grupaList.forEach(p -> grupaGrupaComboBox.addItem(p.getId() + " " + p.getNazwa()));
         if (grupaGrupaComboBox.getSelectedIndex() == -1) {
             return;
         }

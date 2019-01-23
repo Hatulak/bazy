@@ -39,7 +39,17 @@ public class DzieckoRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(dziecko);
+        Dziecko toRemove = em.find(Dziecko.class, dziecko.getId());
+        em.remove(toRemove);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public void update(Dziecko dziecko) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(dziecko);
         em.getTransaction().commit();
         em.close();
     }
