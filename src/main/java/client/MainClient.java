@@ -20,7 +20,6 @@ public class MainClient extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
     private JTextField dzieckoWiekTextField;
-    private JTextField dzieckoNazwiskoTextField;
     private JTextField dzieckoImieTextField;
     private JList dzieckoRodziceList;
     private JComboBox dzieckoGrupaComboBox;
@@ -775,6 +774,25 @@ public class MainClient extends JFrame {
                 //TODO Usuwanie dziecka
             }
         });
+        dzieckoGrupaComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                dzieckoUczenComboBox.removeAllItems();
+                GrupaRepo grupaRepo = new GrupaRepo();
+                Grupa currentGrupa = grupaRepo.getById(Long.parseLong(dzieckoGrupaComboBox.getSelectedItem().toString().split(" ")[0]));
+                dzieckoUczenComboBox.setEnabled(true);
+                currentGrupa.getDzieckoList().forEach(dziecko -> dzieckoUczenComboBox.addItem(dziecko.getId() + " " + dziecko.getImie()));
+                fillDzieckoWindow(dzieckoUczenComboBox.getSelectedItem().toString());
+            }
+        });
+    }
+
+    private void fillDzieckoWindow(String s) {
+        DzieckoRepo dzieckoRepo = new DzieckoRepo();
+        Dziecko dziecko = dzieckoRepo.getById(Long.parseLong(s.split(" ")[0]));
+        dzieckoWiekTextField.setText(String.valueOf(dziecko.getWiek()));
+        dzieckoImieTextField.setText(dziecko.getImie());
+
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
@@ -787,6 +805,7 @@ public class MainClient extends JFrame {
     }
 
     private void refreshEverything() {
+
         DzieckoRepo dzieckoRepo = new DzieckoRepo();
         GrupaRepo grupaRepo = new GrupaRepo();
         MiastoRepo miastoRepo = new MiastoRepo();
@@ -794,6 +813,8 @@ public class MainClient extends JFrame {
         SalaRepo salaRepo = new SalaRepo();
         SzafkaRepo szafkaRepo = new SzafkaRepo();
         SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+
         List<Dziecko> dzieci = dzieckoRepo.getAll();
         List<Grupa> grupy = grupaRepo.getAll();
         List<Miasto> miasta = miastoRepo.getAll();
@@ -801,22 +822,24 @@ public class MainClient extends JFrame {
         List<Sala> sale = salaRepo.getAll();
         List<Szafka> szafki = szafkaRepo.getAll();
         List<SalaSportowa> salaSportowaList = salaSportowaRepo.getAll();
-        SzkolaRepo szkolaRepo = new SzkolaRepo();
         Szkola szkola = szkolaRepo.getAll().get(0);
+
         nazwaSzkolaTextField.setText(szkola.getNazwa());
         adresSzkolaTextField.setText(szkola.getAdres());
         patronSzkolaTextField.setText(szkola.getPatron());
         miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+
         DefaultListModel salaListModel = new DefaultListModel();
         DefaultListModel szafkaListModel = new DefaultListModel();
-        nauczycieleSzkolaList.removeAll();
         DefaultListModel nauczycieleListModel = new DefaultListModel();
+
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
         GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
         miastoComboBox.removeItemListener(miastoComboBoxActionListener);
         grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
         nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
+
         miastoComboBox.removeAllItems();
         dzieckoGrupaComboBox.removeAllItems();
         grupaGrupaComboBox.removeAllItems();
@@ -824,11 +847,12 @@ public class MainClient extends JFrame {
         nauczycielComboBox.removeAllItems();
         salaComboBox.removeAllItems();
         szafkaComboBox.removeAllItems();
+
         miasta.forEach(i -> miastoComboBox.addItem(i.getNazwa()));
         dzieci.forEach(i -> czesneDzieckoComboBox.addItem(i.getId() + " " + i.getImie()));
         grupy.forEach(i -> {
-            dzieckoGrupaComboBox.addItem(i.getNazwa());
-            grupaGrupaComboBox.addItem(i.getNazwa());
+            dzieckoGrupaComboBox.addItem(i.getId() + " " + i.getNazwa());
+            grupaGrupaComboBox.addItem(i.getId() + " " + i.getNazwa());
         });
         nauczyciele.forEach(i -> {
             nauczycieleListModel.addElement(i.getId() + " " + i.getImie() + " " + i.getNazwisko());
