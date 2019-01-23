@@ -95,7 +95,13 @@ public class AddRodzicDialog extends JDialog {
         String imie = imieTextField.getText();
         String nazwisko = nazwiskoTextField.getText();
         String adres = adresTextField.getText();
-        int telefon = Integer.parseInt(telefonTextField.getText());
+        Integer telefon = null;
+        try {
+            telefon = Integer.parseInt(telefonTextField.getText());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Phone number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Rodzic rodzic = new Rodzic(imie, nazwisko, miastoInList, adres, telefon);
         RodzicRepo rodzicRepo = new RodzicRepo();
         rodzicRepo.save(rodzic);
