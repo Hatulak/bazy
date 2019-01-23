@@ -184,6 +184,9 @@ public class MainClient extends JFrame {
         dodajHaleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //todo trzeba przerobbic tak by przycisk dodawnai zestawu sprzetu był nad przyciskiem dodaj sprzet na ekranie głónym
+                // do tego usunąc dodawanie zestawu sprzetu podczas tworzenia hali sportowej, i blokowac dodawanie jak juz sie dodało sale bo ona jest jedna tak jak szkola :3
+
                 AddHalaSportowaDialog addHalaSportowaDialog = new AddHalaSportowaDialog();
                 addHalaSportowaDialog.pack();
                 addHalaSportowaDialog.setVisible(true);
