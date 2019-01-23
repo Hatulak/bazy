@@ -9,6 +9,16 @@ import javax.persistence.Query;
 import java.util.List;
 
 public class SzafkaRepo {
+
+    public void update(Szafka szafka) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(szafka);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public void save(Szafka szafka) {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
