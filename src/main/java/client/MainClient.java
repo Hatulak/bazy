@@ -102,7 +102,7 @@ public class MainClient extends JFrame {
 
     public MainClient() {
         nauczycielRepo = new NauczycielRepo();
-
+        // todo dorobic edycje grupy i usuwanie :3
         add(panel1);
         setTitle("School app");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
