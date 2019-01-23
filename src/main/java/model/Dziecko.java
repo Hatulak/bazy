@@ -3,8 +3,8 @@ package model;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "DZIECKO")
@@ -18,9 +18,7 @@ public class Dziecko {
     @ManyToOne
     @JoinColumn(name = "GRUPA_ID")
     private Grupa grupa;
-    @OneToMany(mappedBy = "dziecko", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Czesne> czesneList;
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "Dziecko_Rodzic",
             joinColumns = {@JoinColumn(name = "DZIECKO_ID")},
@@ -31,11 +29,10 @@ public class Dziecko {
     public Dziecko() {
     }
 
-    public Dziecko(String imie, Integer wiek, Grupa grupa, List<Czesne> czesneList, Set<Rodzic> rodzicSet) {
+    public Dziecko(String imie, Integer wiek, Grupa grupa, Set<Rodzic> rodzicSet) {
         this.imie = imie;
         this.wiek = wiek;
         this.grupa = grupa;
-        this.czesneList = czesneList;
         this.rodzicSet = rodzicSet;
     }
 
@@ -45,14 +42,6 @@ public class Dziecko {
 
     public void removeRodzic(Rodzic rodzic) {
         rodzicSet.remove(rodzic);
-    }
-
-    public void addCzesne(Czesne czesne) {
-        czesneList.add(czesne);
-    }
-
-    public void removeCzesne(Czesne czesne) {
-        czesneList.remove(czesne);
     }
 
     public Long getId() {
@@ -86,14 +75,6 @@ public class Dziecko {
 
     public void setGrupa(Grupa grupa) {
         this.grupa = grupa;
-    }
-
-    public List<Czesne> getCzesneList() {
-        return czesneList;
-    }
-
-    public void setCzesneList(List<Czesne> czesneList) {
-        this.czesneList = czesneList;
     }
 
     public Set<Rodzic> getRodzicSet() {

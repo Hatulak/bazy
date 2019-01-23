@@ -27,36 +27,7 @@ public class AddZestawDialog extends JDialog {
     public AddZestawDialog(SalaSportowa salaSportowa, boolean isEdit, ZestawSprzetow zestawSprzetow) {
         this.salaSportowa = salaSportowa;
         this.zestawSprzetow = zestawSprzetow;
-        if (isEdit) {
-            editPanel.setVisible(true);
-            buttonOK.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    onEditOK();
-                }
-            });
-            dyscyplinaTextField.setText(zestawSprzetow.getDyscyplina());
-            DefaultListModel<String> sprzetListModel = new DefaultListModel<>();
-            List<Sprzet> sprzetListDB = zestawSprzetow.getSprzetList();
-            if (sprzetListDB == null) {
-                edytujSprzetButton.setEnabled(false);
-                return;
-            }
-            if (sprzetListDB.isEmpty()) {
-                edytujSprzetButton.setEnabled(false);
-                return;
-            }
-            edytujSprzetButton.setEnabled(true);
-            sprzetListDB.forEach(p -> sprzetListModel.addElement(p.getId() + " " + p.getNazwa() + " " + p.getIlosc()));
-            sprzetList.setModel(sprzetListModel);
 
-        } else {
-            editPanel.setVisible(false);
-            buttonOK.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    onOK();
-                }
-            });
-        }
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -88,6 +59,36 @@ public class AddZestawDialog extends JDialog {
 
             }
         });
+        if (isEdit) {
+            editPanel.setVisible(true);
+            buttonOK.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    onEditOK();
+                }
+            });
+            dyscyplinaTextField.setText(zestawSprzetow.getDyscyplina());
+            DefaultListModel<String> sprzetListModel = new DefaultListModel<>();
+            List<Sprzet> sprzetListDB = zestawSprzetow.getSprzetList();
+            if (sprzetListDB == null) {
+                edytujSprzetButton.setEnabled(false);
+                return;
+            }
+            if (sprzetListDB.isEmpty()) {
+                edytujSprzetButton.setEnabled(false);
+                return;
+            }
+            edytujSprzetButton.setEnabled(true);
+            sprzetListDB.forEach(p -> sprzetListModel.addElement(p.getId() + " " + p.getNazwa() + " " + p.getIlosc()));
+            sprzetList.setModel(sprzetListModel);
+
+        } else {
+            editPanel.setVisible(false);
+            buttonOK.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    onOK();
+                }
+            });
+        }
     }
 
     private void onEditOK() {
