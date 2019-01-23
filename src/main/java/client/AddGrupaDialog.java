@@ -26,7 +26,7 @@ public class AddGrupaDialog extends JDialog {
     private JList uczniowieList;
     private List<Sala> salaList;
     private List<Nauczyciel> nauczycielList;
-
+    private Grupa grupa;
     public AddGrupaDialog() {
         setContentPane(contentPane);
         setModal(true);
@@ -61,8 +61,79 @@ public class AddGrupaDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        // add your code here
+    public AddGrupaDialog(Grupa grupa) {
+        this.grupa = grupa;
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+        fillNauczycielComboBox();
+        fillSalaComboBox();
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        nazwaTextField.setText(grupa.getNazwa());
+        maxLiczbaTextField.setText(String.valueOf(grupa.getMaxLiczbaDzieci()));
+        wiekTextField.setText(String.valueOf(grupa.getWiek()));
+        setComboNauczyciel();
+        setComboSala();
+    }
+
+    private void setComboNauczyciel() {
+        int index = 0;
+        for (int i = 0; i < nauczycielList.size(); i++) {
+            if (nauczycielList.get(i).getId().equals(grupa.getNauczyciel().getId())) {
+                index = i;
+                break;
+            }
+        }
+        nauczycielComboBox.setSelectedIndex(index);
+    }
+
+    private void setComboSala() {
+        int index = 0;
+        for (int i = 0; i < salaList.size(); i++) {
+            if (salaList.get(i).getId().equals(grupa.getSala().getId())) {
+                index = i;
+                break;
+            }
+        }
+        salaComboBox.setSelectedIndex(index);
+    }
+
+    private void onEditOK() {
+        Grupa grupaEdited = getValidatedGrupa();
+        if (grupaEdited == null) return;
+        grupaEdited.setId(grupa.getId());
+        grupaEdited.setDzieckoList(grupa.getDzieckoList());
+        GrupaRepo grupaRepo = new GrupaRepo();
+        grupaRepo.update(grupaEdited);
+        dispose();
+    }
+
+    private Grupa getValidatedGrupa() {
         String nazwa = nazwaTextField.getText();
         String maxLiczbaText = maxLiczbaTextField.getText();
         String wiekText = wiekTextField.getText();
@@ -70,33 +141,44 @@ public class AddGrupaDialog extends JDialog {
         String salaCombo = salaComboBox.getSelectedItem().toString();
         if (nazwa.isEmpty() || maxLiczbaText.isEmpty() || wiekText.isEmpty() || nauczycielCombo.isEmpty() || salaCombo.isEmpty()) {
             JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         Integer wiek = null;
         try {
             wiek = Integer.valueOf(wiekText);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Wiek number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         Integer maxLiczba = null;
         try {
             maxLiczba = Integer.valueOf(maxLiczbaText);
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Max Liczba number contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return null;
         }
         Nauczyciel nauczyciel = findInNauczyciel(nauczycielCombo);
         if (nauczyciel == null) {
             log.info("Cannot found nauczyciel in list");
-            return;
+            return null;
         }
         Sala sala = findInSalaList(salaCombo);
         if (sala == null) {
             log.info("Cannot found sala in list");
-            return;
+            return null;
         }
-        Grupa grupa = new Grupa(nazwa, maxLiczba, wiek, nauczyciel, sala, Collections.emptyList());
+        if (grupa.getDzieckoList().size() > maxLiczba) {
+            JOptionPane.showMessageDialog(this, "Max Liczba is lower than number of children who are sign in that group!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        Grupa grupaEdited = new Grupa(nazwa, maxLiczba, wiek, nauczyciel, sala, Collections.emptyList());
+        return grupaEdited;
+    }
+
+    private void onOK() {
+        // add your code here
+        Grupa grupa = getValidatedGrupa();
+        if (grupa == null) return;
         GrupaRepo grupaRepo = new GrupaRepo();
         grupaRepo.save(grupa);
         dispose();

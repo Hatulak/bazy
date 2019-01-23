@@ -46,4 +46,13 @@ public class GrupaRepo {
         em.close();
     }
 
+    public void update(Grupa grupa) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(grupa);
+        em.getTransaction().commit();
+        em.close();
+    }
+
 }

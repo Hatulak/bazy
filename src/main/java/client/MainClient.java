@@ -151,6 +151,27 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        edytujGrupaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
+                if (grupaGrupaComboBox.getSelectedItem().toString().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Grupa is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                Grupa inGrupGrupaList = findInGrupGrupaList(grupaGrupaComboBox.getSelectedItem().toString());
+                if (inGrupGrupaList == null) {
+                    log.info("found null in delete grupa button action");
+                    return;
+                }
+                AddGrupaDialog addGrupaDialog = new AddGrupaDialog(inGrupGrupaList);
+                addGrupaDialog.pack();
+                addGrupaDialog.setVisible(true);
+                fillGrupaGrupaComboBox();
+                grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
+                refreshEverything();
+            }
+        });
         usunGrupaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
