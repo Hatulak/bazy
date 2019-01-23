@@ -1,15 +1,21 @@
 package client;
 
+import Repository.SzafkaRepo;
+import Repository.SzkolaRepo;
+import model.Szafka;
+import model.Szkola;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class AddSzafkaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField szafkaPojemnoscTextField;
+    private JTextField szafkaHasloTextField;
+    private JTextField szafkaNumerTextField;
 
     public AddSzafkaDialog() {
         setContentPane(contentPane);
@@ -45,7 +51,22 @@ public class AddSzafkaDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
+        if (szafkaNumerTextField.getText().isEmpty() || szafkaHasloTextField.getText().isEmpty() || szafkaPojemnoscTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of fields is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Integer szafkaNumer = Integer.parseInt(szafkaNumerTextField.getText());
+        String szafkaHaslo = szafkaHasloTextField.getText();
+        Integer szafkaPojemnosc = Integer.parseInt(szafkaPojemnoscTextField.getText());
+
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        List<Szkola> szkolaList = szkolaRepo.getAll();
+        Szkola szkola = szkolaList.get(0);
+
+        SzafkaRepo szafkaRepo = new SzafkaRepo();
+        szafkaRepo.save(new Szafka(szafkaNumer, szafkaHaslo, szafkaPojemnosc, null, szkola));
+
         dispose();
     }
 
