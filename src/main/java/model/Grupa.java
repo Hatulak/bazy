@@ -21,18 +21,19 @@ public class Grupa {
     @OneToOne
     @JoinColumn(name = "SALA_ID")
     private Sala sala;
-    @OneToMany(mappedBy = "grupa", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "grupa", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Dziecko> dzieckoList;
 
     public Grupa() {
     }
 
-    public Grupa(Integer maxLiczbaDzieci, Integer wiek, Nauczyciel nauczyciel, Sala sala, List<Dziecko> dzieckoList) {
+    public Grupa(String nazwa, Integer maxLiczbaDzieci, Integer wiek, Nauczyciel nauczyciel, Sala sala, List<Dziecko> dzieckoList) {
         this.maxLiczbaDzieci = maxLiczbaDzieci;
         this.wiek = wiek;
         this.nauczyciel = nauczyciel;
         this.sala = sala;
         this.dzieckoList = dzieckoList;
+        this.nazwa = nazwa;
     }
 
     public void addDziecko(Dziecko dziecko) {

@@ -97,6 +97,7 @@ public class MainClient extends JFrame {
     private JButton dodajSprzetButton;
     private List<Miasto> miastoList;
     private List<Nauczyciel> nauczycielList;
+    private List<Grupa> grupaList;
     private NauczycielRepo nauczycielRepo;
 
     public MainClient() {
@@ -115,10 +116,13 @@ public class MainClient extends JFrame {
         });
         fillComboboxMiasto();
         fillComboboxNauczyciel();
+        fillGrupaGrupaComboBox();
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
+        GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
+        grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         SzkolaRepo szkolaRepo = new SzkolaRepo();
         if (szkolaRepo.getAll().size() == 1) {
             dodajSzkolaButton.setEnabled(false);
@@ -140,6 +144,9 @@ public class MainClient extends JFrame {
                 AddGrupaDialog addGrupaDialog = new AddGrupaDialog();
                 addGrupaDialog.pack();
                 addGrupaDialog.setVisible(true);
+                grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
+                fillGrupaGrupaComboBox();
+                grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
                 refreshEverything();
             }
         });
@@ -399,7 +406,9 @@ public class MainClient extends JFrame {
         List<Szafka> szafki = szafkaRepo.getAll();
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
+        GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
         miastoComboBox.removeItemListener(miastoComboBoxActionListener);
+        grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
         nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
         miastoComboBox.removeAllItems();
         dzieckoGrupaComboBox.removeAllItems();
@@ -417,6 +426,7 @@ public class MainClient extends JFrame {
         nauczyciele.forEach(i -> nauczycielComboBox.addItem(String.format("%s %s %s", i.getId(), i.getImie(), i.getNazwisko())));
         sale.forEach(i -> salaComboBox.addItem(i.getNumerSali()));
         szafki.forEach(i -> szafkaComboBox.addItem(i.getNumer()));
+        grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
 
@@ -552,5 +562,75 @@ public class MainClient extends JFrame {
             stopienTextField.setText(nauczycielInList.getStopien());
             emailTextField.setText(nauczycielInList.getEmail());
         }
+    }
+
+    private class GrupaComboBoxListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (grupaGrupaComboBox.getSelectedIndex() == -1) {
+                return;
+            }
+            String grupaGrupaCombo = grupaGrupaComboBox.getSelectedItem().toString();
+            if (grupaGrupaCombo.isEmpty()) {
+                log.info("grupaGrupaCombo empty");
+                return;
+            }
+            Grupa grupa = findInGrupGrupaList(grupaGrupaCombo);
+            if (grupa == null) {
+                log.info("grupa cannot found in grupalist");
+                return;
+            }
+            grupaWiekTextField.setText(String.valueOf(grupa.getWiek()));
+            Nauczyciel nauczyciel = grupa.getNauczyciel();
+            grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+            grupaSalaTextField.setText(grupa.getSala().getNumerSali());
+            List<Dziecko> dzieckoList = grupa.getDzieckoList();
+            DefaultListModel<String> dzieciGrupaDefaultListModel = new DefaultListModel<>();
+            dzieckoList.forEach(p -> dzieciGrupaDefaultListModel.addElement(p.getId() + " " + p.getImie()));
+            grupaUczniowieList.setModel(dzieciGrupaDefaultListModel);
+        }
+    }
+
+    private Grupa findInGrupGrupaList(String grupaGrupaCombo) {
+        for (int i = 0; i < grupaList.size(); i++) {
+            if (grupaList.get(i).getNazwa().equals(grupaGrupaCombo)) {
+                return grupaList.get(i);
+            }
+        }
+        return null;
+    }
+
+
+    private void fillGrupaGrupaComboBox() {
+        grupaGrupaComboBox.removeAllItems();
+        GrupaRepo grupaRepo = new GrupaRepo();
+        grupaList = grupaRepo.getAll();
+        if (grupaList == null) {
+            log.info("Epmty list from db with grupa");
+            return;
+        }
+        grupaList.forEach(p -> grupaGrupaComboBox.addItem(p.getNazwa()));
+        if (grupaGrupaComboBox.getSelectedIndex() == -1) {
+            return;
+        }
+        String grupaGrupaCombo = grupaGrupaComboBox.getSelectedItem().toString();
+        if (grupaGrupaCombo.isEmpty()) {
+            log.info("grupaGrupaCombo empty");
+            return;
+        }
+        Grupa grupa = findInGrupGrupaList(grupaGrupaCombo);
+        if (grupa == null) {
+            log.info("grupa cannot found in grupalist");
+            return;
+        }
+        grupaWiekTextField.setText(String.valueOf(grupa.getWiek()));
+        Nauczyciel nauczyciel = grupa.getNauczyciel();
+        grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+        grupaSalaTextField.setText(grupa.getSala().getNumerSali());
+        List<Dziecko> dzieckoList = grupa.getDzieckoList();
+        DefaultListModel<String> dzieciGrupaDefaultListModel = new DefaultListModel<>();
+        dzieckoList.forEach(p -> dzieciGrupaDefaultListModel.addElement(p.getId() + " " + p.getImie()));
+        grupaUczniowieList.setModel(dzieciGrupaDefaultListModel);
     }
 }
