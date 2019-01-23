@@ -18,7 +18,7 @@ public class Dziecko {
     @ManyToOne
     @JoinColumn(name = "GRUPA_ID")
     private Grupa grupa;
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Dziecko_Rodzic",
             joinColumns = {@JoinColumn(name = "DZIECKO_ID")},

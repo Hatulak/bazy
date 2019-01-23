@@ -785,14 +785,21 @@ public class MainClient extends JFrame {
                 fillDzieckoWindow(dzieckoUczenComboBox.getSelectedItem().toString());
             }
         });
+        ActionListener dzieckoUczenActionListener = new DzieckoComboBoxListener();
+        dzieckoUczenComboBox.addActionListener(dzieckoUczenActionListener);
     }
 
     private void fillDzieckoWindow(String s) {
+        if (dzieckoUczenComboBox.getSelectedIndex() == -1) {
+            return;
+        }
         DzieckoRepo dzieckoRepo = new DzieckoRepo();
         Dziecko dziecko = dzieckoRepo.getById(Long.parseLong(s.split(" ")[0]));
         dzieckoWiekTextField.setText(String.valueOf(dziecko.getWiek()));
         dzieckoImieTextField.setText(dziecko.getImie());
-
+        DefaultListModel dzieckoModel = new DefaultListModel();
+        dziecko.getRodzicSet().forEach(rodzic -> dzieckoModel.addElement(rodzic.getId() + " " + rodzic.getImie() + " " + rodzic.getNazwisko()));
+        dzieckoRodziceList.setModel(dzieckoModel);
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
@@ -836,6 +843,9 @@ public class MainClient extends JFrame {
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
         GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
+        DzieckoComboBoxListener dzieckoComboBoxListener = new DzieckoComboBoxListener();
+
+        dzieckoUczenComboBox.removeActionListener(dzieckoComboBoxListener);
         miastoComboBox.removeItemListener(miastoComboBoxActionListener);
         grupaGrupaComboBox.removeActionListener(grupaComboBoxListener);
         nauczycielComboBox.removeActionListener(nauczycielComboBoxListener);
@@ -869,6 +879,8 @@ public class MainClient extends JFrame {
         szafkiSzkolaList.setModel(szafkaListModel);
         nauczycieleSzkolaList.setModel(nauczycieleListModel);
         saleSzkolaList.setModel(salaListModel);
+
+        dzieckoUczenComboBox.addActionListener(dzieckoComboBoxListener);
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
@@ -1016,6 +1028,14 @@ public class MainClient extends JFrame {
             }
         }
         return null;
+    }
+
+    private class DzieckoComboBoxListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            fillDzieckoWindow(dzieckoUczenComboBox.getSelectedItem().toString());
+        }
     }
 
     private class NauczycielComboBoxListener implements ActionListener {
