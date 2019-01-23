@@ -763,6 +763,18 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
+        edytujDzieckoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO Edycja dziecka
+            }
+        });
+        usunDzieckoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO Usuwanie dziecka
+            }
+        });
     }
 
     private Nauczyciel getCurrentNauczyciel(String nauczyciel, List<Nauczyciel> all) {
