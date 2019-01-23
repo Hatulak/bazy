@@ -96,6 +96,8 @@ public class MainClient extends JFrame {
     private JTextField szafkaDzieckoTextField;
     private JButton dodajSprzetButton;
     private JButton dodajZestawSprzetowButton;
+    private JButton edytujZestawSprzetowButton;
+    private JButton usunZestawSprzetowButton;
     private List<Miasto> miastoList;
     private List<Nauczyciel> nauczycielList;
     private List<Grupa> grupaList;
@@ -293,7 +295,7 @@ public class MainClient extends JFrame {
                     return;
                 }
                 SalaSportowa sportowa = sportowaList.get(0);
-                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa);
+                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, false);
                 addZestawDialog.pack();
                 addZestawDialog.setVisible(true);
                 refreshEverything();
@@ -502,6 +504,26 @@ public class MainClient extends JFrame {
                     komputerRepo.update(c);
                 });
                 salaRepo.remove(salaList.get(0));
+                refreshEverything();
+            }
+        });
+        edytujZestawSprzetowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+                List<SalaSportowa> sportowaList = salaSportowaRepo.getAll();
+                if (sportowaList == null) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                if (sportowaList.isEmpty()) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                SalaSportowa sportowa = sportowaList.get(0);
+                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, true);
+                addZestawDialog.pack();
+                addZestawDialog.setVisible(true);
                 refreshEverything();
             }
         });
