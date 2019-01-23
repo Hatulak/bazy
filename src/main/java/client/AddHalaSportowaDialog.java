@@ -11,7 +11,7 @@ public class AddHalaSportowaDialog extends JDialog {
     private JComboBox szkolaComboBox;
     private JList zestawyList;
     private JCheckBox takCheckBox;
-    private JButton stworzZestawButton;
+    private JButton stworzButton;
 
     public AddHalaSportowaDialog() {
         setContentPane(contentPane);
@@ -44,7 +44,7 @@ public class AddHalaSportowaDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzZestawButton.addActionListener(new ActionListener() {
+        stworzButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 AddZestawDialog addZestawDialog = new AddZestawDialog();

@@ -9,8 +9,7 @@ public class AddZestawDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private JButton stworzSprzetButton;
+    private JTextField dyscyplinaTextField;
     private DefaultListModel defaultListModel;
     private SprzetRepo sprzetRepo;
 
@@ -47,15 +46,6 @@ public class AddZestawDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        //todo rzuca nullem
-        stworzSprzetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddSprzetDialog addSprzetDialog = new AddSprzetDialog();
-                addSprzetDialog.pack();
-                addSprzetDialog.setVisible(true);
-            }
-        });
     }
 
     private void onOK() {

@@ -12,10 +12,8 @@ public class AddGrupaDialog extends JDialog {
     private JTextField wiekTextField;
     private JComboBox nauczycielComboBox;
     private JComboBox salaComboBox;
-    private JList uczniowieList;
 
     public AddGrupaDialog() {
-        //todo usunac liste z uczniami bo i tak przy dodawaniu grupy nie mozna dodac uczniow wiec nie jest potrzebna :3, uczniow sie sie bedzie dodawac przy edycji lub tworzeniu cucznie ;3
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
