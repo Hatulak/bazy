@@ -9,7 +9,6 @@ public class AddHalaSportowaDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField wielkoscTextField;
     private JComboBox szkolaComboBox;
-    private JList zestawyList;
     private JCheckBox takCheckBox;
     private JButton stworzButton;
 

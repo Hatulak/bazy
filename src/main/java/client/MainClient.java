@@ -95,6 +95,7 @@ public class MainClient extends JFrame {
     private JTextField szafkaPojemnoscTextField;
     private JTextField szafkaDzieckoTextField;
     private JButton dodajSprzetButton;
+    private JButton dodajZestawSprzetowButton;
     private List<Miasto> miastoList;
     private List<Nauczyciel> nauczycielList;
     private List<Grupa> grupaList;
@@ -378,6 +379,22 @@ public class MainClient extends JFrame {
                 });
                 salaRepo.remove(salaList.get(0));
                 refreshEverything();
+            }
+        });
+        dodajSprzetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddSprzetDialog addSprzetDialog = new AddSprzetDialog();
+                addSprzetDialog.pack();
+                addSprzetDialog.setVisible(true);
+            }
+        });
+        dodajZestawSprzetowButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddZestawDialog addZestawDialog = new AddZestawDialog();
+                addZestawDialog.pack();
+                addZestawDialog.setVisible(true);
             }
         });
     }
