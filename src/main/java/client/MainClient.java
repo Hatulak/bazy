@@ -296,7 +296,7 @@ public class MainClient extends JFrame {
                     return;
                 }
                 SalaSportowa sportowa = sportowaList.get(0);
-                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, false);
+                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, false, null);
                 addZestawDialog.pack();
                 addZestawDialog.setVisible(true);
                 refreshEverything();
@@ -572,8 +572,36 @@ public class MainClient extends JFrame {
                     dodajHaleButton.setEnabled(true);
                     return;
                 }
+                if (zestawySprzetowList.isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No item is selected from list!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String selectedZestaw = zestawySprzetowList.getSelectedValue().toString();
+                ZestawSprzetowRepo zestawSprzetowRepo = new ZestawSprzetowRepo();
+                List<ZestawSprzetow> zestawSprzetow = zestawSprzetowRepo.getAll();
+                if (zestawSprzetow == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (zestawSprzetow.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String idText = selectedZestaw.split(" ")[0];
+                Long id = Long.valueOf(idText);
+                ZestawSprzetow zestawSprzetowToEdit = null;
+                for (int i = 0; i < zestawSprzetow.size(); i++) {
+                    if (zestawSprzetow.get(i).getId().equals(id)) {
+                        zestawSprzetowToEdit = zestawSprzetow.get(i);
+                        break;
+                    }
+                }
+                if (zestawSprzetowToEdit == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with get zestawsprzetow from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 SalaSportowa sportowa = sportowaList.get(0);
-                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, true);
+                AddZestawDialog addZestawDialog = new AddZestawDialog(sportowa, true, zestawSprzetowToEdit);
                 addZestawDialog.pack();
                 addZestawDialog.setVisible(true);
                 refreshEverything();

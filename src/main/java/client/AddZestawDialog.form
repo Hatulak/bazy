@@ -124,7 +124,9 @@
                 <children>
                   <component id="5c75e" class="javax.swing.JList" binding="sprzetList">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <selectionMode value="0"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>

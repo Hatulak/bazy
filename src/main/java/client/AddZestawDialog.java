@@ -2,11 +2,13 @@ package client;
 
 import Repository.ZestawSprzetowRepo;
 import model.SalaSportowa;
+import model.Sprzet;
 import model.ZestawSprzetow;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.Collections;
+import java.util.List;
 
 public class AddZestawDialog extends JDialog {
     private JPanel contentPane;
@@ -20,24 +22,45 @@ public class AddZestawDialog extends JDialog {
     private JScrollPane scrollPaneList;
     private JPanel editPanel;
     private SalaSportowa salaSportowa;
+    private ZestawSprzetow zestawSprzetow;
 
-    public AddZestawDialog(SalaSportowa salaSportowa, boolean isEdit) {
+    public AddZestawDialog(SalaSportowa salaSportowa, boolean isEdit, ZestawSprzetow zestawSprzetow) {
         this.salaSportowa = salaSportowa;
-
+        this.zestawSprzetow = zestawSprzetow;
         if (isEdit) {
             editPanel.setVisible(true);
+            buttonOK.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    onEditOK();
+                }
+            });
+            dyscyplinaTextField.setText(zestawSprzetow.getDyscyplina());
+            DefaultListModel<String> sprzetListModel = new DefaultListModel<>();
+            List<Sprzet> sprzetListDB = zestawSprzetow.getSprzetList();
+            if (sprzetListDB == null) {
+                edytujSprzetButton.setEnabled(false);
+                return;
+            }
+            if (sprzetListDB.isEmpty()) {
+                edytujSprzetButton.setEnabled(false);
+                return;
+            }
+            edytujSprzetButton.setEnabled(true);
+            sprzetListDB.forEach(p -> sprzetListModel.addElement(p.getId() + " " + p.getNazwa() + " " + p.getIlosc()));
+            sprzetList.setModel(sprzetListModel);
+
         } else {
             editPanel.setVisible(false);
+            buttonOK.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    onOK();
+                }
+            });
         }
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
 
         buttonCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -65,6 +88,24 @@ public class AddZestawDialog extends JDialog {
 
             }
         });
+    }
+
+    private void onEditOK() {
+        String dyscyplinaText = dyscyplinaTextField.getText();
+        if (dyscyplinaText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ZestawSprzetowRepo zestawSprzetowRepo = new ZestawSprzetowRepo();
+        ZestawSprzetow byIdZestaw = zestawSprzetowRepo.getById(zestawSprzetow.getId());
+        if (byIdZestaw == null) {
+            JOptionPane.showMessageDialog(this, "Problem with db to update zestaw!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        byIdZestaw.setDyscyplina(dyscyplinaText);
+        zestawSprzetowRepo.update(byIdZestaw);
+
+        dispose();
     }
 
     private void onOK() {
