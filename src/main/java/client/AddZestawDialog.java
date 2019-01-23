@@ -1,5 +1,6 @@
 package client;
 
+import Repository.SprzetRepo;
 import Repository.ZestawSprzetowRepo;
 import model.SalaSportowa;
 import model.Sprzet;
@@ -35,19 +36,7 @@ public class AddZestawDialog extends JDialog {
                 }
             });
             dyscyplinaTextField.setText(zestawSprzetow.getDyscyplina());
-            DefaultListModel<String> sprzetListModel = new DefaultListModel<>();
-            List<Sprzet> sprzetListDB = zestawSprzetow.getSprzetList();
-            if (sprzetListDB == null) {
-                edytujSprzetButton.setEnabled(false);
-                return;
-            }
-            if (sprzetListDB.isEmpty()) {
-                edytujSprzetButton.setEnabled(false);
-                return;
-            }
-            edytujSprzetButton.setEnabled(true);
-            sprzetListDB.forEach(p -> sprzetListModel.addElement(p.getId() + " " + p.getNazwa() + " " + p.getIlosc()));
-            sprzetList.setModel(sprzetListModel);
+            fillListAndSetButtons(zestawSprzetow);
 
         } else {
             editPanel.setVisible(false);
@@ -85,9 +74,56 @@ public class AddZestawDialog extends JDialog {
         usunSprzetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (sprzetList.isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nothing is selected!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String selectedSprzet = sprzetList.getSelectedValue().toString();
+                Long id = Long.valueOf(selectedSprzet.split(" ")[0]);
+                SprzetRepo sprzetRepo = new SprzetRepo();
+                Sprzet sprzetById = sprzetRepo.getById(id);
+                if (sprzetById == null) {
+                    JOptionPane.showMessageDialog(null, "Problem with delete sprzet from DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                ZestawSprzetowRepo zestawSprzetowRepo = new ZestawSprzetowRepo();
+                zestawSprzetow.removeSprzetFromList(sprzetById);
+                sprzetById.setZestawSprzetow(null);
+                zestawSprzetowRepo.update(zestawSprzetow);
+                sprzetRepo.update(sprzetById);
+                sprzetRepo.remove(sprzetById);
+                fillListAndSetButtons(zestawSprzetow);
             }
         });
+        edytujSprzetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (sprzetList.isSelectionEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Nothing is selected!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        });
+    }
+
+    private void fillListAndSetButtons(ZestawSprzetow zestawSprzetow) {
+        zestawSprzetow = new ZestawSprzetowRepo().getById(zestawSprzetow.getId());
+        List<Sprzet> sprzetListDB = zestawSprzetow.getSprzetList();
+        if (sprzetListDB == null) {
+            edytujSprzetButton.setEnabled(false);
+            usunSprzetButton.setEnabled(false);
+        }
+        if (sprzetListDB.isEmpty()) {
+            edytujSprzetButton.setEnabled(false);
+            usunSprzetButton.setEnabled(false);
+        } else {
+            edytujSprzetButton.setEnabled(true);
+            usunSprzetButton.setEnabled(true);
+            DefaultListModel<String> sprzetListModel = new DefaultListModel<>();
+            sprzetListDB.forEach(p -> sprzetListModel.addElement(p.getId() + " " + p.getNazwa() + " " + p.getIlosc()));
+            sprzetList.setModel(sprzetListModel);
+            sprzetList.setSelectedIndex(-1);
+        }
     }
 
     private void onEditOK() {

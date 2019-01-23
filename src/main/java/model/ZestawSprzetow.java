@@ -13,7 +13,7 @@ public class ZestawSprzetow {
     private Long id;
     private String dyscyplina;
 
-    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "zestawSprzetow", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH})
     private List<Sprzet> sprzetList;
 
     @ManyToOne
@@ -34,7 +34,14 @@ public class ZestawSprzetow {
     }
 
     public void removeSprzetFromList(Sprzet sprzet) {
-        sprzetList.add(sprzet);
+        int toRemove = -1;
+        for (int i = 0; i < sprzetList.size(); i++) {
+            if (sprzetList.get(i).getId().equals(sprzet.getId())) {
+                toRemove = i;
+                break;
+            }
+        }
+        sprzetList.remove(toRemove);
     }
 
     public String getDyscyplina() {

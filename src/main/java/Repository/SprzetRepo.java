@@ -39,7 +39,17 @@ public class SprzetRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(sprzet);
+        Sprzet toRemove = em.find(Sprzet.class, sprzet.getId());
+        em.remove(toRemove);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public void update(Sprzet sprzet) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(sprzet);
         em.getTransaction().commit();
         em.close();
     }
