@@ -1,8 +1,17 @@
 package client;
 
+import Repository.SalaSportowaRepo;
+import Repository.SzkolaRepo;
+import lombok.extern.java.Log;
+import model.SalaSportowa;
+import model.Szkola;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Collections;
+import java.util.List;
 
+@Log
 public class AddHalaSportowaDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -43,26 +52,60 @@ public class AddHalaSportowaDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        stworzButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddZestawDialog addZestawDialog = new AddZestawDialog();
-                addZestawDialog.pack();
-                addZestawDialog.setVisible(true);
-            }
-        });
+        fillComboboxSzkola();
     }
 
     private void onOK() {
         // add your code here
-        String wielkosc = wielkoscTextField.getText();
-        String szkola = szkolaComboBox.getSelectedItem().toString();
-
+        boolean checkBoxSelected = takCheckBox.isSelected();
+        String wielkoscText = wielkoscTextField.getText();
+        String szkolaText = szkolaComboBox.getSelectedItem().toString();
+        if (wielkoscText.isEmpty() || szkolaText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Szkola szkola = findSzkolaInDB(szkolaText);
+        if (szkola == null) {
+            JOptionPane.showMessageDialog(this, "Problem to connect and find szkola in DB!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Integer wielkosc = null;
+        try {
+            wielkosc = Integer.valueOf(wielkoscText);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Wielkosc contains not only numbers!!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        SalaSportowa salaSportowa = new SalaSportowa(wielkosc, checkBoxSelected, szkola, Collections.emptyList());
+        SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+        salaSportowaRepo.save(salaSportowa);
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private void fillComboboxSzkola() {
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        List<Szkola> all = szkolaRepo.getAll();
+        if (all == null) {
+            log.info("There is no szkola in DB");
+            JOptionPane.showMessageDialog(this, "There is no szkola in DB!! or problem with database", "Error", JOptionPane.ERROR_MESSAGE);
+            dispose();
+            return;
+        }
+        all.forEach(p -> szkolaComboBox.addItem(p.getNazwa()));
+    }
+
+    private Szkola findSzkolaInDB(String selectedSzkola) {
+        List<Szkola> szkolaList = new SzkolaRepo().getAll();
+        for (int i = 0; i < szkolaList.size(); i++) {
+            if (szkolaList.get(i).getNazwa().equals(selectedSzkola)) {
+                return szkolaList.get(i);
+            }
+        }
+        return null;
     }
 }

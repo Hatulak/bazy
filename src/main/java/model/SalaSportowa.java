@@ -17,7 +17,7 @@ public class SalaSportowa {
     @OneToOne
     @JoinColumn(name = "SZKOLA_ID")
     private Szkola szkola;
-    @OneToMany(mappedBy = "salaSportowa", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "salaSportowa", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ZestawSprzetow> zestawSprzetowList;
 
     public SalaSportowa() {

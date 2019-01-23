@@ -103,7 +103,6 @@ public class MainClient extends JFrame {
 
     public MainClient() {
         nauczycielRepo = new NauczycielRepo();
-        // todo dorobic edycje grupy i usuwanie :3
         add(panel1);
         setTitle("School app");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -239,6 +238,24 @@ public class MainClient extends JFrame {
                 AddHalaSportowaDialog addHalaSportowaDialog = new AddHalaSportowaDialog();
                 addHalaSportowaDialog.pack();
                 addHalaSportowaDialog.setVisible(true);
+                refreshEverything();
+            }
+        });
+        usunHaleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
+                List<SalaSportowa> sportowaList = salaSportowaRepo.getAll();
+                if (sportowaList == null) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                if (sportowaList.isEmpty()) {
+                    dodajHaleButton.setEnabled(true);
+                    return;
+                }
+                SalaSportowa sportowa = sportowaList.get(0);
+                salaSportowaRepo.remove(sportowa);
                 refreshEverything();
             }
         });
@@ -473,12 +490,14 @@ public class MainClient extends JFrame {
         NauczycielRepo nauczycielRepo = new NauczycielRepo();
         SalaRepo salaRepo = new SalaRepo();
         SzafkaRepo szafkaRepo = new SzafkaRepo();
+        SalaSportowaRepo salaSportowaRepo = new SalaSportowaRepo();
         List<Dziecko> dzieci = dzieckoRepo.getAll();
         List<Grupa> grupy = grupaRepo.getAll();
         List<Miasto> miasta = miastoRepo.getAll();
         List<Nauczyciel> nauczyciele = nauczycielRepo.getAll();
         List<Sala> sale = salaRepo.getAll();
         List<Szafka> szafki = szafkaRepo.getAll();
+        List<SalaSportowa> salaSportowaList = salaSportowaRepo.getAll();
         NauczycielComboBoxListener nauczycielComboBoxListener = new NauczycielComboBoxListener();
         MiastoComboBoxActionListener miastoComboBoxActionListener = new MiastoComboBoxActionListener();
         GrupaComboBoxListener grupaComboBoxListener = new GrupaComboBoxListener();
@@ -504,7 +523,33 @@ public class MainClient extends JFrame {
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
+        fillHalaTab(salaSportowaList);
+    }
 
+    private void fillHalaTab(List<SalaSportowa> salaSportowaList) {
+        if (salaSportowaList == null) {
+            dodajHaleButton.setEnabled(true);
+            wielkoscTextField.setText("");
+            trybunaCheckBox.setSelected(false);
+            DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
+            zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
+            return;
+        }
+        if (salaSportowaList.isEmpty()) {
+            wielkoscTextField.setText("");
+            trybunaCheckBox.setSelected(false);
+            dodajHaleButton.setEnabled(true);
+            DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
+            zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
+            return;
+        }
+        SalaSportowa salaSportowa = salaSportowaList.get(0);
+        dodajHaleButton.setEnabled(false);
+        wielkoscTextField.setText(String.valueOf(salaSportowa.getWielkosc()));
+        trybunaCheckBox.setSelected(salaSportowa.getCzyTrybuna());
+        DefaultListModel<String> zestawSprzetowDefaultListModel = new DefaultListModel<>();
+        salaSportowa.getZestawSprzetowList().forEach(p -> zestawSprzetowDefaultListModel.addElement(p.getId() + " " + p.getDyscyplina()));
+        zestawySprzetowList.setModel(zestawSprzetowDefaultListModel);
     }
 
     private class MiastoComboBoxActionListener implements ItemListener {

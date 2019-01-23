@@ -39,7 +39,8 @@ public class SalaSportowaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(salaSportowa);
+        SalaSportowa salaToRemove = em.find(SalaSportowa.class, salaSportowa.getId());
+        em.remove(salaToRemove);
         em.getTransaction().commit();
         em.close();
     }
