@@ -22,6 +22,7 @@ public class AddDzieckoDialog extends JDialog {
     private JTextField wiekTextField;
     private JTextField imieTextField;
     private JButton stworzRodziceButton;
+    private JComboBox szafkaComboBox;
 
     public AddDzieckoDialog() {
         setContentPane(contentPane);
