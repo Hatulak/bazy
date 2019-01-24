@@ -818,6 +818,7 @@ public class MainClient extends JFrame {
                 GrupaRepo grupaRepo = new GrupaRepo();
                 Grupa currentGrupa = grupaRepo.getById(Long.parseLong(dzieckoGrupaComboBox.getSelectedItem().toString().split(" ")[0]));
                 if (currentGrupa.getDzieckoList().isEmpty()) {
+                    fillDzieckoWindow(null);
                     return;
                 }
                 dzieckoUczenComboBox.setEnabled(true);
@@ -860,6 +861,12 @@ public class MainClient extends JFrame {
     }
 
     private void fillDzieckoWindow(String s) {
+        if (s == null) {
+            dzieckoImieTextField.setText("");
+            dzieckoWiekTextField.setText("");
+            dzieckoRodziceList.setModel(new DefaultListModel());
+            dzieckoUczenComboBox.setEnabled(false);
+        }
         if (dzieckoUczenComboBox.getSelectedIndex() == -1) {
             return;
         }
