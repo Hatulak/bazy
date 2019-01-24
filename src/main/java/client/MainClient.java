@@ -954,7 +954,7 @@ public class MainClient extends JFrame {
             usunDzieckoButton.setEnabled(false);
             dzieckoUczenComboBox.setEnabled(false);
         } else {
-            dzieckoUczenComboBox.setEnabled(false);
+            dzieckoUczenComboBox.setEnabled(true);
             edytujDzieckoButton.setEnabled(true);
             usunDzieckoButton.setEnabled(true);
         }

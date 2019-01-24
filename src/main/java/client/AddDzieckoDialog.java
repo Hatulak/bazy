@@ -26,8 +26,10 @@ public class AddDzieckoDialog extends JDialog {
     private JTextField imieTextField;
     private JButton stworzRodziceButton;
     private JComboBox szafkaComboBox;
+    private JButton usunRodzicButton;
 
     public AddDzieckoDialog() {
+        usunRodzicButton.setVisible(false);
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -113,6 +115,12 @@ public class AddDzieckoDialog extends JDialog {
                 addRodzicDialog.pack();
                 addRodzicDialog.setVisible(true);
                 updateRodziceList();
+            }
+        });
+        usunRodzicButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         updateGrupaComboBox();
