@@ -11,6 +11,7 @@ import model.Szafka;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,8 @@ public class AddDzieckoDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        rodziceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        rodziceList.addSelectionInterval(0, 2);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -69,6 +72,67 @@ public class AddDzieckoDialog extends JDialog {
         updateGrupaComboBox();
         updateSzafkaComboBox();
         updateRodziceList();
+    }
+
+    public AddDzieckoDialog(String dziecko) {
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+        rodziceList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        rodziceList.addSelectionInterval(0, 2);
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        stworzRodziceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddRodzicDialog addRodzicDialog = new AddRodzicDialog();
+                addRodzicDialog.pack();
+                addRodzicDialog.setVisible(true);
+                updateRodziceList();
+            }
+        });
+        updateGrupaComboBox();
+        updateSzafkaComboBox();
+        updateRodziceList();
+        DzieckoRepo dzieckoRepo = new DzieckoRepo();
+        SzafkaRepo szafkaRepo = new SzafkaRepo();
+        Dziecko currentDziecko = dzieckoRepo.getById(Long.parseLong(dziecko.split(" ")[0]));
+        imieTextField.setText(currentDziecko.getImie());
+        wiekTextField.setText(String.valueOf(currentDziecko.getWiek()));
+        grupaComboBox.setSelectedItem(currentDziecko.getGrupa().getId() + " " + currentDziecko.getGrupa().getNazwa());
+        Szafka dzieckoSzafka = szafkaRepo.getDzieckoSzafka(currentDziecko.getId());
+        szafkaComboBox.setSelectedItem(dzieckoSzafka.getId() + " " + dzieckoSzafka.getNumer());
+        List<Rodzic> rodzicList = new ArrayList<>(currentDziecko.getRodzicSet());
+        rodzicList.forEach(rodzic -> rodziceList.setSelectedValue(rodzic.getId() + " " + rodzic.getImie() + " " + rodzic.getNazwisko(), true));
+        //TODO Poprawić, aby dobrbze zaznaczało rodziców w liście
+    }
+
+    private void onEditOK() {
+        //TODO Edycja dziecka
     }
 
     private void updateSzafkaComboBox() {

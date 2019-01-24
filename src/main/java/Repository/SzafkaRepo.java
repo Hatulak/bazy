@@ -63,4 +63,13 @@ public class SzafkaRepo {
         em.close();
         return resultList;
     }
+
+    public Szafka getDzieckoSzafka(Long dzieckoID) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        Query query = em.createQuery("select c from Szafka c where c.dziecko.id  = :pDziecko", Szafka.class).setParameter("pDziecko", dzieckoID);
+        Szafka result = (Szafka) query.getResultList().get(0);
+        em.close();
+        return result;
+    }
 }

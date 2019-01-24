@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -765,7 +766,9 @@ public class MainClient extends JFrame {
         edytujDzieckoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO Edycja dziecka
+                AddDzieckoDialog editDzieckoDialog = new AddDzieckoDialog(dzieckoUczenComboBox.getSelectedItem().toString());
+                editDzieckoDialog.pack();
+                editDzieckoDialog.setVisible(true);
             }
         });
         usunDzieckoButton.addActionListener(new ActionListener() {
@@ -808,11 +811,24 @@ public class MainClient extends JFrame {
         dzieckoGrupaComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                if (dzieckoGrupaComboBox.getSelectedItem() == null) {
+                    return;
+                }
                 dzieckoUczenComboBox.removeAllItems();
                 GrupaRepo grupaRepo = new GrupaRepo();
                 Grupa currentGrupa = grupaRepo.getById(Long.parseLong(dzieckoGrupaComboBox.getSelectedItem().toString().split(" ")[0]));
+                if (currentGrupa.getDzieckoList().isEmpty()) {
+                    return;
+                }
                 dzieckoUczenComboBox.setEnabled(true);
-                currentGrupa.getDzieckoList().forEach(dziecko -> dzieckoUczenComboBox.addItem(dziecko.getId() + " " + dziecko.getImie()));
+                List<Long> idList = new ArrayList<>();
+                currentGrupa.getDzieckoList().forEach(dziecko -> {
+                    if (!idList.contains(dziecko.getId())) {
+                        dzieckoUczenComboBox.addItem(dziecko.getId() + " " + dziecko.getImie());
+                        idList.add(dziecko.getId());
+                    }
+                });
+
                 fillDzieckoWindow(dzieckoUczenComboBox.getSelectedItem().toString());
             }
         });
@@ -889,6 +905,10 @@ public class MainClient extends JFrame {
         patronSzkolaTextField.setText(szkola.getPatron());
         miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
 
+        dzieckoWiekTextField.setText("");
+        dzieckoImieTextField.setText("");
+        dzieckoRodziceList.setModel(new DefaultListModel());
+
         DefaultListModel salaListModel = new DefaultListModel();
         DefaultListModel szafkaListModel = new DefaultListModel();
         DefaultListModel nauczycieleListModel = new DefaultListModel();
@@ -929,9 +949,19 @@ public class MainClient extends JFrame {
             szafkaComboBox.addItem(i.getId() + " Numer Szafki: " + i.getNumer());
             szafkaListModel.addElement(i.getId() + " Numer Szafki: " + i.getNumer());
         });
+        if (dzieckoUczenComboBox.getSelectedItem() == null) {
+            edytujDzieckoButton.setEnabled(false);
+            usunDzieckoButton.setEnabled(false);
+            dzieckoUczenComboBox.setEnabled(false);
+        } else {
+            dzieckoUczenComboBox.setEnabled(false);
+            edytujDzieckoButton.setEnabled(true);
+            usunDzieckoButton.setEnabled(true);
+        }
         szafkiSzkolaList.setModel(szafkaListModel);
         nauczycieleSzkolaList.setModel(nauczycieleListModel);
         saleSzkolaList.setModel(salaListModel);
+
 
         dzieckoUczenComboBox.addActionListener(dzieckoComboBoxListener);
         grupaGrupaComboBox.addActionListener(grupaComboBoxListener);
@@ -1087,6 +1117,9 @@ public class MainClient extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (dzieckoUczenComboBox.getSelectedItem() == null) {
+                return;
+            }
             fillDzieckoWindow(dzieckoUczenComboBox.getSelectedItem().toString());
         }
     }
