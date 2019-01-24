@@ -39,7 +39,8 @@ public class RodzicRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(rodzic);
+        Rodzic toRemove = em.find(Rodzic.class, rodzic.getId());
+        em.remove(toRemove);
         em.getTransaction().commit();
         em.close();
     }

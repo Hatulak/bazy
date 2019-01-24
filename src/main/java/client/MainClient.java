@@ -770,6 +770,7 @@ public class MainClient extends JFrame {
                 AddDzieckoDialog editDzieckoDialog = new AddDzieckoDialog(dzieckoUczenComboBox.getSelectedItem().toString());
                 editDzieckoDialog.pack();
                 editDzieckoDialog.setVisible(true);
+                refreshEverything();
             }
         });
         usunDzieckoButton.addActionListener(new ActionListener() {
