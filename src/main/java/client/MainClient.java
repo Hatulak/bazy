@@ -834,6 +834,7 @@ public class MainClient extends JFrame {
         });
         ActionListener dzieckoUczenActionListener = new DzieckoComboBoxListener();
         dzieckoUczenComboBox.addActionListener(dzieckoUczenActionListener);
+        refreshEverything();
     }
 
     private Szafka findSzafkaOfDziecko(Dziecko dzieckoDB) {
