@@ -933,12 +933,18 @@ public class MainClient extends JFrame {
         List<Sala> sale = salaRepo.getAll();
         List<Szafka> szafki = szafkaRepo.getAll();
         List<SalaSportowa> salaSportowaList = salaSportowaRepo.getAll();
-        Szkola szkola = szkolaRepo.getAll().get(0);
 
-        nazwaSzkolaTextField.setText(szkola.getNazwa());
-        adresSzkolaTextField.setText(szkola.getAdres());
-        patronSzkolaTextField.setText(szkola.getPatron());
-        miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+        List<Szkola> all = szkolaRepo.getAll();
+        if (all != null) {
+            if (!all.isEmpty()) {
+                Szkola szkola = all.get(0);
+                nazwaSzkolaTextField.setText(szkola.getNazwa());
+                adresSzkolaTextField.setText(szkola.getAdres());
+                patronSzkolaTextField.setText(szkola.getPatron());
+                miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+            }
+        }
+
 
         dzieckoWiekTextField.setText("");
         dzieckoImieTextField.setText("");
