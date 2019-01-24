@@ -846,6 +846,9 @@ public class MainClient extends JFrame {
             return null;
         }
         for (int i = 0; i < szafkaListDB.size(); i++) {
+            if (szafkaListDB.get(i).getDziecko() == null) {
+                continue;
+            }
             if (szafkaListDB.get(i).getDziecko().getId().equals(dzieckoDB.getId())) {
                 return szafkaListDB.get(i);
             }
