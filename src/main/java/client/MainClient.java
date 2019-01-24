@@ -15,6 +15,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Log
 public class MainClient extends JFrame {
@@ -799,6 +800,17 @@ public class MainClient extends JFrame {
                     szafkaRepo.update(szafkaDB);
                 }
                 grupaDB.removeDziecko(dzieckoDB);
+                Set<Rodzic> rodzicSet = dzieckoDB.getRodzicSet();
+                if (rodzicSet != null) {
+                    if (!rodzicSet.isEmpty()) {
+                        RodzicRepo rodzicRepo = new RodzicRepo();
+                        for (Rodzic rodzic : rodzicSet) {
+                            rodzic.removeDziecko(dzieckoDB);
+                            rodzicRepo.update(rodzic);
+                        }
+                    }
+
+                }
                 dzieckoDB.setRodzicSet(null);
                 dzieckoDB.setGrupa(null);
                 grupaRepo.update(grupaDB);
@@ -1190,12 +1202,7 @@ public class MainClient extends JFrame {
 
     private Grupa findInGrupGrupaList(String grupaGrupaCombo) {
         Long id = Long.valueOf(grupaGrupaCombo.split(" ")[0]);
-        for (int i = 0; i < grupaList.size(); i++) {
-            if (grupaList.get(i).getId().equals(id)) {
-                return grupaList.get(i);
-            }
-        }
-        return null;
+        return new GrupaRepo().getById(id);
     }
 
 

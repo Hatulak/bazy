@@ -19,7 +19,7 @@ public class Rodzic {
     private Miasto miasto;
     private String adres;
     private Integer telefon;
-    @ManyToMany(mappedBy = "rodzicSet")
+    @ManyToMany(mappedBy = "rodzicSet", fetch = FetchType.EAGER)
     Set<Dziecko> dzieckoSet = new HashSet<>();
 
     public Rodzic() {

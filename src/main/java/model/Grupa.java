@@ -41,7 +41,14 @@ public class Grupa {
     }
 
     public void removeDziecko(Dziecko dziecko) {
-        dzieckoList.remove(dziecko);
+        int index = -1;
+        for (int i = 0; i < dzieckoList.size(); i++) {
+            if (dzieckoList.get(i).getId().equals(dziecko.getId())) {
+                index = i;
+                break;
+            }
+        }
+        dzieckoList.remove(index);
     }
 
     public Long getId() {

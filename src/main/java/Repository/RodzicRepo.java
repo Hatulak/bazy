@@ -43,4 +43,13 @@ public class RodzicRepo {
         em.getTransaction().commit();
         em.close();
     }
+
+    public void update(Rodzic rodzic) {
+        EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(rodzic);
+        em.getTransaction().commit();
+        em.close();
+    }
 }
