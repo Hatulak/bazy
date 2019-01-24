@@ -427,7 +427,6 @@ public class MainClient extends JFrame {
                 refreshEverything();
             }
         });
-
         dodajSzafkeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -561,6 +560,18 @@ public class MainClient extends JFrame {
 
                 edytujSalaButton.setEnabled(true);
                 usunSalaButton.setEnabled(true);
+            }
+        });
+        edytujSalaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SalaRepo salaRepo = new SalaRepo();
+                List<Sala> salaList = salaRepo.getBySalaNumber(salaComboBox.getSelectedItem().toString());
+
+                AddSalaDialog addSalaDialog = new AddSalaDialog(salaList.get(0));
+                addSalaDialog.pack();
+                addSalaDialog.setVisible(true);
+                refreshEverything();
             }
         });
         czesneDzieckoComboBox.addActionListener(new ActionListener() {

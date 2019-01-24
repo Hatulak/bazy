@@ -31,7 +31,10 @@ public class AddSalaDialog extends JDialog {
 
     private List<Rzutnik> rzutnikList;
     private List<Komputer> komputerList;
+    private List<Komputer> komputeryWSaliToEditList;
     private List<Szkola> szkolaList;
+    private Sala sala;
+    private Rzutnik rzutnikInSala;
 
     public AddSalaDialog() {
         setContentPane(contentPane);
@@ -87,6 +90,148 @@ public class AddSalaDialog extends JDialog {
         fillListViewKomupter();
         fillComboboxSzkola();
     }
+
+    public AddSalaDialog(Sala sala) {
+        this.sala = sala;
+        this.rzutnikInSala = sala.getRzutnik();
+        setContentPane(contentPane);
+        setModal(true);
+        getRootPane().setDefaultButton(buttonOK);
+
+        buttonOK.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onEditOK();
+            }
+        });
+
+        buttonCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() when cross is clicked
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        // call onCancel() on ESCAPE
+        contentPane.registerKeyboardAction(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onCancel();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        stworzRzutnikButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddRzutnikDialog addRzutnikDialog = new AddRzutnikDialog();
+                addRzutnikDialog.pack();
+                addRzutnikDialog.setVisible(true);
+                fillComboboxRzutnikToEdit();
+            }
+        });
+        stworzKomputerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddKomputerDialog addKomputerDialog = new AddKomputerDialog();
+                addKomputerDialog.pack();
+                addKomputerDialog.setVisible(true);
+                fillListViewKomupterToEdit();
+            }
+        });
+        fillComboboxRzutnikToEdit();
+        fillListViewKomupterToEdit();
+        fillComboboxSzkola();
+
+        komputeryWSaliToEditList.forEach(k -> {
+            komputeryJList.setSelectedValue(k.getId(), true);
+            komputeryJList.getSelectionModel().setSelectionInterval(0, 2);
+        });
+        numerTextField.setText(sala.getNumerSali());
+        liczbaKrzeselTextField.setText(sala.getLiczbaKrzesel().toString());
+        liczbaLawekTextField.setText(sala.getLiczbaLawek().toString());
+    }
+
+    private void onEditOK() {
+        String numerSali = numerTextField.getText();
+        Integer liczbaKrzesel = Integer.parseInt(liczbaKrzeselTextField.getText());
+        Integer liczbaLawek = Integer.parseInt(liczbaLawekTextField.getText());
+
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        List<Szkola> szkolaList = szkolaRepo.getByName(szkolaComboBox.getSelectedItem().toString());
+        Szkola szkola = szkolaList.get(0);
+
+        RzutnikRepo rzutnikRepo = new RzutnikRepo();
+        List<Rzutnik> rzutnikList = rzutnikRepo.getByModel(rzutnikComboBox.getSelectedItem().toString());
+        Rzutnik rzutnik = rzutnikList.get(0);
+
+        KomputerRepo komputerRepo = new KomputerRepo();
+        List selectedValuesList = komputeryJList.getSelectedValuesList();
+        List<Komputer> selectedComputerList = new LinkedList<>();
+        for (int i = 0; i < selectedValuesList.size(); i++) {
+            selectedComputerList.add(komputerRepo.getById(Long.parseLong(selectedValuesList.get(i).toString())));
+        }
+
+        SalaRepo salaRepo = new SalaRepo();
+        sala.setNumerSali(numerSali);
+        sala.setLiczbaKrzesel(liczbaKrzesel);
+        sala.setLiczbaLawek(liczbaLawek);
+        sala.setSzkola(szkola);
+        sala.setRzutnik(rzutnik);
+        salaRepo.update(sala);
+
+        komputeryWSaliToEditList.forEach(k -> {
+            k.setSala(null);
+            komputerRepo.update(k);
+        });
+
+
+        selectedComputerList.forEach(c -> {
+            c.setSala(sala);
+            komputerRepo.update(c);
+        });
+
+        dispose();
+    }
+
+    private void fillListViewKomupterToEdit() {
+        komputeryJList.removeAll();
+        KomputerRepo komputerRepo = new KomputerRepo();
+        komputerList = komputerRepo.getAllKomputersWhereSalaIdIsNull();
+        komputeryWSaliToEditList = komputerRepo.getBySala(sala);
+
+        DefaultListModel komputerListModel = new DefaultListModel();
+
+        if (komputeryWSaliToEditList == null) {
+            log.info("Empty list with komputer's get from DB");
+        } else {
+            komputeryWSaliToEditList.forEach(k -> komputerListModel.addElement(k.getId().toString()));
+        }
+
+        if (komputerList == null) {
+            log.info("Empty list with komputer's get from DB");
+        } else {
+            komputerList.forEach(e -> komputerListModel.addElement(e.getId().toString()));
+        }
+
+        komputeryJList.setModel(komputerListModel);
+    }
+
+    private void fillComboboxRzutnikToEdit() {
+        rzutnikComboBox.removeAllItems();
+        RzutnikRepo rzutnikRepo = new RzutnikRepo();
+        rzutnikList = rzutnikRepo.getRzutniksWhereRzutnikInSalaIsNull();
+        rzutnikComboBox.addItem(rzutnikInSala.getModel());
+        if (rzutnikList == null) {
+            log.info("Empty list with rzutnik's get from DB");
+        } else {
+            rzutnikList.forEach(p -> rzutnikComboBox.addItem(p.getModel()));
+        }
+    }
+
 
     private void fillListViewKomupter() {
         komputeryJList.removeAll();
