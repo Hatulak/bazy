@@ -135,8 +135,10 @@ public class AddDzieckoDialog extends JDialog {
         Szafka dzieckoSzafka = szafkaRepo.getDzieckoSzafka(currentDziecko.getId());
         szafkaComboBox.setSelectedItem(dzieckoSzafka.getId() + " " + dzieckoSzafka.getNumer());
         List<Rodzic> rodzicList = new ArrayList<>(currentDziecko.getRodzicSet());
-        rodzicList.forEach(rodzic -> rodziceList.setSelectedValue(rodzic.getId() + " " + rodzic.getImie() + " " + rodzic.getNazwisko(), true));
-        //TODO Poprawić, aby dobrbze zaznaczało rodziców w liście
+        rodzicList.forEach(rodzic -> {
+            rodziceList.setSelectedValue(rodzic.getId() + " " + rodzic.getImie() + " " + rodzic.getNazwisko(), true);
+            rodziceList.getSelectionModel().setSelectionInterval(0, 2);
+        });
     }
 
     private void onEditOK() {
