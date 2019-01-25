@@ -73,7 +73,8 @@ public class KomputerRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(komputer);
+        Komputer komputer1 = em.find(Komputer.class, komputer.getId());
+        em.remove(komputer1);
         em.getTransaction().commit();
         em.close();
     }

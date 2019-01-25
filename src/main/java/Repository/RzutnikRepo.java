@@ -59,7 +59,8 @@ public class RzutnikRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(rzutnik);
+        Rzutnik rzutnik1 = em.find(Rzutnik.class, rzutnik.getId());
+        em.remove(rzutnik1);
         em.getTransaction().commit();
         em.close();
     }

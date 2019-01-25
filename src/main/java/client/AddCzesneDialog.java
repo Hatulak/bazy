@@ -140,6 +140,13 @@ public class AddCzesneDialog extends JDialog {
             return;
         }
 
+        try {
+            Double czesneAmountDouble = Double.parseDouble(czesneAmount);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Kwota czesnych musi być liczbą!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if (czesne == null) {
             CzesneRepo czesneRepo = new CzesneRepo();
             czesneRepo.save(new Czesne(czesneDate, Double.parseDouble(czesneAmount), dziecko));

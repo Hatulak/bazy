@@ -13,7 +13,7 @@ public class Sala {
     private String numerSali;
     private Integer liczbaKrzesel;
     private Integer liczbaLawek;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SZKOLA_ID")
     private Szkola szkola;
     @OneToOne(fetch = FetchType.EAGER)

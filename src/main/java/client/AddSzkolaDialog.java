@@ -22,8 +22,10 @@ public class AddSzkolaDialog extends JDialog {
     private JTextField adresTextField;
     private JButton stworzMiastoButton;
     private List<Miasto> miastoList;
+
+    private Szkola szkola;
+
     public AddSzkolaDialog() {
-        //todo usunac pola sele szahfka i nauczyciele pryz tworzeniu sszkoły
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -61,13 +63,14 @@ public class AddSzkolaDialog extends JDialog {
     }
 
     public AddSzkolaDialog(Szkola szkola) {
+        this.szkola = szkola;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                onEditOK();
             }
         });
 
@@ -113,6 +116,34 @@ public class AddSzkolaDialog extends JDialog {
         }
     }
 
+    private void onEditOK() {
+        // add your code here
+        String nazwa = nazwaTextField.getText();
+        String patron = patronTextField.getText();
+        String adres = adresTextField.getText();
+        String miasto = miastoComboBox.getSelectedItem().toString();
+        if (miasto.isEmpty() || nazwa.isEmpty() || patron.isEmpty() || adres.isEmpty()) {
+            log.info("Empty field");
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Miasto miastoInList = MainClient.findMiastoInList(miasto, miastoList);
+        if (miastoInList == null) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        szkola.setNazwa(nazwa);
+        szkola.setPatron(patron);
+        szkola.setAdres(adres);
+        szkola.setMiasto(miastoInList);
+
+        SzkolaRepo szkolaRepo = new SzkolaRepo();
+        szkolaRepo.update(szkola);
+        dispose();
+    }
+
     private void onOK() {
         // add your code here
         String nazwa = nazwaTextField.getText();
@@ -126,6 +157,7 @@ public class AddSzkolaDialog extends JDialog {
         }
         Miasto miastoInList = MainClient.findMiastoInList(miasto, miastoList);
         if (miastoInList == null) {
+            JOptionPane.showMessageDialog(this, "One of field is empty!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         SzkolaRepo szkolaRepo = new SzkolaRepo();

@@ -97,9 +97,24 @@ public class AddSzafkaDialog extends JDialog {
             return;
         }
 
-        Integer szafkaNumer = Integer.parseInt(szafkaNumerTextField.getText());
-        String szafkaHaslo = szafkaHasloTextField.getText();
-        Integer szafkaPojemnosc = Integer.parseInt(szafkaPojemnoscTextField.getText());
+        Integer szafkaNumer;
+        String szafkaHaslo = new String();
+        szafkaHaslo = szafkaHasloTextField.getText();
+        Integer szafkaPojemnosc;
+        try {
+            szafkaNumer = Integer.parseInt(szafkaNumerTextField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Numer szafki musi być liczbą", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            szafkaPojemnosc = Integer.parseInt(szafkaPojemnoscTextField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Pojemność szafki musi być liczbą", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
 
         if (szafka == null) {
             SzkolaRepo szkolaRepo = new SzkolaRepo();

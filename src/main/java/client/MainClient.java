@@ -410,7 +410,13 @@ public class MainClient extends JFrame {
                     id += id_imie.charAt(i);
                     i++;
                 }
-                String czesneToEditString = czesneCzesneList.getSelectedValue().toString();
+                String czesneToEditString = new String();
+                try {
+                    czesneToEditString = czesneCzesneList.getSelectedValue().toString();
+                } catch (NullPointerException exception) {
+                    JOptionPane.showMessageDialog(null, "Aby edytować czesne należy najpierw wybrać któreś z listy", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 i = 0;
                 String idCzesne = new String();
                 while (czesneToEditString.charAt(i) != ' ' && i < czesneToEditString.length()) {
@@ -497,6 +503,26 @@ public class MainClient extends JFrame {
         usunSzkolaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                szkolaRepo.removeEverything();
+
+//                KomputerRepo komputerRepo = new KomputerRepo();
+//                List<Komputer> komputerList = komputerRepo.getAll();
+//                komputerList.forEach(k -> komputerRepo.remove(k));
+//                //KOMPY SIE USUWAJA poprawnie
+//                SalaRepo salaRepo = new SalaRepo();
+//                List<Sala> salaList = salaRepo.getAll();
+//                salaList.forEach(s -> {
+//
+//                    salaRepo.remove(s);
+//                });
+
+
+//                RzutnikRepo rzutnikRepo = new RzutnikRepo();
+//                List<Rzutnik> rzutnikList = rzutnikRepo.getAll();
+//                rzutnikList.forEach(r -> rzutnikRepo.remove(r));
+                //rzutnik jak sala
+
+
                 dodajSzkolaButton.setEnabled(true);
                 edytujSzkolaButton.setEnabled(false);
                 usunSzkolaButton.setEnabled(false);
@@ -646,6 +672,10 @@ public class MainClient extends JFrame {
                 }
                 SzafkaRepo szafkaRepo = new SzafkaRepo();
                 Szafka szafka = szafkaRepo.getById(Long.parseLong(id));
+                if (szafka.getDziecko() != null) {
+                    JOptionPane.showMessageDialog(null, "Nie można usunąć szafki do której przypisane jest dziecko!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 szafkaRepo.remove(szafka);
                 refreshEverything();
             }

@@ -15,10 +15,10 @@ public class Grupa {
     private String nazwa;
     private Integer maxLiczbaDzieci;
     private Integer wiek;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "NAUCZYCIEL_ID")
     private Nauczyciel nauczyciel;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "SALA_ID")
     private Sala sala;
     @OneToMany(mappedBy = "grupa", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH})
