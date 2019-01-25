@@ -494,7 +494,21 @@ public class MainClient extends JFrame {
                     return;
                 }
                 //todo trzeba to ogarnac czemu nie działa do konca :c
+                List<Grupa> all = new GrupaRepo().getAll();
+                if (all != null) {
+                    if (!all.isEmpty()) {
+                        for (int i = 0; i < all.size(); i++) {
+                            if (all.get(i).getNauczyciel().getId().equals(byId.getId())) {
+                                Grupa grupa = all.get(i);
+                                grupa.setNauczyciel(null);
+                                new GrupaRepo().update(grupa);
+                                break;
+                            }
+                        }
+                    }
+                }
                 nauczycielRepo.remove(byId);
+
                 fillComboboxNauczyciel();
                 nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
                 refreshEverything();
@@ -1246,7 +1260,11 @@ public class MainClient extends JFrame {
             }
             grupaWiekTextField.setText(String.valueOf(grupa.getWiek()));
             Nauczyciel nauczyciel = grupa.getNauczyciel();
-            grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+            if (nauczyciel == null) {
+                grupaNauczycielTextField.setText("");
+            } else {
+                grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+            }
             grupaSalaTextField.setText(grupa.getSala().getNumerSali());
             List<Dziecko> dzieckoList = grupa.getDzieckoList();
             DefaultListModel<String> dzieciGrupaDefaultListModel = new DefaultListModel<>();

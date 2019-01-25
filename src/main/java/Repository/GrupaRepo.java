@@ -2,6 +2,8 @@ package Repository;
 
 import Utils.EMF;
 import model.Grupa;
+import model.Nauczyciel;
+import model.Sala;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +15,10 @@ public class GrupaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
+        Nauczyciel nauczyciel = em.find(Nauczyciel.class, grupa.getNauczyciel().getId());
+        grupa.setNauczyciel(nauczyciel);
+        Sala sala = em.find(Sala.class, grupa.getSala().getId());
+        grupa.setSala(sala);
         em.persist(grupa);
         em.getTransaction().commit();
         em.close();
