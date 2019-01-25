@@ -2,6 +2,7 @@ package Repository;
 
 import Utils.EMF;
 import model.Sala;
+import model.Szkola;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,6 +23,8 @@ public class SalaRepo {
         EntityManagerFactory entityManagerFactory = EMF.getEntityManagerFactory();
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
+        Szkola szkola = em.find(Szkola.class, sala.getSzkola().getId());
+        sala.setSzkola(szkola);
         em.persist(sala);
         em.getTransaction().commit();
         em.close();
