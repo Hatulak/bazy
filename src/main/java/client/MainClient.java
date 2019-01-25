@@ -504,25 +504,6 @@ public class MainClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 szkolaRepo.removeEverything();
-
-//                KomputerRepo komputerRepo = new KomputerRepo();
-//                List<Komputer> komputerList = komputerRepo.getAll();
-//                komputerList.forEach(k -> komputerRepo.remove(k));
-//                //KOMPY SIE USUWAJA poprawnie
-//                SalaRepo salaRepo = new SalaRepo();
-//                List<Sala> salaList = salaRepo.getAll();
-//                salaList.forEach(s -> {
-//
-//                    salaRepo.remove(s);
-//                });
-
-
-//                RzutnikRepo rzutnikRepo = new RzutnikRepo();
-//                List<Rzutnik> rzutnikList = rzutnikRepo.getAll();
-//                rzutnikList.forEach(r -> rzutnikRepo.remove(r));
-                //rzutnik jak sala
-
-
                 dodajSzkolaButton.setEnabled(true);
                 edytujSzkolaButton.setEnabled(false);
                 usunSzkolaButton.setEnabled(false);
@@ -972,7 +953,13 @@ public class MainClient extends JFrame {
                 adresSzkolaTextField.setText(szkola.getAdres());
                 patronSzkolaTextField.setText(szkola.getPatron());
                 miastoSzkolaTextField.setText(szkola.getMiasto().getNazwa());
+            } else {
+                nazwaSzkolaTextField.setText("");
+                adresSzkolaTextField.setText("");
+                patronSzkolaTextField.setText("");
+                miastoSzkolaTextField.setText("");
             }
+
         }
 
 
