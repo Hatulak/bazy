@@ -103,6 +103,9 @@ public class AddGrupaDialog extends JDialog {
 
     private void setComboNauczyciel() {
         int index = 0;
+        if(nauczycielList.isEmpty() || grupa.getNauczyciel() == null){
+            return;
+        }
         for (int i = 0; i < nauczycielList.size(); i++) {
             if (nauczycielList.get(i).getId().equals(grupa.getNauczyciel().getId())) {
                 index = i;

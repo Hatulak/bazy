@@ -1040,6 +1040,7 @@ public class MainClient extends JFrame {
         nauczycielComboBox.addActionListener(nauczycielComboBoxListener);
         miastoComboBox.addItemListener(miastoComboBoxActionListener);
         fillHalaTab(salaSportowaList);
+        fillComboboxMiasto();
     }
 
     private void fillHalaTab(List<SalaSportowa> salaSportowaList) {
@@ -1290,7 +1291,11 @@ public class MainClient extends JFrame {
         }
         grupaWiekTextField.setText(String.valueOf(grupa.getWiek()));
         Nauczyciel nauczyciel = grupa.getNauczyciel();
-        grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+        if(nauczyciel == null){
+            grupaNauczycielTextField.setText("");
+        }else{
+            grupaNauczycielTextField.setText(nauczyciel.getId() + " " + nauczyciel.getImie() + "" + nauczyciel.getNazwisko());
+        }
         grupaSalaTextField.setText(grupa.getSala().getNumerSali());
         List<Dziecko> dzieckoList = grupa.getDzieckoList();
         DefaultListModel<String> dzieciGrupaDefaultListModel = new DefaultListModel<>();

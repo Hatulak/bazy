@@ -158,7 +158,9 @@ public class AddDzieckoDialog extends JDialog {
         List<Rodzic> rodzicList = new ArrayList<>(dzieckoCon.getRodzicSet());
         rodzicList.forEach(rodzic -> {
             rodziceList.setSelectedValue(rodzic.getId() + " " + rodzic.getImie() + " " + rodzic.getNazwisko(), true);
-            rodziceList.getSelectionModel().setSelectionInterval(0, 2);
+            if(rodzicList.size()>1) {
+                rodziceList.getSelectionModel().setSelectionInterval(0, 1);
+            }
         });
     }
 
@@ -189,17 +191,17 @@ public class AddDzieckoDialog extends JDialog {
         }
 
         GrupaRepo grupaRepo = new GrupaRepo();
+        if (grupaComboBox.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Empty combobox or DB problem!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Grupa grupa = grupaRepo.getById(Long.parseLong(grupaComboBox.getSelectedItem().toString().split(" ")[0]));
-        if (grupa == null) {
-            JOptionPane.showMessageDialog(this, "Empty combobox or DB problem!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
         SzafkaRepo szafkaRepo = new SzafkaRepo();
-        Szafka szafka = szafkaRepo.getById(Long.parseLong(szafkaComboBox.getSelectedItem().toString().split(" ")[0]));
-        if (szafka == null) {
+        if (szafkaComboBox.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Empty combobox or DB problem!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        Szafka szafka = szafkaRepo.getById(Long.parseLong(szafkaComboBox.getSelectedItem().toString().split(" ")[0]));
         Szafka szafkaDB = findSzafkaOfDziecko(dzieckoCon);
         if (szafkaDB != null) {
             szafkaDB.setDziecko(null);
@@ -311,18 +313,18 @@ public class AddDzieckoDialog extends JDialog {
             return;
         }
         GrupaRepo grupaRepo = new GrupaRepo();
+        if(grupaComboBox.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(this, "Nie wybrano grupy!!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Grupa grupa = grupaRepo.getById(Long.parseLong(grupaComboBox.getSelectedItem().toString().split(" ")[0]));
 
-        if (grupa == null) {
-            JOptionPane.showMessageDialog(this, "Empty combobox or DB problem!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
         SzafkaRepo szafkaRepo = new SzafkaRepo();
-        Szafka szafka = szafkaRepo.getById(Long.parseLong(szafkaComboBox.getSelectedItem().toString().split(" ")[0]));
-        if (szafka == null) {
-            JOptionPane.showMessageDialog(this, "Empty combobox or DB problem!!", "Error", JOptionPane.ERROR_MESSAGE);
+        if (szafkaComboBox.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "Nie wybrano szafki!!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        Szafka szafka = szafkaRepo.getById(Long.parseLong(szafkaComboBox.getSelectedItem().toString().split(" ")[0]));
         Dziecko dziecko = new Dziecko(imie, wiek, grupa, selectedRodziceSet);
         DzieckoRepo dzieckoRepo = new DzieckoRepo();
         dzieckoRepo.save(dziecko);
