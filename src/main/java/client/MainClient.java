@@ -941,7 +941,24 @@ public class MainClient extends JFrame {
     }
 
     private void refreshEverything() {
-
+        imieTextField.setText("");
+        nazwiskoTextField.setText("");
+        telefonTextField.setText("");
+        adresTextField.setText("");
+        miastoTextField.setText("");
+        szkolaTextField.setText("");
+        stopienTextField.setText("");
+        emailTextField.setText("");
+        grupaSalaTextField.setText("");
+        grupaNauczycielTextField.setText("");
+        grupaWiekTextField.setText("");
+        szafkaDzieckoTextField.setText("");
+        szafkaHasloTextField.setText("");
+        szafkaNumerTextField.setText("");
+        szafkaPojemnoscTextField.setText("");
+        dzieckoUczenComboBox.removeAllItems();
+        grupaUczniowieList.setModel(new DefaultListModel());
+        czesneCzesneList.setModel(new DefaultListModel());
         DzieckoRepo dzieckoRepo = new DzieckoRepo();
         GrupaRepo grupaRepo = new GrupaRepo();
         MiastoRepo miastoRepo = new MiastoRepo();
